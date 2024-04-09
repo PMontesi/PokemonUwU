@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ImageView fitHeight="408.0" fitWidth="600.0" layoutY="-1.0">
+         <image>
+            <Image url="@../../../../../../../../multimedia/fondo%20de%20prueba.png" />
+         </image>
+      </ImageView>
+      <Pane layoutX="107.0" layoutY="14.0" prefHeight="67.0" prefWidth="386.0">
+         <children>
+            <Text layoutX="38.0" layoutY="43.0" strokeType="OUTSIDE" strokeWidth="0.0" text="COLECCIÓN POKEMON" wrappingWidth="311.0">
+               <font>
+                  <Font size="27.0" />
+               </font>
+            </Text>
+         </children>
+      </Pane>
+      <Button layoutX="14.0" layoutY="349.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="109.0" text="Volver al menú" />
+      <Pane layoutX="256.0" layoutY="81.0" prefHeight="255.0" prefWidth="324.0" style="-fx-background-color: #000000;">
+         <children>
+            <Text fill="WHITE" layoutX="55.0" layoutY="137.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CAJA POKEMON" wrappingWidth="235.0">
+               <font>
+                  <Font size="27.0" />
+               </font>
+            </Text>
+         </children>
+      </Pane>
+      <Pane layoutX="89.0" layoutY="81.0" prefHeight="255.0" prefWidth="109.0" style="-fx-background-color: #000000;">
+         <children>
+            <Text fill="WHITE" layoutX="-63.0" layoutY="137.0" rotate="90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="EQUIPO POKEMON" wrappingWidth="235.0">
+               <font>
+                  <Font size="27.0" />
+               </font>
+            </Text>
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>

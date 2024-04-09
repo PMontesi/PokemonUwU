@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="0c947eaf-43b0-4a23-833b-73d6a0a1c774" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mvnw" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mvnw.cmd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/es/cesur/progprojectpok/HelloApplication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/es/cesur/progprojectpok/ImageData.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/es/cesur/progprojectpok/SplashApplication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/es/cesur/progprojectpok/controllers/HelloController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/es/cesur/progprojectpok/controllers/SplashController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/es/cesur/progprojectpok/daos/UserDAO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/es/cesur/progprojectpok/database/HibernateSessionFactoryUtil.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/es/cesur/progprojectpok/database/script.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/es/cesur/progprojectpok/managers/UserManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/es/cesur/progprojectpok/model/User.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/es/cesur/progprojectpok/services/UserService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/es/cesur/progprojectpok/utils/Utils.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/es/cesur/progprojectpok/utils/UtilsAudio.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/es/cesur/progprojectpok/utils/UtilsCadenas.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/es/cesur/progprojectpok/utils/UtilsFicheros.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/es/cesur/progprojectpok/utils/UtilsGraficos.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/es/cesur/progprojectpok/audio/capture.mp3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/es/cesur/progprojectpok/audio/chill.mp3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/es/cesur/progprojectpok/audio/exitocaptura.mp3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/es/cesur/progprojectpok/audio/fallocaptura.mp3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/es/cesur/progprojectpok/audio/lanza_capture.mp3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/es/cesur/progprojectpok/audio/no_capture.mp3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/es/cesur/progprojectpok/audio/splash.mp3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/es/cesur/progprojectpok/audio/thunder.mp3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/es/cesur/progprojectpok/audio/thunder.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/es/cesur/progprojectpok/images/bola2.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/es/cesur/progprojectpok/images/criatura-planta.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/es/cesur/progprojectpok/images/criatura-rayo.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/es/cesur/progprojectpok/images/entren-espaldas-bg2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/es/cesur/progprojectpok/images/entren-espaldas2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/es/cesur/progprojectpok/images/fondoplaya.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/es/cesur/progprojectpok/images/logocesur-transformed.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/es/cesur/progprojectpok/styles/styles.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/es/cesur/progprojectpok/view/hello-view.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/es/cesur/progprojectpok/view/splash-view.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/es/cesur/progprojectpok/daos/UserDAOTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/es/cesur/progprojectpok/utils/UtilsTest.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "customColor": "",
+  "associatedIndex": 4
+}]]></component>
+  <component name="ProjectId" id="2erN8FFycqXuOU5T7BSWJ3HxFp8" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "master",
+    "settings.editor.selected.configurable": "reference.settings.project.maven.importing"
+  }
+}]]></component>
+  <component name="RunManager" selected="Application.SplashApplication">
+    <configuration name="HelloApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="es.cesur.progprojectpok.HelloApplication" />
+      <module name="PROG-PROJECT-POK" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="es.cesur.progprojectpok.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SplashApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="es.cesur.progprojectpok.SplashApplication" />
+      <module name="PROG-PROJECT-POK" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="es.cesur.progprojectpok.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.SplashApplication" />
+        <item itemvalue="Application.HelloApplication" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="0c947eaf-43b0-4a23-833b-73d6a0a1c774" name="Changes" comment="" />
+      <created>1712658581202</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1712658581202</updated>
+    </task>
+    <servers />
+  </component>
+</project>
