@@ -12,7 +12,7 @@
    <children>
       <ImageView fitHeight="400.0" fitWidth="600.0">
          <image>
-            <Image url="@../../../../../../../../multimedia/fondo%20combate.png" />
+            <Image url="@../images/fondo-combate.png" />
          </image>
       </ImageView>
       <Pane layoutX="137.0" layoutY="14.0" prefHeight="67.0" prefWidth="386.0">
