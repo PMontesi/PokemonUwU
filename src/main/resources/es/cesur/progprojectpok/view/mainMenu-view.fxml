@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.effect.*?>
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -8,28 +15,84 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <ImageView fitHeight="408.0" fitWidth="600.0" layoutY="-1.0">
+      <ImageView fitHeight="480.0" fitWidth="800.0">
          <image>
-            <Image url="@../images/fondo-de-prueba.png" />
+            <Image url="@../images/images.jpg" />
          </image>
       </ImageView>
-      <Button layoutX="183.0" layoutY="100.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="235.0" text="Combate" />
-      <Button layoutX="183.0" layoutY="142.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="235.0" text="Entrenamiento" />
-      <Button layoutX="183.0" layoutY="185.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="235.0" text="Colección" />
-      <Button layoutX="183.0" layoutY="227.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="235.0" text="Captura" />
-      <Button layoutX="183.0" layoutY="269.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="235.0" text="Centro Pokemon" />
-      <Pane layoutX="107.0" layoutY="14.0" prefHeight="67.0" prefWidth="386.0">
+      <Button layoutX="143.0" layoutY="179.0" mnemonicParsing="false" prefHeight="65.0" prefWidth="250.0" rotate="80.5" text="Combate" textAlignment="CENTER">
+         <font>
+            <Font name="System Bold" size="22.0" />
+         </font>
+         <rotationAxis>
+            <Point3D />
+         </rotationAxis>
+         <effect>
+            <SepiaTone />
+         </effect>
+      </Button>
+      <Button layoutX="143.0" layoutY="254.0" mnemonicParsing="false" prefHeight="65.0" prefWidth="250.0" rotate="80.5" text="Entrenamiento" textAlignment="CENTER">
+         <font>
+            <Font name="System Bold" size="22.0" />
+         </font>
+         <rotationAxis>
+            <Point3D />
+         </rotationAxis>
+         <effect>
+            <SepiaTone />
+         </effect>
+      </Button>
+      <Button layoutX="143.0" layoutY="328.0" mnemonicParsing="false" prefHeight="65.0" prefWidth="250.0" rotate="80.5" text="Colección" textAlignment="CENTER">
+         <font>
+            <Font name="System Bold" size="22.0" />
+         </font>
+         <rotationAxis>
+            <Point3D />
+         </rotationAxis>
+         <effect>
+            <SepiaTone />
+         </effect></Button>
+      <Button layoutX="408.0" layoutY="179.0" mnemonicParsing="false" prefHeight="65.0" prefWidth="250.0" rotate="80.5" text="Captura" textAlignment="CENTER">
+         <font>
+            <Font name="System Bold" size="22.0" />
+         </font>
+         <rotationAxis>
+            <Point3D />
+         </rotationAxis>
+         <effect>
+            <SepiaTone />
+         </effect></Button>
+      <Button layoutX="408.0" layoutY="254.0" mnemonicParsing="false" prefHeight="65.0" prefWidth="250.0" rotate="80.5" text="Centro Pokemon" textAlignment="CENTER">
+         <font>
+            <Font name="System Bold" size="22.0" />
+         </font>
+         <rotationAxis>
+            <Point3D />
+         </rotationAxis>
+         <effect>
+            <SepiaTone />
+         </effect></Button>
+      <Pane layoutX="207.0" layoutY="75.0" prefHeight="67.0" prefWidth="386.0">
          <children>
-            <Text layoutX="89.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="MENÚ PRINCIPAL" wrappingWidth="235.0">
+            <Text layoutX="23.0" layoutY="49.0" strokeType="OUTSIDE" strokeWidth="0.0" text="MENÚ PRINCIPAL" wrappingWidth="341.0">
                <font>
-                  <Font size="27.0" />
+                  <Font name="System Bold" size="40.0" />
                </font>
             </Text>
          </children>
       </Pane>
-      <Button layoutX="183.0" layoutY="311.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="235.0" text="Crianza" />
-      <Button layoutX="483.0" layoutY="355.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="109.0" text="Cerrar Aplicación" />
+      <Button layoutX="408.0" layoutY="328.0" mnemonicParsing="false" prefHeight="65.0" prefWidth="250.0" rotate="80.5" text="Crianza" textAlignment="CENTER">
+         <font>
+            <Font name="System Bold" size="22.0" />
+         </font>
+         <rotationAxis>
+            <Point3D />
+         </rotationAxis>
+         <effect>
+            <SepiaTone />
+         </effect></Button>
+      <Button layoutX="639.0" layoutY="411.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="109.0" text="Cerrar Aplicación" />
    </children>
 </AnchorPane>
