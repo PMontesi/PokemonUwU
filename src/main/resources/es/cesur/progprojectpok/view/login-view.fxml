@@ -30,12 +30,12 @@
                   <Font name="System Bold" size="22.0" />
                </font>
             </Text>
-            <TextField layoutX="128.0" layoutY="103.0" prefHeight="16.0" prefWidth="160.0">
+            <TextField fx:id="loginUsuario" layoutX="128.0" layoutY="103.0" prefHeight="16.0" prefWidth="160.0">
                <font>
                   <Font size="16.0" />
                </font>
             </TextField>
-            <TextField layoutX="128.0" layoutY="157.0" prefHeight="16.0" prefWidth="160.0">
+            <TextField fx:id="loginContra" layoutX="128.0" layoutY="157.0" prefHeight="16.0" prefWidth="160.0">
                <font>
                   <Font size="16.0" />
                </font>
@@ -50,12 +50,12 @@
                   <Font name="System Bold" size="18.0" />
                </font>
             </Text>
-            <Button layoutX="25.0" layoutY="245.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="120.0" text="Registrarse">
+            <Button fx:id="loginRegistro" layoutX="25.0" layoutY="245.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="120.0" text="Registrarse">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
             </Button>
-            <Button layoutX="161.0" layoutY="245.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="120.0" text="Entrar">
+            <Button fx:id="loginEntrar" layoutX="161.0" layoutY="245.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="120.0" text="Entrar">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
@@ -65,5 +65,10 @@
             <Insets />
          </opaqueInsets>
       </AnchorPane>
+      <Button fx:id="loginSalir" layoutX="676.0" layoutY="424.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="91.0" text="Salir">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>
