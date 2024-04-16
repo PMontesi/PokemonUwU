@@ -13,12 +13,12 @@
    <children>
       <ImageView fitHeight="480.0" fitWidth="800.0">
          <image>
-            <Image url="@../PROG-PROJECT-POK/src/main/resources/es/cesur/progprojectpok/images/fondo%20combate.jpg" />
+            <Image url="@../images/fondo-combate.jpg" />
          </image>
       </ImageView>
       <ImageView fitHeight="480.0" fitWidth="870.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../PROG-PROJECT-POK/src/main/resources/es/cesur/progprojectpok/images/battle-plataform-2.png" />
+            <Image url="@../images/battle-plataform-2.png" />
          </image>
       </ImageView>
       <Pane layoutX="137.0" layoutY="14.0" prefHeight="67.0" prefWidth="386.0" />
@@ -56,12 +56,12 @@
       </Pane>
       <ImageView fitHeight="339.0" fitWidth="386.0" layoutX="47.0" layoutY="148.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../PROG-PROJECT-POK/src/main/resources/es/cesur/progprojectpok/images/pokemons/charizard-back.png" />
+            <Image url="@../images/pokemons/charizard-back.png" />
          </image>
       </ImageView>
       <ImageView fitHeight="400.0" fitWidth="300.0" layoutX="471.0" layoutY="-21.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../PROG-PROJECT-POK/src/main/resources/es/cesur/progprojectpok/images/pokemons/blastoise-front.png" />
+            <Image url="@../images/pokemons/blastoise-front.png" />
          </image>
       </ImageView>
       <Text layoutX="353.0" layoutY="46.0" strokeType="OUTSIDE" strokeWidth="0.0" text="COMBATE" wrappingWidth="128.0">

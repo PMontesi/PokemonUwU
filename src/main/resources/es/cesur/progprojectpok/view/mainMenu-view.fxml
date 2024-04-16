@@ -20,7 +20,7 @@
    <children>
       <ImageView fitHeight="480.0" fitWidth="800.0">
          <image>
-            <Image url="@../../../../../../../../POKEMON/ImagenesPokemon/menu.jpg" />
+            <Image url="@../images/menu.jpg" />
          </image>
       </ImageView>
       <Button fx:id="menuCombate" layoutX="143.0" layoutY="179.0" mnemonicParsing="false" prefHeight="65.0" prefWidth="250.0" rotate="80.5" text="Combate" textAlignment="CENTER">
@@ -92,7 +92,7 @@
       <Pane prefHeight="67.0" prefWidth="386.0" />
       <ImageView fx:id="tituloMenu" fitHeight="153.0" fitWidth="475.0" layoutX="163.0" layoutY="33.0">
          <image>
-            <Image url="@../../../../../../../../../../../Downloads/Men-principal-16-4-2024%20(1).png" />
+            <Image url="@../images/menuprincipal.png" />
          </image>
       </ImageView>
       <Button fx:id="menuCerrarsesion" layoutX="545.0" layoutY="428.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="109.0" text="Cerrar sesión">
