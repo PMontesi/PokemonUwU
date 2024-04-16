@@ -41,12 +41,12 @@
       </Pane>
       <ImageView fitHeight="249.0" fitWidth="306.0" layoutX="42.0" layoutY="230.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../PROG-PROJECT-POK/src/main/resources/es/cesur/progprojectpok/images/trainer-back.png" />
+            <Image url="@../images/trainer-back.png" />
          </image>
       </ImageView>
       <ImageView fitHeight="249.0" fitWidth="268.0" layoutX="464.0" layoutY="87.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../PROG-PROJECT-POK/src/main/resources/es/cesur/progprojectpok/images/pokemons/charmander-front.png" />
+            <Image url="@../images/pokemons/charmander-front.png" />
          </image>
       </ImageView>
    </children>

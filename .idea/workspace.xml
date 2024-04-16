@@ -4,13 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0c947eaf-43b0-4a23-833b-73d6a0a1c774" name="Changes" comment="Nuevas imágenes implementadas.&#10;Vistas de Login y Menú principal.">
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_15_04_2024_10_15__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_15_04_2024_10_15__Changes_.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_15_04_2024_14_09__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_15_04_2024_14_09__Changes_.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/es/cesur/progprojectpok/view/login-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/es/cesur/progprojectpok/view/login-view.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/es/cesur/progprojectpok/view/mainMenu-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/es/cesur/progprojectpok/view/mainMenu-view.fxml" afterDir="false" />
-    </list>
+    <list default="true" id="0c947eaf-43b0-4a23-833b-73d6a0a1c774" name="Changes" comment="Arreglada la procedencia de todas las imágenes de las views," />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
