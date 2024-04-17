@@ -1,22 +1,22 @@
 package es.cesur.progprojectpok.controllers;
 
+import es.cesur.progprojectpok.SplashApplication;
 import es.cesur.progprojectpok.database.DBConnection;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-import javafx.stage.Stage;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.event.ActionEvent;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.ResourceBundle;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ResourceBundle;
 
 
 public class LoginController implements Initializable {
@@ -51,13 +51,14 @@ public class LoginController implements Initializable {
             statement.setString(2, pass);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                // Usuario válido, puedes realizar acciones adicionales aquí
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("view/mainMenu-view.fxml"));
-                Scene scene = new Scene(fxmlLoader.load(), 800, 480);
-                Stage menuStage = new Stage();
-                menuStage.setTitle("Menu");
-                menuStage.setScene(scene);
-                menuStage.show();
+                Stage stage = new Stage();
+                FXMLLoader fxmlLoader = new FXMLLoader(SplashApplication.class.getResource("view/mainMenu-view.fxml"));
+                Scene scene = null;
+                    scene = new Scene(fxmlLoader.load(), 760, 750);
+                    stage.setTitle("Menu");
+                    stage.setScene(scene);
+                    stage.show();
+
             } else {
                 System.out.println("No va");
             }
