@@ -16,6 +16,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Random;
 import java.util.ResourceBundle;
 
 
@@ -53,8 +54,7 @@ public class LoginController implements Initializable {
             if (resultSet.next()) {
                 Stage stage = new Stage();
                 FXMLLoader fxmlLoader = new FXMLLoader(SplashApplication.class.getResource("view/mainMenu-view.fxml"));
-                Scene scene = null;
-                    scene = new Scene(fxmlLoader.load(), 760, 750);
+                Scene scene = scene = new Scene(fxmlLoader.load(), 800, 480);
                     stage.setTitle("Menu");
                     stage.setScene(scene);
                     stage.show();
@@ -63,6 +63,40 @@ public class LoginController implements Initializable {
                 System.out.println("No va");
             }
         } catch (SQLException |IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void registrarUsuario() throws SQLException {
+        String username = loginUsuario.getText();
+        String pass = loginContra.getText();
+        Random random = new Random();
+        int pokedollares = random.nextInt(201)+800;
+        String sql = "INSERT INTO ENTRENADOR (NOM_ENTRENADOR, PASS, POKEDOLLARS) VALUES (?, ?, ?)";
+
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, username);
+            statement.setString(2, pass);
+            statement.setInt(3, pokedollares);
+            statement.executeUpdate();
+
+            /*
+            if (resultSet.next()) {
+                Stage stage = new Stage();
+                FXMLLoader fxmlLoader = new FXMLLoader(SplashApplication.class.getResource("view/mainMenu-view.fxml"));
+                Scene scene = scene = new Scene(fxmlLoader.load(), 800, 480);
+                stage.setTitle("Menu");
+                stage.setScene(scene);
+                stage.show();
+
+            } else {
+                System.out.println("Sos un puto");
+            }
+
+             */
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }

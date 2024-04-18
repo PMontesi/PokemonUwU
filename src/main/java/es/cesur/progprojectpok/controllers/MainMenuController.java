@@ -31,7 +31,7 @@ public class MainMenuController implements Initializable {
         FXMLLoader fxmlLoader = new FXMLLoader(SplashApplication.class.getResource("view/login-view.fxml"));
         Scene scene = null;
         try {
-            scene = new Scene(fxmlLoader.load(), 760, 750);
+            scene = new Scene(fxmlLoader.load(), 800, 480);
             stage.setTitle("Menu");
             stage.setScene(scene);
             stage.show();
