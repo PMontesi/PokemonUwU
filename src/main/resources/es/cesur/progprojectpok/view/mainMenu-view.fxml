@@ -16,7 +16,7 @@
             <Image url="@../images/menu.jpg" />
          </image>
       </ImageView>
-      <Button fx:id="menuCombate" layoutX="143.0" layoutY="179.0" mnemonicParsing="false" prefHeight="65.0" prefWidth="250.0" rotate="80.5" text="Combate" textAlignment="CENTER">
+      <Button fx:id="menuCombate" layoutX="143.0" layoutY="179.0" mnemonicParsing="false" onAction="#abrirMenuCombate" prefHeight="65.0" prefWidth="250.0" rotate="80.5" text="Combate" textAlignment="CENTER">
          <font>
             <Font name="System Bold" size="22.0" />
          </font>
@@ -27,7 +27,7 @@
             <SepiaTone />
          </effect>
       </Button>
-      <Button fx:id="menuEntrenamiento" layoutX="143.0" layoutY="254.0" mnemonicParsing="false" prefHeight="65.0" prefWidth="250.0" rotate="80.5" text="Entrenamiento" textAlignment="CENTER">
+      <Button fx:id="menuEntrenamiento" layoutX="143.0" layoutY="254.0" mnemonicParsing="false" onAction="#abrirMenuEntrenamiento" prefHeight="65.0" prefWidth="250.0" rotate="80.5" text="Entrenamiento" textAlignment="CENTER">
          <font>
             <Font name="System Bold" size="22.0" />
          </font>
@@ -38,7 +38,7 @@
             <SepiaTone />
          </effect>
       </Button>
-      <Button fx:id="menuColeccion" layoutX="143.0" layoutY="328.0" mnemonicParsing="false" prefHeight="65.0" prefWidth="250.0" rotate="80.5" text="Colección" textAlignment="CENTER">
+      <Button fx:id="menuColeccion" layoutX="143.0" layoutY="328.0" mnemonicParsing="false" onAction="#abrirMenuColeccion" prefHeight="65.0" prefWidth="250.0" rotate="80.5" text="Colección" textAlignment="CENTER">
          <font>
             <Font name="System Bold" size="22.0" />
          </font>
@@ -48,7 +48,7 @@
          <effect>
             <SepiaTone />
          </effect></Button>
-      <Button fx:id="menuCaptura" layoutX="408.0" layoutY="179.0" mnemonicParsing="false" prefHeight="65.0" prefWidth="250.0" rotate="80.5" text="Captura" textAlignment="CENTER">
+      <Button fx:id="menuCaptura" layoutX="408.0" layoutY="179.0" mnemonicParsing="false" onAction="#abrirMenuCaptura" prefHeight="65.0" prefWidth="250.0" rotate="80.5" text="Captura" textAlignment="CENTER">
          <font>
             <Font name="System Bold" size="22.0" />
          </font>
@@ -58,7 +58,7 @@
          <effect>
             <SepiaTone />
          </effect></Button>
-      <Button fx:id="menuCentroPoke" layoutX="408.0" layoutY="254.0" mnemonicParsing="false" prefHeight="65.0" prefWidth="250.0" rotate="80.5" text="Centro Pokemon" textAlignment="CENTER">
+      <Button fx:id="menuCentroPoke" layoutX="408.0" layoutY="254.0" mnemonicParsing="false" onAction="#abrirMenuCentroPoke" prefHeight="65.0" prefWidth="250.0" rotate="80.5" text="Centro Pokemon" textAlignment="CENTER">
          <font>
             <Font name="System Bold" size="22.0" />
          </font>
@@ -68,11 +68,11 @@
          <effect>
             <SepiaTone />
          </effect></Button>
-      <Button fx:id="menuSalir" layoutX="664.0" layoutY="428.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="109.0" text="Salir">
+      <Button fx:id="menuSalir" layoutX="664.0" layoutY="428.0" mnemonicParsing="false" onAction="#salirPrograma" prefHeight="31.0" prefWidth="109.0" text="Salir">
          <font>
             <Font size="14.0" />
          </font></Button>
-      <Button fx:id="menuCrianza" layoutX="408.0" layoutY="328.0" mnemonicParsing="false" prefHeight="65.0" prefWidth="250.0" rotate="80.5" text="Crianza" textAlignment="CENTER">
+      <Button fx:id="menuCrianza" layoutX="408.0" layoutY="328.0" mnemonicParsing="false" onAction="#abrirMenuCrianza" prefHeight="65.0" prefWidth="250.0" rotate="80.5" text="Crianza" textAlignment="CENTER">
          <font>
             <Font name="System Bold" size="22.0" />
          </font>

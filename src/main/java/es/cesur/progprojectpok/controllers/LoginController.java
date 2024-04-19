@@ -53,7 +53,8 @@ public class LoginController implements Initializable {
             statement.setString(2, pass);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                Stage stage = new Stage();
+                Stage stage = (Stage) loginUsuario.getScene().getWindow();
+                stage.close();
                 FXMLLoader fxmlLoader = new FXMLLoader(SplashApplication.class.getResource("view/mainMenu-view.fxml"));
                 Scene scene = scene = new Scene(fxmlLoader.load(), 800, 480);
                     stage.setTitle("Menu");
@@ -101,6 +102,11 @@ public class LoginController implements Initializable {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public void salirPrograma (){
+        Stage stage = (Stage) loginSalir.getScene().getWindow();
+        stage.close();
     }
 
 

@@ -65,7 +65,7 @@
             <Insets />
          </opaqueInsets>
       </AnchorPane>
-      <Button fx:id="loginSalir" layoutX="676.0" layoutY="424.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="91.0" text="Salir">
+      <Button fx:id="loginSalir" layoutX="676.0" layoutY="424.0" mnemonicParsing="false" onAction="#salirPrograma" prefHeight="24.0" prefWidth="91.0" text="Salir">
          <font>
             <Font size="14.0" />
          </font>
