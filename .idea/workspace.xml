@@ -4,8 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0c947eaf-43b0-4a23-833b-73d6a0a1c774" name="Changes" comment="Funcionalidad de registro de entrenador">
+    <list default="true" id="0c947eaf-43b0-4a23-833b-73d6a0a1c774" name="Changes" comment="Creadas algunas clases básicas">
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_11_04_2024_19_56_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_11_04_2024_19_56__Changes_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_11_04_2024_18_14_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_11_04_2024_18_14__Changes_.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/es/cesur/progprojectpok/controllers/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/es/cesur/progprojectpok/controllers/LoginController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/es/cesur/progprojectpok/view/login-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/es/cesur/progprojectpok/view/login-view.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -14,6 +20,14 @@
   </component>
   <component name="CodeStyleSettingsInfer">
     <option name="done" value="true" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Enum" />
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
@@ -38,18 +52,18 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master",
-    "last_opened_file_path": "C:/Users/PabloMontesinosNicol",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "org.jetbrains.plugins.github.ui.GithubSettingsConfigurable"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/PabloMontesinosNicol/uml-generated-code&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;org.jetbrains.plugins.github.ui.GithubSettingsConfigurable&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="E:\CESUR\Asignaturas\Programación\Proyectos Intellij\PokemonUwU\src\main\resources\es\cesur\progprojectpok\images" />
@@ -58,6 +72,7 @@
       <recent name="es.cesur.progprojectpok.database.ConfigDB" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="es.cesur.progprojectpok.clases" />
       <recent name="es.cesur.progprojectpok" />
     </key>
   </component>
@@ -176,7 +191,15 @@
       <option name="project" value="LOCAL" />
       <updated>1713426001619</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Creadas algunas clases básicas">
+      <option name="closed" value="true" />
+      <created>1713440684031</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1713440684031</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -195,7 +218,8 @@
     <MESSAGE value="Todas las imágenes de los primeros 26 pokémons." />
     <MESSAGE value="Arreglado el Login" />
     <MESSAGE value="Funcionalidad de registro de entrenador" />
-    <option name="LAST_COMMIT_MESSAGE" value="Funcionalidad de registro de entrenador" />
+    <MESSAGE value="Creadas algunas clases básicas" />
+    <option name="LAST_COMMIT_MESSAGE" value="Creadas algunas clases básicas" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

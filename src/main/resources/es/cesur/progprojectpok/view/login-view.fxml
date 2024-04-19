@@ -55,6 +55,11 @@
                   <Font name="System Bold" size="18.0" />
                </font>
             </Button>
+            <Text fx:id="textoError" fill="RED" layoutX="1.0" layoutY="225.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="RIGHT" wrappingWidth="288.76171875">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Text>
          </children>
          <opaqueInsets>
             <Insets />
@@ -65,6 +70,5 @@
             <Font size="14.0" />
          </font>
       </Button>
-      <Button fx:id="aaa" layoutX="77.0" layoutY="365.0" mnemonicParsing="false" text="AAAAA" />
    </children>
 </AnchorPane>

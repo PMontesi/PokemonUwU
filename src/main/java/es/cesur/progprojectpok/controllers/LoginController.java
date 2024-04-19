@@ -8,6 +8,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -23,11 +24,11 @@ import java.util.ResourceBundle;
 public class LoginController implements Initializable {
 
     @FXML
-    private Button aaa;
-    @FXML
     private TextField loginUsuario;
     @FXML
     private TextField loginContra;
+    @FXML
+    private Text textoError;
     @FXML
     private Button loginRegistro;
     @FXML
@@ -60,9 +61,10 @@ public class LoginController implements Initializable {
                     stage.show();
 
             } else {
-                System.out.println("No va");
+                textoError.setText("Sos un putiaso");
             }
-        } catch (SQLException |IOException e) {
+        } catch (SQLException | IOException e) {
+            textoError.setText("La base de datos es una putisasa");
             e.printStackTrace();
         }
     }
