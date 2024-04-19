@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -8,11 +9,11 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="es.cesur.progprojectpok.controllers.CapturaController">
    <children>
       <ImageView fitHeight="480.0" fitWidth="800.0">
          <image>
-            <Image url="@../PROG-PROJECT-POK/src/main/resources/es/cesur/progprojectpok/images/fondo-combate.jpg" />
+            <Image url="@../images/fondo-combate.jpg" />
          </image>
       </ImageView>
       <Pane layoutX="224.0" layoutY="14.0" prefHeight="67.0" prefWidth="386.0">
@@ -26,28 +27,20 @@
       </Pane>
       <Pane layoutX="434.0" layoutY="359.0" prefHeight="87.0" prefWidth="295.0" style="-fx-background-color: #000000;">
          <children>
-            <Button layoutX="25.0" layoutY="25.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="115.0" text="CAPTURAR" />
-            <Button layoutX="164.0" layoutY="25.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="115.0" text="MENÚ PRINCIAPL" />
+            <Button fx:id="botonCapturar" layoutX="25.0" layoutY="25.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="115.0" text="CAPTURAR" />
+            <Button fx:id="botonMenuPrincipal" layoutX="164.0" layoutY="25.0" mnemonicParsing="false" onAction="#volverMenu" prefHeight="37.0" prefWidth="115.0" text="MENÚ PRINCIAPL" />
          </children>
       </Pane>
-      <Pane layoutX="62.0" layoutY="110.0" prefHeight="95.0" prefWidth="324.0" style="-fx-background-color: #ffffff;">
-         <children>
-            <Text layoutX="85.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="TEXTO DE CAPTURA" wrappingWidth="187.056640625">
-               <font>
-                  <Font size="32.0" />
-               </font>
-            </Text>
-         </children>
-      </Pane>
-      <ImageView fitHeight="249.0" fitWidth="306.0" layoutX="42.0" layoutY="230.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="imagenEntrenador" fitHeight="249.0" fitWidth="306.0" layoutX="42.0" layoutY="230.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/trainer-back.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="249.0" fitWidth="268.0" layoutX="464.0" layoutY="87.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="pokemonSalvaje" fitHeight="249.0" fitWidth="268.0" layoutX="464.0" layoutY="87.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/pokemons/charmander-front.png" />
          </image>
       </ImageView>
+      <TextArea fx:id="logCaptura" layoutX="42.0" layoutY="100.0" prefHeight="112.0" prefWidth="406.0" />
    </children>
 </AnchorPane>
