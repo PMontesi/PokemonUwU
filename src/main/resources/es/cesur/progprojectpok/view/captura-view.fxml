@@ -27,7 +27,7 @@
       </Pane>
       <Pane layoutX="434.0" layoutY="359.0" prefHeight="87.0" prefWidth="295.0" style="-fx-background-color: #000000;">
          <children>
-            <Button fx:id="botonCapturar" layoutX="25.0" layoutY="25.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="115.0" text="CAPTURAR" />
+            <Button fx:id="botonCapturar" layoutX="25.0" layoutY="25.0" mnemonicParsing="false" onAction="#lanzarPokeball" prefHeight="37.0" prefWidth="115.0" text="CAPTURAR" />
             <Button fx:id="botonMenuPrincipal" layoutX="164.0" layoutY="25.0" mnemonicParsing="false" onAction="#volverMenu" prefHeight="37.0" prefWidth="115.0" text="MENÚ PRINCIAPL" />
          </children>
       </Pane>
@@ -36,7 +36,7 @@
             <Image url="@../images/trainer-back.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="pokemonSalvaje" fitHeight="249.0" fitWidth="268.0" layoutX="464.0" layoutY="87.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="pokemonSalvajeImagen" fitHeight="249.0" fitWidth="268.0" layoutX="464.0" layoutY="87.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/pokemons/charmander-front.png" />
          </image>
