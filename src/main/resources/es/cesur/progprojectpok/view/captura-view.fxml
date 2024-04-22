@@ -36,11 +36,11 @@
             <Image url="@../images/trainer-back.png" />
          </image>
       </ImageView>
+      <TextArea fx:id="logCaptura" layoutX="42.0" layoutY="100.0" prefHeight="112.0" prefWidth="406.0" />
       <ImageView fx:id="pokemonSalvajeImagen" fitHeight="249.0" fitWidth="268.0" layoutX="464.0" layoutY="87.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/pokemons/charmander-front.png" />
          </image>
       </ImageView>
-      <TextArea fx:id="logCaptura" layoutX="42.0" layoutY="100.0" prefHeight="112.0" prefWidth="406.0" />
    </children>
 </AnchorPane>

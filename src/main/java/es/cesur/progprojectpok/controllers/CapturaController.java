@@ -112,10 +112,14 @@ public class CapturaController implements Initializable {
 
 
         }
+        //Image imagenPokemonGenerado = new Image(getClass().getResource(imagenURL).toExternalForm());
+        //pokemonSalvajeImagen.setImage(imagenPokemonGenerado);
+
         //Imágen del pokemon seleccionado. En teoría, funciona, pero la imagen no sale.
         File archivo = new File(imagenURL);
         System.out.println("URL File: " + archivo.toString());
-        Image imagenPokemonGenerado = new Image(archivo.toURI().toString());
+        Image imagenPokemonGenerado = new Image("file:C:\\Users\\PabloMontesinosNicol\\Desktop\\Pojemon\\PROG-PROJECT-POK\\src\\main\\resources\\es\\cesur\\progprojectpok\\images\\entren-espaldas-bg2.png"
+);
         System.out.println(imagenPokemonGenerado.getUrl());
         System.out.println("URL imagenPokemonGenerado: " + archivo.toURI().toString());
         pokemonSalvajeImagen.setImage(imagenPokemonGenerado);
@@ -128,8 +132,8 @@ public class CapturaController implements Initializable {
 
     //Cuando se haga la mochila y la tienda, habrá que añadir la función de reducir la cantidad de pokéballs
     public void lanzarPokeball() {
-        int probCaptura = (int) (Math.random()*100 +1);
-        if (probCaptura > 33){
+        int probCaptura = (int) (Math.random()*3 +1);
+        if (probCaptura >= 2){
             logCaptura.setStyle("-fx-text-fill: green");
             logCaptura.setText(pokemonSalvaje.getNombre() + " salvaje ha sido capturado con éxito");
             Entrenador.capturarPokemon(pokemonSalvaje);
