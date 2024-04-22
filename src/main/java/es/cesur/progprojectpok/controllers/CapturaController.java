@@ -18,6 +18,7 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 import java.net.ConnectException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -97,31 +98,22 @@ public class CapturaController implements Initializable {
                 if(pokemonSalvaje.getSexo() == 'H' && resultSetPokemon.getString("IMAGEN_DELANTE_F") != null){
                     imagenURL = resultSetPokemon.getString("IMAGEN_DELANTE_F");
                 }else imagenURL = resultSetPokemon.getString("IMAGEN_DELANTE");
-
-
-                //Para comprobar que todo funciona
-                String imagenMacho = resultSetPokemon.getString("IMAGEN_DELANTE");
-                String imagenHembra = resultSetPokemon.getString("IMAGEN_DELANTE_F");
-                System.out.println(pokemonSalvaje.toString());
-                System.out.println("Imagen macho: " + imagenMacho);
-                System.out.println("Imagen hembra: " + imagenHembra);
-                System.out.println("Imagen url: " + imagenURL);
             }
         } catch (SQLException e) {
             e.printStackTrace();
-
-
         }
-        //Image imagenPokemonGenerado = new Image(getClass().getResource(imagenURL).toExternalForm());
-        //pokemonSalvajeImagen.setImage(imagenPokemonGenerado);
 
-        //Imágen del pokemon seleccionado. En teoría, funciona, pero la imagen no sale.
+        //Image imagenPokemonGenerado = new Image("file:C:\\Users\\PabloMontesinosNicol\\Desktop\\Pojemon\\PROG-PROJECT-POK\\src\\main\\resources\\es\\cesur\\progprojectpok\\images\\entren-espaldas-bg2.png"
+        //Image imagenPokemonGenerado = new Image("file:E:\\CESUR\\Asignaturas\\Programación\\Proyectos Intellij\\PokemonUwU\\src\\main\\resources\\es\\cesur\\progprojectpok\\images\\pokemons\\arbok-front.png");
+
+        //Cambio de imagen.
         File archivo = new File(imagenURL);
-        System.out.println("URL File: " + archivo.toString());
-        Image imagenPokemonGenerado = new Image("file:C:\\Users\\PabloMontesinosNicol\\Desktop\\Pojemon\\PROG-PROJECT-POK\\src\\main\\resources\\es\\cesur\\progprojectpok\\images\\entren-espaldas-bg2.png"
-);
-        System.out.println(imagenPokemonGenerado.getUrl());
-        System.out.println("URL imagenPokemonGenerado: " + archivo.toURI().toString());
+        String rutaAbsoluta = archivo.getAbsolutePath();
+        if(System.getProperty("os.name").startsWith("Windows")){
+            rutaAbsoluta = rutaAbsoluta.replace("/", "\\");
+        }
+        String fileURL ="file:///" + rutaAbsoluta.replace("\\", "/");
+        Image imagenPokemonGenerado = new Image(rutaAbsoluta);
         pokemonSalvajeImagen.setImage(imagenPokemonGenerado);
 
         //Log de captura.
@@ -148,3 +140,4 @@ public class CapturaController implements Initializable {
 
 
 }
+
