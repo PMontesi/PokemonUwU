@@ -5,12 +5,14 @@ import es.cesur.progprojectpok.clases.Entrenador;
 import es.cesur.progprojectpok.clases.Pokemon;
 import es.cesur.progprojectpok.clases.Tipos;
 import es.cesur.progprojectpok.database.DBConnection;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
@@ -18,18 +20,23 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 import java.net.ConnectException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Random;
 import java.util.ResourceBundle;
+import java.util.concurrent.CountDownLatch;
 
 public class CapturaController implements Initializable {
 
 
+    @FXML
+    public Button botonBuscar;
+    @FXML
+    public Button moteSi;
+    @FXML
+    public Button moteNo;
     @FXML
     private Button botonCapturar;
     @FXML
@@ -40,27 +47,72 @@ public class CapturaController implements Initializable {
     private ImageView imagenEntrenador;
     @FXML
     private TextArea logCaptura;
+    @FXML
+    private TextField textoMote;
     private Pokemon pokemonSalvaje;
 
-    public void volverMenu() {
-        Stage stage = (Stage) botonMenuPrincipal.getScene().getWindow();
-        stage.close();
-        FXMLLoader fxmlLoader = new FXMLLoader(SplashApplication.class.getResource("view/mainMenu-view.fxml"));
-        Scene scene = null;
-        try {
-            scene = new Scene(fxmlLoader.load(), 800, 480);
-            stage.setTitle("Menu");
-            stage.setScene(scene);
-            stage.show();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        moteSi.setVisible(false);
+        moteNo.setVisible(false);
+        textoMote.setVisible(false);
+        pokemonNuevo();
+    }
+
+
+    //Cuando se haga la mochila y la tienda, habrá que añadir la función de reducir la cantidad de pokéballs
+    public void lanzarPokeball() {
+        int probCaptura = (int) (Math.random()*3 +1);
+        if (probCaptura >= 2 && pokemonSalvaje != null){
+            logCaptura.setStyle("-fx-text-fill: green");
+            logCaptura.setText(pokemonSalvaje.getNombre() + " salvaje ha sido capturado con éxito");
+            moteSi.setVisible(true);
+            moteNo.setVisible(true);
+            textoMote.setVisible(true);
+
+        }
+        else if (probCaptura == 1 && pokemonSalvaje != null) {
+            logCaptura.setStyle("-fx-text-fill: red");
+            logCaptura.setText(pokemonSalvaje.getNombre() + " salvaje ha huído");
+            pokemonSalvajeImagen.setVisible(false);
+            pokemonSalvaje = null;
+        } else if (pokemonSalvaje == null) {
+            logCaptura.setText("¡No hay ningún pokemon al que lanzarle una pokéball!");
+        }
+    }
+
+
+    public void ponerMoteTrue(){
+        System.out.println("SE PULSÓ EL BOTÓN");
+
+        if(textoMote.getText().isEmpty()){
+            pokemonSalvaje.setMote(pokemonSalvaje.getNombre());
+        }else pokemonSalvaje.setMote(textoMote.getText());
+
+        Entrenador.capturarPokemon(pokemonSalvaje);
+        pokemonSalvajeImagen.setVisible(false);
+        pokemonSalvaje = null;
+        moteSi.setVisible(false);
+        moteNo.setVisible(false);
+        textoMote.setVisible(false);
+    }
+    public void ponerMoteFalse(){
+        System.out.println("SE PULSÓ EL BOTÓN");
+
+        pokemonSalvaje.setMote(pokemonSalvaje.getNombre());
+        Entrenador.capturarPokemon(pokemonSalvaje);
+        pokemonSalvajeImagen.setVisible(false);
+        pokemonSalvaje = null;
+        moteSi.setVisible(false);
+        moteNo.setVisible(false);
+        textoMote.setVisible(false);
+    }
+
+    public void pokemonNuevo(){
         int numPokedexTotal = 0;
         String imagenURL = "";
+        pokemonSalvajeImagen.setVisible(true);
         pokemonSalvaje = new Pokemon();
 
         //Primer select para que el rango del math.random funcione.
@@ -103,9 +155,6 @@ public class CapturaController implements Initializable {
             e.printStackTrace();
         }
 
-        //Image imagenPokemonGenerado = new Image("file:C:\\Users\\PabloMontesinosNicol\\Desktop\\Pojemon\\PROG-PROJECT-POK\\src\\main\\resources\\es\\cesur\\progprojectpok\\images\\entren-espaldas-bg2.png"
-        //Image imagenPokemonGenerado = new Image("file:E:\\CESUR\\Asignaturas\\Programación\\Proyectos Intellij\\PokemonUwU\\src\\main\\resources\\es\\cesur\\progprojectpok\\images\\pokemons\\arbok-front.png");
-
         //Cambio de imagen.
         File archivo = new File(imagenURL);
         String rutaAbsoluta = archivo.getAbsolutePath();
@@ -119,25 +168,21 @@ public class CapturaController implements Initializable {
         //Log de captura.
         logCaptura.setStyle("-fx-text-fill: blue");
         logCaptura.setText("Un " + pokemonSalvaje.getNombre() + " salvaje ha aparecido");
-
     }
 
-    //Cuando se haga la mochila y la tienda, habrá que añadir la función de reducir la cantidad de pokéballs
-    public void lanzarPokeball() {
-        int probCaptura = (int) (Math.random()*3 +1);
-        if (probCaptura >= 2){
-            logCaptura.setStyle("-fx-text-fill: green");
-            logCaptura.setText(pokemonSalvaje.getNombre() + " salvaje ha sido capturado con éxito");
-            Entrenador.capturarPokemon(pokemonSalvaje);
-        }
-        else {
-            logCaptura.setStyle("-fx-text-fill: red");
-            logCaptura.setText(pokemonSalvaje.getNombre() + " salvaje ha huído");
-            pokemonSalvaje = null; //quizá haga falta desarrollar más esta parte.
+    public void volverMenu() {
+        Stage stage = (Stage) botonMenuPrincipal.getScene().getWindow();
+        stage.close();
+        FXMLLoader fxmlLoader = new FXMLLoader(SplashApplication.class.getResource("view/mainMenu-view.fxml"));
+        Scene scene = null;
+        try {
+            scene = new Scene(fxmlLoader.load(), 800, 480);
+            stage.setTitle("Menu");
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
-
-
-
 }
 
