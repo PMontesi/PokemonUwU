@@ -5,12 +5,14 @@ import es.cesur.progprojectpok.clases.Entrenador;
 import es.cesur.progprojectpok.clases.Pokemon;
 import es.cesur.progprojectpok.clases.Tipos;
 import es.cesur.progprojectpok.database.DBConnection;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
@@ -24,10 +26,17 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
+import java.util.concurrent.CountDownLatch;
 
 public class CapturaController implements Initializable {
 
 
+    @FXML
+    public Button botonBuscar;
+    @FXML
+    public Button moteSi;
+    @FXML
+    public Button moteNo;
     @FXML
     private Button botonCapturar;
     @FXML
@@ -38,11 +47,16 @@ public class CapturaController implements Initializable {
     private ImageView imagenEntrenador;
     @FXML
     private TextArea logCaptura;
+    @FXML
+    private TextField textoMote;
     private Pokemon pokemonSalvaje;
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        moteSi.setVisible(false);
+        moteNo.setVisible(false);
+        textoMote.setVisible(false);
         pokemonNuevo();
     }
 
@@ -53,9 +67,10 @@ public class CapturaController implements Initializable {
         if (probCaptura >= 2 && pokemonSalvaje != null){
             logCaptura.setStyle("-fx-text-fill: green");
             logCaptura.setText(pokemonSalvaje.getNombre() + " salvaje ha sido capturado con éxito");
-            Entrenador.capturarPokemon(pokemonSalvaje);
-            pokemonSalvajeImagen.setVisible(false);
-            pokemonSalvaje = null;
+            moteSi.setVisible(true);
+            moteNo.setVisible(true);
+            textoMote.setVisible(true);
+
         }
         else if (probCaptura == 1 && pokemonSalvaje != null) {
             logCaptura.setStyle("-fx-text-fill: red");
@@ -67,9 +82,37 @@ public class CapturaController implements Initializable {
         }
     }
 
+
+    public void ponerMoteTrue(){
+        System.out.println("SE PULSÓ EL BOTÓN");
+
+        if(textoMote.getText().isEmpty()){
+            pokemonSalvaje.setMote(pokemonSalvaje.getNombre());
+        }else pokemonSalvaje.setMote(textoMote.getText());
+
+        Entrenador.capturarPokemon(pokemonSalvaje);
+        pokemonSalvajeImagen.setVisible(false);
+        pokemonSalvaje = null;
+        moteSi.setVisible(false);
+        moteNo.setVisible(false);
+        textoMote.setVisible(false);
+    }
+    public void ponerMoteFalse(){
+        System.out.println("SE PULSÓ EL BOTÓN");
+
+        pokemonSalvaje.setMote(pokemonSalvaje.getNombre());
+        Entrenador.capturarPokemon(pokemonSalvaje);
+        pokemonSalvajeImagen.setVisible(false);
+        pokemonSalvaje = null;
+        moteSi.setVisible(false);
+        moteNo.setVisible(false);
+        textoMote.setVisible(false);
+    }
+
     public void pokemonNuevo(){
         int numPokedexTotal = 0;
         String imagenURL = "";
+        pokemonSalvajeImagen.setVisible(true);
         pokemonSalvaje = new Pokemon();
 
         //Primer select para que el rango del math.random funcione.
