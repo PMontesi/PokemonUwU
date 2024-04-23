@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.effect.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
@@ -94,5 +95,14 @@
             <Text fx:id="textDescripCombate" layoutX="13.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="TEXTO DE COMBATE" wrappingWidth="453.0566101074219" />
          </children>
       </Pane>
+      <Button fx:id="botonAtrasCombate" layoutY="5.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="56.0" style="-fx-background-color: #00000000;">
+         <graphic>
+            <ImageView fitHeight="49.0" fitWidth="55.0">
+               <image>
+                  <Image url="@../images/botonvolveratras.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
    </children>
 </AnchorPane>

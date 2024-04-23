@@ -4,13 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0c947eaf-43b0-4a23-833b-73d6a0a1c774" name="Changes" comment="Gitignore actualizado">
+    <list default="true" id="0c947eaf-43b0-4a23-833b-73d6a0a1c774" name="Changes" comment="Adición de imagenes y actualizacion de combatview">
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_15_04_2024_10_15__Changes_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_15_04_2024_14_09_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_15_04_2024_14_09__Changes_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_15_04_2024_21_33_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_15_04_2024_21_33__Changes_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_16_04_2024_13_53__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_16_04_2024_13_53__Changes_.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_17_04_2024_14_44__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_17_04_2024_14_44__Changes_.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_18_04_2024_8_44__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_18_04_2024_8_44__Changes_.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/es/cesur/progprojectpok/HelloApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/es/cesur/progprojectpok/HelloApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/es/cesur/progprojectpok/clases/Pokemon.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/es/cesur/progprojectpok/clases/Pokemon.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/es/cesur/progprojectpok/controllers/CapturaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/es/cesur/progprojectpok/controllers/CapturaController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/es/cesur/progprojectpok/controllers/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/es/cesur/progprojectpok/controllers/LoginController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/es/cesur/progprojectpok/view/captura-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/es/cesur/progprojectpok/view/captura-view.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/es/cesur/progprojectpok/view/combate-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/es/cesur/progprojectpok/view/combate-view.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -214,7 +218,14 @@
       <option name="project" value="LOCAL" />
       <updated>1713551514123</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Adición de imagenes y actualizacion de combatview">
+      <created>1713789461553</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1713789461553</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -236,7 +247,8 @@
     <MESSAGE value="Creadas algunas clases básicas" />
     <MESSAGE value="Login correcciones." />
     <MESSAGE value="Gitignore actualizado" />
-    <option name="LAST_COMMIT_MESSAGE" value="Gitignore actualizado" />
+    <MESSAGE value="Adición de imagenes y actualizacion de combatview" />
+    <option name="LAST_COMMIT_MESSAGE" value="Adición de imagenes y actualizacion de combatview" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
