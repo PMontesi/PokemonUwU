@@ -14,6 +14,7 @@ public class Pokemon {
     private int experiencia;
     private char sexo;
     private int fertilidad;
+    private int numPokedex;
     private static final int VALOR_INICIAL_FERT = 5;
     private Tipos tipo1;
     private Tipos tipo2;
@@ -26,7 +27,7 @@ public class Pokemon {
     }
 
     //Constructor de pokemons que nacen. Principalmente para la pantalla de captura.
-    public Pokemon(String nombre, Tipos tipo1, Tipos tipo2) {
+    public Pokemon(String nombre, int numPokedex, Tipos tipo1, Tipos tipo2) {
         this.nombre = nombre;
         this.vitalidad = (int) (Math.random()*10 + 1);
         this.ataque = (int) (Math.random()*10 + 1);
@@ -37,6 +38,7 @@ public class Pokemon {
         this.nivel = 1;
         this.experiencia = 0;
         this.sexo = randomSex();
+        this.numPokedex = numPokedex;
         this.fertilidad = VALOR_INICIAL_FERT;
         this.tipo1 = tipo1;
         this.tipo2 = tipo2;
@@ -168,6 +170,14 @@ public class Pokemon {
 
     public void setFertilidad(int fertilidad) {
         this.fertilidad = fertilidad;
+    }
+
+    public int getNumPokedex() {
+        return numPokedex;
+    }
+
+    public void setNumPokedex(int numPokedex) {
+        this.numPokedex = numPokedex;
     }
 
     public Tipos getTipo1() {

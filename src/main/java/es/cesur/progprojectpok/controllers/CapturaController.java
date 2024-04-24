@@ -1,47 +1,174 @@
 package es.cesur.progprojectpok.controllers;
 
 import es.cesur.progprojectpok.SplashApplication;
+import es.cesur.progprojectpok.clases.Entrenador;
 import es.cesur.progprojectpok.clases.Pokemon;
 import es.cesur.progprojectpok.clases.Tipos;
 import es.cesur.progprojectpok.database.DBConnection;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.ConnectException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
+import java.util.concurrent.CountDownLatch;
 
 public class CapturaController implements Initializable {
 
 
     @FXML
+    public Button botonBuscar;
+    @FXML
+    public Button moteSi;
+    @FXML
+    public Button moteNo;
+    @FXML
     private Button botonCapturar;
     @FXML
     private Button botonMenuPrincipal;
     @FXML
-    private ImageView pokemonSalvaje;
+    private ImageView pokemonSalvajeImagen;
     @FXML
     private ImageView imagenEntrenador;
     @FXML
     private TextArea logCaptura;
     @FXML
-    private Pane pokemonPane;
-    @FXML
-    private AnchorPane anchorCaptura;
+    private TextField textoMote;
+    private Pokemon pokemonSalvaje;
+
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        moteSi.setVisible(false);
+        moteNo.setVisible(false);
+        textoMote.setVisible(false);
+        pokemonNuevo();
+    }
+
+
+    //Cuando se haga la mochila y la tienda, habrá que añadir la función de reducir la cantidad de pokéballs
+    public void lanzarPokeball() {
+        int probCaptura = (int) (Math.random()*3 +1);
+        if (probCaptura >= 2 && pokemonSalvaje != null){
+            logCaptura.setStyle("-fx-text-fill: green");
+            logCaptura.setText(pokemonSalvaje.getNombre() + " salvaje ha sido capturado con éxito");
+            moteSi.setVisible(true);
+            moteNo.setVisible(true);
+            textoMote.setVisible(true);
+
+        }
+        else if (probCaptura == 1 && pokemonSalvaje != null) {
+            logCaptura.setStyle("-fx-text-fill: red");
+            logCaptura.setText(pokemonSalvaje.getNombre() + " salvaje ha huído");
+            pokemonSalvajeImagen.setVisible(false);
+            pokemonSalvaje = null;
+        } else if (pokemonSalvaje == null) {
+            logCaptura.setText("¡No hay ningún pokemon al que lanzarle una pokéball!");
+        }
+    }
+
+
+    public void ponerMoteTrue(){
+        System.out.println("SE PULSÓ EL BOTÓN");
+
+        if(textoMote.getText().isEmpty()){
+            pokemonSalvaje.setMote(pokemonSalvaje.getNombre());
+        }else pokemonSalvaje.setMote(textoMote.getText());
+
+        Entrenador.capturarPokemon(pokemonSalvaje);
+        pokemonSalvajeImagen.setVisible(false);
+        pokemonSalvaje = null;
+        moteSi.setVisible(false);
+        moteNo.setVisible(false);
+        textoMote.setVisible(false);
+    }
+    public void ponerMoteFalse(){
+        System.out.println("SE PULSÓ EL BOTÓN");
+
+        pokemonSalvaje.setMote(pokemonSalvaje.getNombre());
+        Entrenador.capturarPokemon(pokemonSalvaje);
+        pokemonSalvajeImagen.setVisible(false);
+        pokemonSalvaje = null;
+        moteSi.setVisible(false);
+        moteNo.setVisible(false);
+        textoMote.setVisible(false);
+    }
+
+    public void pokemonNuevo(){
+        int numPokedexTotal = 0;
+        String imagenURL = "";
+        pokemonSalvajeImagen.setVisible(true);
+        pokemonSalvaje = new Pokemon();
+
+        //Primer select para que el rango del math.random funcione.
+        String sqlSelectTotalPokedex = "SELECT MAX(NUM_POKEDEX) FROM POKEDEX";
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sqlSelectTotalPokedex)) {
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                numPokedexTotal = resultSet.getInt(1);
+            }
+            System.out.println("Maxnumpokedex: " + numPokedexTotal);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        int pokemonAleatorio = (int) (Math.random() * numPokedexTotal + 1);
+        System.out.println(pokemonAleatorio);
+
+        //Segundo select para obtener el Pokemon con el número aleatorio generado.
+        String sqlSelectPokemon = "SELECT * FROM POKEDEX WHERE NUM_POKEDEX = ?";
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement statementSelectPokemon = connection.prepareStatement(sqlSelectPokemon)) {
+            statementSelectPokemon.setInt(1, pokemonAleatorio);
+            ResultSet resultSetPokemon = statementSelectPokemon.executeQuery();
+
+            //Construcción del Pokemon en base a las columnas del segundo SELECT y obtención de la URL de la imagen.
+            while (resultSetPokemon.next()) {
+                String nombre = resultSetPokemon.getString("NOM_POKEMON");
+                String tipo1 = resultSetPokemon.getString("TIPO1");
+                String tipo2 = resultSetPokemon.getString("TIPO2");
+                if (tipo2 == null){ tipo2 = "null";}
+                int numPokedex = resultSetPokemon.getInt(("NUM_POKEDEX"));
+                pokemonSalvaje = new Pokemon(nombre, numPokedex, Pokemon.TipoStringToEnum(tipo1), Pokemon.TipoStringToEnum(tipo2));
+                if(pokemonSalvaje.getSexo() == 'H' && resultSetPokemon.getString("IMAGEN_DELANTE_F") != null){
+                    imagenURL = resultSetPokemon.getString("IMAGEN_DELANTE_F");
+                }else imagenURL = resultSetPokemon.getString("IMAGEN_DELANTE");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        //Cambio de imagen.
+        File archivo = new File(imagenURL);
+        String rutaAbsoluta = archivo.getAbsolutePath();
+        if(System.getProperty("os.name").startsWith("Windows")){
+            rutaAbsoluta = rutaAbsoluta.replace("/", "\\");
+        }
+        String fileURL ="file:///" + rutaAbsoluta.replace("\\", "/");
+        Image imagenPokemonGenerado = new Image(rutaAbsoluta);
+        pokemonSalvajeImagen.setImage(imagenPokemonGenerado);
+
+        //Log de captura.
+        logCaptura.setStyle("-fx-text-fill: blue");
+        logCaptura.setText("Un " + pokemonSalvaje.getNombre() + " salvaje ha aparecido");
+    }
 
     public void volverMenu() {
         Stage stage = (Stage) botonMenuPrincipal.getScene().getWindow();
@@ -57,90 +184,5 @@ public class CapturaController implements Initializable {
             throw new RuntimeException(e);
         }
     }
-
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        int numPokedex = 0;
-        String imagenMacho = "";
-
-        String sqlSelectTotalPokedex = "SELECT MAX(NUM_POKEDEX) FROM POKEDEX";
-        try (Connection connection = DBConnection.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sqlSelectTotalPokedex)) {
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                numPokedex = resultSet.getInt(1);
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        int pokemonAleatorio = (int) (Math.random() * numPokedex + 1);
-        System.out.println(pokemonAleatorio);
-
-        String sqlSelectPokemon = "SELECT * FROM POKEDEX WHERE NUM_POKEDEX = ?";
-        try (Connection connection = DBConnection.getConnection();
-             PreparedStatement statementSelectPokemon = connection.prepareStatement(sqlSelectPokemon)) {
-            statementSelectPokemon.setInt(1, pokemonAleatorio);
-            ResultSet resultSetPokemon = statementSelectPokemon.executeQuery();
-            while (resultSetPokemon.next()) {
-                String nombre = resultSetPokemon.getString("NOM_POKEMON");
-                String tipo1 = resultSetPokemon.getString("TIPO1");
-                String tipo2 = resultSetPokemon.getString("TIPO2");
-                System.out.println(tipo2);
-                if (tipo2 == null){ tipo2 = "null";};
-                Pokemon pokemon = new Pokemon(nombre, Pokemon.TipoStringToEnum(tipo1), Pokemon.TipoStringToEnum(tipo2));
-                imagenMacho = resultSetPokemon.getString("IMAGEN_DELANTE");
-                String imagenHembra= resultSetPokemon.getString("IMAGEN_DELANTE_F");
-
-                System.out.println(pokemon.toString());
-                System.out.println(imagenMacho);
-                System.out.println(imagenHembra);
-            }
-
-
-
-        //SUSTITUCIÓN DE IMÁGEN. NO FUNCIONA.
-
-        File archivo = new File("/images/logocesur-transformed.png");
-            System.out.println(archivo.toString());
-        Image imagenDeRelleno = new Image(archivo.toURI().toString());
-            System.out.println(imagenDeRelleno.getUrl());
-            System.out.println(archivo.toURI().toString());
-            ImageView nuevoPokemon = new ImageView(imagenDeRelleno);
-            nuevoPokemon.setFitHeight(268);
-            nuevoPokemon.setFitWidth(249);
-            nuevoPokemon.setLayoutX(464);
-            nuevoPokemon.setLayoutY(87);
-            nuevoPokemon.setVisible(true);
-            pokemonPane.setVisible(true);
-
-            anchorCaptura.getChildren().add(nuevoPokemon);
-
-            nuevoPokemon.toFront();
-            pokemonSalvaje.setImage(imagenDeRelleno);
-            pokemonSalvaje.setVisible(true);
-
-/*//
-
-
-        if (imagen != null && !imagen.isEmpty()) {
-            Image imagenPokemonSalvaje = new Image(imagen);
-            pokemonSalvaje.setImage(imagenPokemonSalvaje);
-        } else {
-            // Si la URL de la imagen es nula o vacía, puedes mostrar una imagen de relleno o dejar el ImageView vacío
-            // Por ejemplo, para mostrar una imagen de relleno:
-            Image imagenDeRelleno = new Image("/images/entren-espaldas.png");
-            pokemonSalvaje.setImage(imagenDeRelleno);
-        }
-
-         */
-
-    } catch (SQLException e) {
-        e.printStackTrace();
-
-
-    }
-    }
 }
+
