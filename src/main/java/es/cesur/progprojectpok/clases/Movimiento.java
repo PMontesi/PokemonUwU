@@ -1,6 +1,6 @@
 package es.cesur.progprojectpok.clases;
 
-public class Movimiento {
+public abstract class Movimiento {
     private String nombre;
     private int ppMax;
     private int ppRest;
