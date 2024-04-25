@@ -4,6 +4,7 @@ import es.cesur.progprojectpok.SplashApplication;
 import es.cesur.progprojectpok.clases.Entrenador;
 import es.cesur.progprojectpok.clases.Pokemon;
 import es.cesur.progprojectpok.clases.Tipos;
+import es.cesur.progprojectpok.clases.Usuario;
 import es.cesur.progprojectpok.database.DBConnection;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -90,7 +91,7 @@ public class CapturaController implements Initializable {
             pokemonSalvaje.setMote(pokemonSalvaje.getNombre());
         }else pokemonSalvaje.setMote(textoMote.getText());
 
-        Entrenador.capturarPokemon(pokemonSalvaje);
+        Usuario.capturarPokemon(pokemonSalvaje);
         pokemonSalvajeImagen.setVisible(false);
         pokemonSalvaje = null;
         moteSi.setVisible(false);
@@ -101,7 +102,7 @@ public class CapturaController implements Initializable {
         System.out.println("SE PULSÓ EL BOTÓN");
 
         pokemonSalvaje.setMote(pokemonSalvaje.getNombre());
-        Entrenador.capturarPokemon(pokemonSalvaje);
+        Usuario.capturarPokemon(pokemonSalvaje);
         pokemonSalvajeImagen.setVisible(false);
         pokemonSalvaje = null;
         moteSi.setVisible(false);
