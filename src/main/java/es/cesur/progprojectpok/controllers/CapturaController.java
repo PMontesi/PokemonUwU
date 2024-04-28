@@ -3,10 +3,7 @@ package es.cesur.progprojectpok.controllers;
 import es.cesur.progprojectpok.SplashApplication;
 import es.cesur.progprojectpok.clases.Entrenador;
 import es.cesur.progprojectpok.clases.Pokemon;
-import es.cesur.progprojectpok.clases.Tipos;
-import es.cesur.progprojectpok.clases.Usuario;
 import es.cesur.progprojectpok.database.DBConnection;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -20,14 +17,12 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.ConnectException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
-import java.util.concurrent.CountDownLatch;
 
 public class CapturaController implements Initializable {
 
@@ -91,7 +86,7 @@ public class CapturaController implements Initializable {
             pokemonSalvaje.setMote(pokemonSalvaje.getNombre());
         }else pokemonSalvaje.setMote(textoMote.getText());
 
-        Usuario.capturarPokemon(pokemonSalvaje);
+        Entrenador.capturarPokemon(pokemonSalvaje);
         pokemonSalvajeImagen.setVisible(false);
         pokemonSalvaje = null;
         moteSi.setVisible(false);
@@ -102,7 +97,7 @@ public class CapturaController implements Initializable {
         System.out.println("SE PULSÓ EL BOTÓN");
 
         pokemonSalvaje.setMote(pokemonSalvaje.getNombre());
-        Usuario.capturarPokemon(pokemonSalvaje);
+        Entrenador.capturarPokemon(pokemonSalvaje);
         pokemonSalvajeImagen.setVisible(false);
         pokemonSalvaje = null;
         moteSi.setVisible(false);
@@ -136,18 +131,16 @@ public class CapturaController implements Initializable {
         //Segundo select para obtener el Pokemon con el número aleatorio generado.
         String sqlSelectPokemon = "SELECT * FROM POKEDEX WHERE NUM_POKEDEX = ?";
         try (Connection connection = DBConnection.getConnection();
-             PreparedStatement statementSelectPokemon = connection.prepareStatement(sqlSelectPokemon)) {
+             PreparedStatement statementSelectPokemon = connection.prepareStatement(sqlSelectPokemon)
+        ) {
             statementSelectPokemon.setInt(1, pokemonAleatorio);
             ResultSet resultSetPokemon = statementSelectPokemon.executeQuery();
 
             //Construcción del Pokemon en base a las columnas del segundo SELECT y obtención de la URL de la imagen.
             while (resultSetPokemon.next()) {
                 String nombre = resultSetPokemon.getString("NOM_POKEMON");
-                String tipo1 = resultSetPokemon.getString("TIPO1");
-                String tipo2 = resultSetPokemon.getString("TIPO2");
-                if (tipo2 == null){ tipo2 = "null";}
                 int numPokedex = resultSetPokemon.getInt(("NUM_POKEDEX"));
-                pokemonSalvaje = new Pokemon(nombre, numPokedex, Pokemon.TipoStringToEnum(tipo1), Pokemon.TipoStringToEnum(tipo2));
+                pokemonSalvaje = new Pokemon(nombre, numPokedex);
                 if(pokemonSalvaje.getSexo() == 'H' && resultSetPokemon.getString("IMAGEN_DELANTE_F") != null){
                     imagenURL = resultSetPokemon.getString("IMAGEN_DELANTE_F");
                 }else imagenURL = resultSetPokemon.getString("IMAGEN_DELANTE");

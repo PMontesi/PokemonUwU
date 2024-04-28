@@ -40,3 +40,9 @@ ADD CONSTRAINT NUM_POKEDEX_EVO_FK
 
 
 INSERT INTO ENTRENADOR (ID_ENTRENADOR, NOM_ENTRENADOR, PASS, POKEDOLLARS) VALUES (1, 'Paco', 123, 999999);
+
+INSERT INTO MOVIMIENTOS (ID_MOVIMIENTO, NOM_MOVIMIENTO, POTENCIA, TIPO, ESTADO, TIPO_DAÑO, TURNOS, MEJORA, CANT_MEJORA, NIVEL_APRENDIZAJE, PP_MAX, PP_REST) VALUES
+						(1, 			'Placaje', 		40, 	'NORMAL', null, 'FISICO', null, null, null, 1, 35, 35),
+						(2, 			'Hiperrayo', 	150, 	'NORMAL', null, 'ESPECIAL', null, null, null, 1, 5, 5),
+						(3, 			'Danza espada', null, 	'NORMAL', null,	null,		5,	'ATAQUE', 100, 1, 20, 20),
+                        (4, 			'Canto',		null,	'NORMAL', 'DORMIDO', null, 3, 	null, 	null, 1, 15, 15);
