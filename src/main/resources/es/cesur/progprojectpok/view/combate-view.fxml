@@ -89,5 +89,6 @@
             <Text fx:id="textDescripCombate" layoutX="13.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="TEXTO DE COMBATE" wrappingWidth="453.0566101074219" />
          </children>
       </Pane>
+      <Button fx:id="iniciarCombate" layoutX="285.0" layoutY="218.0" mnemonicParsing="false" onAction="#empezarCombate" prefHeight="37.0" prefWidth="231.0" text="LUCHA (por ahora se empieza así)" />
    </children>
 </AnchorPane>

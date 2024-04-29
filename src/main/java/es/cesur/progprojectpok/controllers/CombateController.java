@@ -32,6 +32,8 @@ public class CombateController implements Initializable {
     @FXML
     private Button botonMovi4;
     @FXML
+    private Button iniciarCombate;
+    @FXML
     private Pane paneMovimientos;
     @FXML
     private Pane paneDescCombate;
@@ -50,12 +52,14 @@ public class CombateController implements Initializable {
 
 
     //Esta variable se tiene que inicializar según el valor de la sentencia sql
-    Combate combate;
-    Entrenador usuario;
-    Entrenador rival;
-    int numeroCombate;
+    private Combate combate;
+    private Entrenador usuario;
+    private Entrenador rival;
+    private int numeroCombate;
 
-
+    public void setUsuario(Entrenador usuario){
+        this.usuario = usuario;
+    }
     /*
     Al comenzar el combate se crean los dos entrenadores y ambos equipos.
 
@@ -68,7 +72,15 @@ public class CombateController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+    }
 
+    public void empezarCombate(){
+        if (usuario != null) {
+            System.out.println(usuario.getIdUsuario());
+            // Realizar cualquier inicialización adicional necesaria con el usuario
+        } else {
+            System.out.println("El usuario es null");
+        }
 
         try {
             int mediaNivel = 0;
@@ -76,10 +88,10 @@ public class CombateController implements Initializable {
             String sqlLongitudequipo = "SELECT COUNT(CAJA), AVG(NIVEL) FROM POKEMON WHERE CAJA = 0 AND ID_ENTRENADOR = ?";
             Connection connection = DBConnection.getConnection();
             PreparedStatement statementLongitudequipo = connection.prepareStatement(sqlLongitudequipo);
-            statementLongitudequipo.setInt(1, Entrenador.getIdUsuario());
+            statementLongitudequipo.setInt(1, usuario.getIdUsuario());
             ResultSet resultLongitud = statementLongitudequipo.executeQuery();
             while(resultLongitud.next()){
-                usuario = new Entrenador(Entrenador.getNombreUsuario(), resultLongitud.getInt(1));
+                usuario.setEquipoPokemon(resultLongitud.getInt(1));
             }
 
             System.out.println(usuario.toString());
@@ -90,7 +102,7 @@ public class CombateController implements Initializable {
                     "INNER JOIN POKEDEX PD ON P.NUM_POKEDEX = PD.NUM_POKEDEX\n" +
                     "WHERE P.CAJA = 0 AND P.ID_ENTRENADOR = ?;";
             PreparedStatement statementSelectPokemon = connection.prepareStatement(sqlSelectPokemon);
-            statementSelectPokemon.setInt(1, Entrenador.getIdUsuario());
+            statementSelectPokemon.setInt(1, usuario.getIdUsuario());
             ResultSet resultSetPokemon = statementSelectPokemon.executeQuery();{
                 int indice = 0;
                 while (resultSetPokemon.next()){
@@ -169,8 +181,8 @@ public class CombateController implements Initializable {
                     System.out.println(rival.getPokemon(1));
                     System.out.println("Movimiento rival: " + pokemonRival.getMovimiento(0).getNombre());
                     System.out.println("Movimiento rival: " + pokemonRival.getMovimiento(1).getNombre());
+                    System.out.println("Movimiento rival: " + pokemonRival.getMovimiento(2).getNombre());
                     System.out.println("Movimiento rival: " + pokemonRival.getMovimiento(3).getNombre());
-                    System.out.println("Movimiento rival: " + pokemonRival.getMovimiento(4).getNombre());
                 }
 
             }

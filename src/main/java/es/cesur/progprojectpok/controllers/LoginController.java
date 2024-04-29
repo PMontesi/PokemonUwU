@@ -54,9 +54,18 @@ public class LoginController implements Initializable {
             statement.setString(2, pass);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-               Entrenador.setPokedolares(resultSet.getInt("POKEDOLLARS"));
-               Entrenador.setIdUsuario(resultSet.getInt("ID_ENTRENADOR"));
-               Entrenador.setNombreUsuario(resultSet.getString("NOM_ENTRENADOR"));
+                Entrenador usuario = new Entrenador(
+                        resultSet.getString("NOM_ENTRENADOR"),
+                        resultSet.getInt("POKEDOLLARS"),
+                        resultSet.getInt("ID_ENTRENADOR")
+                );
+
+                usuario.setPokedolares(usuario.getPokedolares());
+                usuario.setIdUsuario(usuario.getIdUsuario());
+                usuario.setNombreUsuario(usuario.getNombreUsuario());
+
+
+                System.out.println(usuario.getIdUsuario());
                 Stage stage = (Stage) loginUsuario.getScene().getWindow();
                 stage.close();
                 FXMLLoader fxmlLoader = new FXMLLoader(SplashApplication.class.getResource("view/mainMenu-view.fxml"));
@@ -65,6 +74,10 @@ public class LoginController implements Initializable {
                     stage.setScene(scene);
                     stage.show();
 
+                //Pasar el usuario al main menu
+                MainMenuController mainMenuController = fxmlLoader.getController();
+                mainMenuController.setUsuario(usuario);
+                //Estas dos líneas de arriba
             } else {
                 textoError.setText("Sos un putiaso");
             }

@@ -46,6 +46,8 @@ public class CapturaController implements Initializable {
     @FXML
     private TextField textoMote;
     private Pokemon pokemonSalvaje;
+    private Entrenador usuario;
+
 
 
     @Override
@@ -54,6 +56,10 @@ public class CapturaController implements Initializable {
         moteNo.setVisible(false);
         textoMote.setVisible(false);
         pokemonNuevo();
+
+    }
+    public void setUsuario(Entrenador usuario){
+        this.usuario = usuario;
     }
 
 
@@ -86,7 +92,7 @@ public class CapturaController implements Initializable {
             pokemonSalvaje.setMote(pokemonSalvaje.getNombre());
         }else pokemonSalvaje.setMote(textoMote.getText());
 
-        Entrenador.capturarPokemon(pokemonSalvaje);
+        usuario.capturarPokemon(pokemonSalvaje);
         pokemonSalvajeImagen.setVisible(false);
         pokemonSalvaje = null;
         moteSi.setVisible(false);
@@ -97,7 +103,7 @@ public class CapturaController implements Initializable {
         System.out.println("SE PULSÓ EL BOTÓN");
 
         pokemonSalvaje.setMote(pokemonSalvaje.getNombre());
-        Entrenador.capturarPokemon(pokemonSalvaje);
+        usuario.capturarPokemon(pokemonSalvaje);
         pokemonSalvajeImagen.setVisible(false);
         pokemonSalvaje = null;
         moteSi.setVisible(false);
@@ -174,6 +180,8 @@ public class CapturaController implements Initializable {
             stage.setTitle("Menu");
             stage.setScene(scene);
             stage.show();
+            MainMenuController mainMenuController = fxmlLoader.getController();
+            mainMenuController.setUsuario(usuario);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

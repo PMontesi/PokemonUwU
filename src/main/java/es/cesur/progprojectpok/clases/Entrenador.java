@@ -10,13 +10,20 @@ import java.util.Arrays;
 
 public class Entrenador {
 
-    private static String nombreUsuario;
-    private static int pokedolares;
-    private static int idUsuario;
+    private String nombreUsuario;
+    private int pokedolares;
+    private int idUsuario;
     private String nombre;
     private Pokemon[] equipoPokemon;
 
+    public Entrenador() {
+    }
 
+    public Entrenador(String nombreUsuario, int pokedolares, int idUsuario) {
+        this.nombreUsuario = nombreUsuario;
+        this.pokedolares = pokedolares;
+        this.idUsuario = idUsuario;
+    }
 
     public Entrenador(String nombre, int longitudEquipo) {
         this.nombre = nombre;
@@ -29,13 +36,13 @@ public class Entrenador {
 
 
     //MÉTODOS
-    public static void capturarPokemon(Pokemon pokemon){
+    public void capturarPokemon(Pokemon pokemon){
         System.out.println("Método invocado con éxito");
         String sqlInsertPokemonCap = "INSERT INTO POKEMON (NUM_POKEDEX, ID_ENTRENADOR, MOTE, CAJA, ATAQUE, AT_ESPECIAL, DEFENSA, DEF_ESPECIAL, VELOCIDAD, NIVEL, FERTILIDAD, SEXO, ESTADO, EXPERIENCIA, VITALIDAD) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try(Connection connection = DBConnection.getConnection();
             PreparedStatement statementPokemonCapturado = connection.prepareStatement(sqlInsertPokemonCap)){
             statementPokemonCapturado.setInt(1, pokemon.getNumPokedex());
-            statementPokemonCapturado.setInt(2, Entrenador.getIdUsuario());
+            statementPokemonCapturado.setInt(2, getIdUsuario());
             //Añadir algo para cuando no se le quiera poner un mote al pokemon
             statementPokemonCapturado.setString(3, pokemon.getMote());
             //Añadir algo para cuando el equipo pokemon está lleno
@@ -92,32 +99,33 @@ public class Entrenador {
         return equipoPokemon;
     }
 
-    public void setEquipoPokemon(Pokemon[] equipoPokemon) {
-        this.equipoPokemon = equipoPokemon;
+    public void setEquipoPokemon(int longitud) {
+
+        this.equipoPokemon = new Pokemon[longitud];
     }
 
-    public static int getPokedolares() {
+    public int getPokedolares() {
         return pokedolares;
     }
 
-    public static void setPokedolares(int pokedolares) {
-        Entrenador.pokedolares = pokedolares;
+    public void setPokedolares(int pokedolares) {
+        this.pokedolares = pokedolares;
     }
 
-    public static int getIdUsuario() {
+    public int getIdUsuario() {
         return idUsuario;
     }
 
-    public static void setIdUsuario(int idUsuario) {
-        Entrenador.idUsuario = idUsuario;
+    public void setIdUsuario(int idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
-    public static String getNombreUsuario() {
+    public String getNombreUsuario() {
         return nombreUsuario;
     }
 
-    public static void setNombreUsuario(String nombreUsuario) {
-        Entrenador.nombreUsuario = nombreUsuario;
+    public void setNombreUsuario(String nombreUsuario) {
+        this.nombreUsuario = nombreUsuario;
     }
 
 

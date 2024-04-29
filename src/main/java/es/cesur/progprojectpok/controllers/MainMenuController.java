@@ -2,6 +2,7 @@ package es.cesur.progprojectpok.controllers;
 
 import es.cesur.progprojectpok.HelloApplication;
 import es.cesur.progprojectpok.SplashApplication;
+import es.cesur.progprojectpok.clases.Entrenador;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -32,10 +33,15 @@ public class MainMenuController implements Initializable {
     private Button menuColeccion;
     @FXML
     private Button menuCaptura;
+    private Entrenador usuario;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+    }
+
+    public void setUsuario(Entrenador usuario){
+        this.usuario = usuario;
     }
 
     public void cerrarSesion(){
@@ -60,6 +66,14 @@ public class MainMenuController implements Initializable {
 
         //NO EXISTE LA VISTA. POR AHORA LLEVA AL mainMenu
         FXMLLoader fxmlLoader = new FXMLLoader(SplashApplication.class.getResource("view/mainMenu-view.fxml"));
+
+        /*
+        Para pasarle el usuario
+
+        EntrenamientoController entrenamientoController = fxmlLoader.getController();
+        entrenamientoController.setUsuario(usuario);
+
+         */
         Scene scene = null;
         try {
             scene = new Scene(fxmlLoader.load(), 800, 480);
@@ -82,6 +96,8 @@ public class MainMenuController implements Initializable {
             stage.setTitle("Menu");
             stage.setScene(scene);
             stage.show();
+            CombateController combateController = fxmlLoader.getController();
+            combateController.setUsuario(usuario);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -141,12 +157,16 @@ public class MainMenuController implements Initializable {
         stage.close();
 
         FXMLLoader fxmlLoader = new FXMLLoader(SplashApplication.class.getResource("view/captura-view.fxml"));
+
         Scene scene = null;
         try {
             scene = new Scene(fxmlLoader.load(), 800, 480);
             stage.setTitle("Menu");
             stage.setScene(scene);
             stage.show();
+
+            CapturaController capturaController = fxmlLoader.getController();
+            capturaController.setUsuario(usuario);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

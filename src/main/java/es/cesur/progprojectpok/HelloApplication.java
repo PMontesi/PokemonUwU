@@ -1,5 +1,6 @@
 package es.cesur.progprojectpok;
 
+import es.cesur.progprojectpok.clases.Entrenador;
 import es.cesur.progprojectpok.managers.UserManager;
 import es.cesur.progprojectpok.model.User;
 import javafx.application.Application;
@@ -12,6 +13,7 @@ import java.io.IOException;
 public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
+
 
 /*        UserManager userManager = new UserManager();
         Boolean loginOk = userManager.login("miguel", "1234");
