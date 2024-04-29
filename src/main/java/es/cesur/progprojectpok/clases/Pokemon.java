@@ -278,12 +278,17 @@ public class Pokemon {
     public void usarMovimiento(int indice, Pokemon pokemonObjetivo){
         System.out.println("MOVIMIENTO " +  indice + " USADO SOBRE " + pokemonObjetivo.getNombre());
         if (MOVIMIENTOS[indice] instanceof MovimientoAtaque){
-            ((MovimientoAtaque) MOVIMIENTOS[indice]).aplicarDamage(pokemonObjetivo);
+            if((((MovimientoAtaque) MOVIMIENTOS[indice]).getTipoAtaque().equalsIgnoreCase("FISICO"))){
+                ((MovimientoAtaque) MOVIMIENTOS[indice]).aplicarDamage(pokemonObjetivo, getAtaque());
+            }
+            else if ((((MovimientoAtaque) MOVIMIENTOS[indice]).getTipoAtaque().equalsIgnoreCase("ESPECIAL"))){
+                ((MovimientoAtaque) MOVIMIENTOS[indice]).aplicarDamage(pokemonObjetivo, getAtaqueEspecial());
+            }
         }
-        if (MOVIMIENTOS[indice] instanceof MovimientoMejora){
+        else if (MOVIMIENTOS[indice] instanceof MovimientoMejora){
             ((MovimientoMejora) MOVIMIENTOS[indice]).mejoraAplica(pokemonObjetivo);
         }
-        if (MOVIMIENTOS[indice] instanceof MovimientoEstado){
+        else if (MOVIMIENTOS[indice] instanceof MovimientoEstado){
             ((MovimientoEstado) MOVIMIENTOS[indice]).aplicarEstado(pokemonObjetivo);
         }
     }
@@ -310,7 +315,8 @@ public class Pokemon {
                             resultSetMovimiento.getInt("PP_REST"),
                             TipoStringToEnum(resultSetMovimiento.getString("TIPO")),
                             0,
-                            resultSetMovimiento.getInt("POTENCIA")
+                            resultSetMovimiento.getInt("POTENCIA"),
+                            resultSetMovimiento.getString("TIPO_DAÑO")
                     );
                 }
                 else if(resultSetMovimiento.getString("ESTADO") != null){

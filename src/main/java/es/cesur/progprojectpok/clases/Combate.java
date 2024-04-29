@@ -20,7 +20,8 @@ public class Combate {
         if (pokemonA.getVelocidad() > pokemonB.getVelocidad()){
             pokemonA.usarMovimiento(movimientoA, pokemonB);
             pokemonB.usarMovimiento(movimientoB, pokemonA);
-        } else if (pokemonB.getVelocidad() > pokemonA.getVelocidad()) {
+        }
+        else if (pokemonB.getVelocidad() > pokemonA.getVelocidad()) {
             pokemonB.usarMovimiento(movimientoB, pokemonA);
             pokemonA.usarMovimiento(movimientoA, pokemonB);
         }

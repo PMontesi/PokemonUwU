@@ -18,7 +18,36 @@ public class MovimientoMejora extends Movimiento{
 
     //Esto quizá haya que hacerlo por cada movimiento.
     public void mejoraAplica(Pokemon pokemonObjetivo){
-
+        switch (getEstadistica()){
+            case "ATAQUE" -> pokemonObjetivo.setAtaque(pokemonObjetivo.getAtaque()*(1+getCantidadMejora()/100));
+            case "DEFENSA" -> pokemonObjetivo.setDefensa(pokemonObjetivo.getDefensa()*(1+getCantidadMejora()/100));
+            case "AT_ESP" -> pokemonObjetivo.setAtaqueEspecial(pokemonObjetivo.getAtaqueEspecial()*(1+getCantidadMejora()/100));
+            case "DEF_ESP" -> pokemonObjetivo.setDefensaEspecial(pokemonObjetivo.getDefensaEspecial()*(1+getCantidadMejora()/100));
+            case "VELOCIDAD" -> pokemonObjetivo.setVelocidad(pokemonObjetivo.getVelocidad()*(1+getCantidadMejora()/100));
+        }
     }
 
+    public int getDuracionTurnos() {
+        return duracionTurnos;
+    }
+
+    public void setDuracionTurnos(int duracionTurnos) {
+        this.duracionTurnos = duracionTurnos;
+    }
+
+    public String getEstadistica() {
+        return estadistica;
+    }
+
+    public void setEstadistica(String estadistica) {
+        this.estadistica = estadistica;
+    }
+
+    public int getCantidadMejora() {
+        return cantidadMejora;
+    }
+
+    public void setCantidadMejora(int cantidadMejora) {
+        this.cantidadMejora = cantidadMejora;
+    }
 }
