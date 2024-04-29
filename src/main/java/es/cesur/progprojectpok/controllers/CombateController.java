@@ -194,9 +194,6 @@ public class CombateController implements Initializable {
         }
 
 
-        //HABRÁ QUE GENERAR POKEMONS ALEATORIOS PARA METERLOS AL EQUIPO
-
-
         String sqlCombate = "guardar combate en la base de datos";
         //Aquí la ejecución de la sentencia sql
 

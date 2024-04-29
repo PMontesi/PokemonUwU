@@ -4,13 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0c947eaf-43b0-4a23-833b-73d6a0a1c774" name="Changes" comment="Gitignore actualizado">
+    <list default="true" id="0c947eaf-43b0-4a23-833b-73d6a0a1c774" name="Changes" comment="Actu CENTRO POKEMON y EQUIPO 2.0">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/es/cesur/progprojectpok/HelloApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/es/cesur/progprojectpok/HelloApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/es/cesur/progprojectpok/clases/Combate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/es/cesur/progprojectpok/clases/Combate.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/es/cesur/progprojectpok/clases/MovimientoAtaque.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/es/cesur/progprojectpok/clases/MovimientoAtaque.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/es/cesur/progprojectpok/clases/MovimientoMejora.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/es/cesur/progprojectpok/clases/MovimientoMejora.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/es/cesur/progprojectpok/clases/Pokemon.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/es/cesur/progprojectpok/clases/Pokemon.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/es/cesur/progprojectpok/controllers/CapturaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/es/cesur/progprojectpok/controllers/CapturaController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/es/cesur/progprojectpok/controllers/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/es/cesur/progprojectpok/controllers/LoginController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/es/cesur/progprojectpok/view/captura-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/es/cesur/progprojectpok/view/captura-view.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/es/cesur/progprojectpok/clases/Usuario.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/es/cesur/progprojectpok/controllers/CombateController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/es/cesur/progprojectpok/controllers/CombateController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/es/cesur/progprojectpok/view/combate-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/es/cesur/progprojectpok/view/combate-view.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -214,7 +216,35 @@
       <option name="project" value="LOCAL" />
       <updated>1713551514123</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Adición de imagenes y actualizacion de combatview">
+      <created>1713789461553</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1713789461553</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Actu combate y equipo">
+      <created>1713884325446</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1713884325446</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Actu CENTRO POKEMON y EQUIPO">
+      <created>1714001853169</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1714001853169</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Actu CENTRO POKEMON y EQUIPO 2.0">
+      <created>1714045114833</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1714045114833</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -236,7 +266,11 @@
     <MESSAGE value="Creadas algunas clases básicas" />
     <MESSAGE value="Login correcciones." />
     <MESSAGE value="Gitignore actualizado" />
-    <option name="LAST_COMMIT_MESSAGE" value="Gitignore actualizado" />
+    <MESSAGE value="Adición de imagenes y actualizacion de combatview" />
+    <MESSAGE value="Actu combate y equipo" />
+    <MESSAGE value="Actu CENTRO POKEMON y EQUIPO" />
+    <MESSAGE value="Actu CENTRO POKEMON y EQUIPO 2.0" />
+    <option name="LAST_COMMIT_MESSAGE" value="Actu CENTRO POKEMON y EQUIPO 2.0" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
