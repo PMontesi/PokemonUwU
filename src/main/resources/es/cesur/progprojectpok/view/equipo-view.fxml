@@ -98,16 +98,6 @@
             <Image url="@../images/COLECCIONtitulo.png" />
          </image>
       </ImageView>
-      <Pane layoutX="35.0" layoutY="100.0" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #00ff66;" />
-      <Pane layoutX="35.0" layoutY="160.0" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #00ff66;">
-         <children>
-            <Text layoutX="14.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nivel 1" wrappingWidth="50.568359375" />
-            <Text layoutX="-12.0" layoutY="22.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nombre/Mote Pokemon" />
-         </children></Pane>
-      <Pane layoutX="35.0" layoutY="340.0" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #00ff66;" />
-      <Pane layoutX="35.0" layoutY="400.0" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #00ff66;" />
-      <Pane layoutX="35.0" layoutY="220.0" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #00ff66;" />
-      <Pane layoutX="35.0" layoutY="280.0" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #00ff66;" />
       <Pane layoutX="560.0" layoutY="98.0" prefHeight="350.0" prefWidth="200.0" style="-fx-background-color: ffffff;">
          <children>
             <ImageView fitHeight="160.0" fitWidth="160.0" layoutY="70.0">
@@ -127,5 +117,179 @@
             <Font size="34.0" />
          </font>
       </Text>
+      <Pane fx:id="colecpanePoke1" layoutX="35.0" layoutY="98.0" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #00ff66;">
+         <children>
+            <Label fx:id="colecapodo1" layoutX="46.0" layoutY="3.0" text="Apodo">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <ProgressBar fx:id="colecprogBar1" layoutX="46.0" layoutY="37.0" maxHeight="10.0" minHeight="10.0" prefHeight="10.0" prefWidth="150.0" progress="0.0" />
+            <Label fx:id="colecnivelpoke1" layoutX="46.0" layoutY="20.0" prefHeight="20.0" prefWidth="47.0" text="Nivel">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="colechpPoke1" layoutX="146.0" layoutY="20.0" prefHeight="20.0" prefWidth="52.0" text="Max Hp">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Pane fx:id="colecimagenElemento1" layoutX="180.0" prefHeight="20.0" prefWidth="20.0">
+               <children>
+                  <ImageView fitHeight="20.0" fitWidth="20.0">
+                     <image>
+                        <Image url="@../images/iconoHielo.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+         </children>
+      </Pane>
+      <Pane fx:id="colecpanePoke4" layoutX="35.0" layoutY="278.0" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #00ff66;">
+         <children>
+            <Label fx:id="colecapodo4" layoutX="46.0" layoutY="3.0" text="Apodo">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <ProgressBar layoutX="46.0" layoutY="37.0" maxHeight="10.0" minHeight="10.0" prefHeight="10.0" prefWidth="150.0" progress="0.0" />
+            <Label fx:id="nivelpoke4" layoutX="46.0" layoutY="20.0" prefHeight="20.0" prefWidth="47.0" text="Nivel">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="hpPoke4" layoutX="146.0" layoutY="20.0" prefHeight="20.0" prefWidth="52.0" text="Max Hp">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Pane fx:id="imagenElemento6" layoutX="180.0" prefHeight="20.0" prefWidth="20.0">
+               <children>
+                  <ImageView fitHeight="20.0" fitWidth="20.0">
+                     <image>
+                        <Image url="@../images/iconoHielo.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+         </children>
+      </Pane>
+      <Pane fx:id="colecpanePoke5" layoutX="35.0" layoutY="338.0" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #00ff66;">
+         <children>
+            <Label fx:id="colecapodo5" layoutX="46.0" layoutY="3.0" text="Apodo">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <ProgressBar layoutX="46.0" layoutY="37.0" maxHeight="10.0" minHeight="10.0" prefHeight="10.0" prefWidth="150.0" progress="0.0" />
+            <Label fx:id="nivelpoke5" layoutX="46.0" layoutY="20.0" prefHeight="20.0" prefWidth="47.0" text="Nivel">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="hpPoke5" layoutX="146.0" layoutY="20.0" prefHeight="20.0" prefWidth="52.0" text="Max Hp">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Pane fx:id="imagenElemento5" layoutX="180.0" prefHeight="20.0" prefWidth="20.0">
+               <children>
+                  <ImageView fitHeight="20.0" fitWidth="20.0">
+                     <image>
+                        <Image url="@../images/iconoHielo.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+         </children>
+      </Pane>
+      <Pane fx:id="colecpanePoke6" layoutX="35.0" layoutY="398.0" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #00ff66;">
+         <children>
+            <Label fx:id="colecapodo6" layoutX="46.0" layoutY="3.0" text="Apodo">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <ProgressBar layoutX="46.0" layoutY="37.0" maxHeight="10.0" minHeight="10.0" prefHeight="10.0" prefWidth="150.0" progress="0.0" />
+            <Label fx:id="nivelpoke6" layoutX="46.0" layoutY="20.0" prefHeight="20.0" prefWidth="47.0" text="Nivel">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="hpPoke6" layoutX="146.0" layoutY="20.0" prefHeight="20.0" prefWidth="52.0" text="Max Hp">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Pane fx:id="imagenElemento4" layoutX="180.0" prefHeight="20.0" prefWidth="20.0">
+               <children>
+                  <ImageView fitHeight="20.0" fitWidth="20.0">
+                     <image>
+                        <Image url="@../images/iconoHielo.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+         </children>
+      </Pane>
+      <Pane fx:id="colecpanePoke3" layoutX="35.0" layoutY="218.0" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #00ff66;">
+         <children>
+            <Label fx:id="colecapodo3" layoutX="46.0" layoutY="3.0" text="Apodo">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <ProgressBar layoutX="46.0" layoutY="37.0" maxHeight="10.0" minHeight="10.0" prefHeight="10.0" prefWidth="150.0" progress="0.0" />
+            <Label fx:id="nivelpoke3" layoutX="46.0" layoutY="20.0" prefHeight="20.0" prefWidth="47.0" text="Nivel">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="hpPoke3" layoutX="146.0" layoutY="20.0" prefHeight="20.0" prefWidth="52.0" text="Max Hp">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Pane fx:id="imagenElemento3" layoutX="180.0" prefHeight="20.0" prefWidth="20.0">
+               <children>
+                  <ImageView fitHeight="20.0" fitWidth="20.0">
+                     <image>
+                        <Image url="@../images/iconoHielo.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+         </children>
+      </Pane>
+      <Pane fx:id="colecpanePoke2" layoutX="35.0" layoutY="158.0" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #00ff66;">
+         <children>
+            <Label fx:id="colecapodo2" layoutX="46.0" layoutY="3.0" text="Apodo">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <ProgressBar fx:id="progBar2" layoutX="46.0" layoutY="37.0" maxHeight="10.0" minHeight="10.0" prefHeight="10.0" prefWidth="150.0" progress="0.0" />
+            <Label fx:id="colecnivelpoke2" layoutX="46.0" layoutY="20.0" prefHeight="20.0" prefWidth="47.0" text="Nivel">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="hpPoke2" layoutX="146.0" layoutY="20.0" prefHeight="20.0" prefWidth="52.0" text="Max Hp">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Pane fx:id="imagenElemento2" layoutX="180.0" prefHeight="20.0" prefWidth="20.0">
+               <children>
+                  <ImageView fitHeight="20.0" fitWidth="20.0">
+                     <image>
+                        <Image url="@../images/iconoHielo.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+         </children>
+      </Pane>
    </children>
 </AnchorPane>
