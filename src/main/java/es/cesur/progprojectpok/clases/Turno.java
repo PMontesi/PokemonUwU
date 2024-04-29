@@ -14,4 +14,36 @@ public class Turno {
         this.accionRival = accionRival;
     }
 
+
+    public int getNumeroCombate() {
+        return numeroCombate;
+    }
+
+    public void setNumeroCombate(int numeroCombate) {
+        this.numeroCombate = numeroCombate;
+    }
+
+    public int getNumeroTurno() {
+        return numeroTurno;
+    }
+
+    public void setNumeroTurno(int numeroTurno) {
+        this.numeroTurno = numeroTurno;
+    }
+
+    public String getAccionJugador() {
+        return accionJugador;
+    }
+
+    public void setAccionJugador(String accionJugador) {
+        this.accionJugador = accionJugador;
+    }
+
+    public String getAccionRival() {
+        return accionRival;
+    }
+
+    public void setAccionRival(String accionRival) {
+        this.accionRival = accionRival;
+    }
 }

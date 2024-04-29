@@ -37,6 +37,9 @@ public class Combate {
         }
     }
 
+    public void comprobarEstado(Pokemon pokemon){
+
+    }
     public void retirarse(Entrenador usuario){}
     public void determinarGanador(){}
     public void entregarPokedolares(){}

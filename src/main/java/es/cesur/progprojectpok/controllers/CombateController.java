@@ -55,7 +55,10 @@ public class CombateController implements Initializable {
     private Combate combate;
     private Entrenador usuario;
     private Entrenador rival;
+    private int pokemonUsuarioActivo = 0;
+    private int pokemonRivalActivo = 0;
     private int numeroCombate;
+    private Turno turno;
 
     public void setUsuario(Entrenador usuario){
         this.usuario = usuario;
@@ -110,8 +113,8 @@ public class CombateController implements Initializable {
                     //HAY QUE RETOCAR ESTA PARTE UNA VEZ ESTÉN HECHOS LOS ESTADOS Y LOS OBJETOS
                     String estadoPermanente = resultSetPokemon.getString("ESTADO");
                     int idObjeto = resultSetPokemon.getInt("ID_OBJETO");
-                    EstadoPersistente estadoPersistenteNulo = new EstadoPersistente();
-                    EstadoTemporal estadotemporalNulo = new EstadoTemporal();
+                    String estadoPersistenteNulo = "saludable";
+                    String estadotemporalNulo = "normal";
                     Objeto objetoNulo = new Objeto();
 
 
@@ -160,8 +163,6 @@ public class CombateController implements Initializable {
                 while (resultSetPokemonRival.next()) {
 
                     //HAY QUE RETOCAR ESTA PARTE UNA VEZ ESTÉN HECHOS LOS ESTADOS Y LOS OBJETOS
-                    EstadoPersistente estadoPersistenteNulo = new EstadoPersistente();
-                    EstadoTemporal estadotemporalNulo = new EstadoTemporal();
                     Objeto objetoNulo = new Objeto();
 
                     Pokemon pokemonRival = new Pokemon(
@@ -170,7 +171,7 @@ public class CombateController implements Initializable {
                             pokemonAleatorio,
                             resultSetPokemonRival.getString("TIPO1"),
                             resultSetPokemonRival.getString("TIPO2"),
-                            estadoPersistenteNulo, estadotemporalNulo, objetoNulo
+                            objetoNulo
                     );
 
                     for (int j = 0; j < pokemonRival.getMovimientos().length; j++) {
@@ -198,12 +199,77 @@ public class CombateController implements Initializable {
         //Aquí la ejecución de la sentencia sql
 
         combate = new Combate(usuario, rival);
+        Turno turno = new Turno(1, 0, "a", "a");
         paneDescCombate.setVisible(false);
     }
 
     public void usarMovi1(){
-        int indice = 1;
-        combate.combatir(usuario.getPokemon(1), indice, rival.getPokemon(1), 1);
+        int indice = 0;
+        combate.combatir(usuario.getPokemon(pokemonUsuarioActivo), indice, rival.getPokemon(pokemonRivalActivo), 1);
         textDescripCombate.setText("El combate está teniendo lugar");
+        String accionUsuario = "Aquí iría la acción del textlog";
+        String accionRival = "Aquí iría la acción del textlog";
+        turno.setNumeroTurno(turno.getNumeroTurno()+1);
+        combate.getTurnos().add(
+                new Turno(
+                        turno.getNumeroCombate(),
+                        turno.getNumeroTurno(),
+                        accionUsuario,
+                        accionRival
+                )
+        );
+    }
+    public void usarMovi2(){
+        int indice = 1;
+        combate.combatir(usuario.getPokemon(pokemonUsuarioActivo), indice, rival.getPokemon(pokemonRivalActivo), 1);
+        textDescripCombate.setText("El combate está teniendo lugar");
+        String accionUsuario = "Aquí iría la acción del textlog";
+        String accionRival = "Aquí iría la acción del textlog";
+        turno.setNumeroTurno(turno.getNumeroTurno()+1);
+        combate.getTurnos().add(
+                new Turno(
+                        turno.getNumeroCombate(),
+                        turno.getNumeroTurno(),
+                        accionUsuario,
+                        accionRival
+                )
+        );
+    }
+    public void usarMovi3(){
+        int indice = 2;
+        combate.combatir(usuario.getPokemon(pokemonUsuarioActivo), indice, rival.getPokemon(pokemonRivalActivo), 1);
+        textDescripCombate.setText("El combate está teniendo lugar");
+        String accionUsuario = "Aquí iría la acción del textlog";
+        String accionRival = "Aquí iría la acción del textlog";
+        turno.setNumeroTurno(turno.getNumeroTurno()+1);
+        combate.getTurnos().add(
+                new Turno(
+                        turno.getNumeroCombate(),
+                        turno.getNumeroTurno(),
+                        accionUsuario,
+                        accionRival
+                )
+        );
+    }
+    public void usarMovi4(){
+        int indice = 3;
+        combate.combatir(usuario.getPokemon(pokemonUsuarioActivo), indice, rival.getPokemon(pokemonRivalActivo), 1);
+        textDescripCombate.setText("El combate está teniendo lugar");
+        String accionUsuario = "Aquí iría la acción del textlog";
+        String accionRival = "Aquí iría la acción del textlog";
+        turno.setNumeroTurno(turno.getNumeroTurno()+1);
+        combate.getTurnos().add(
+                new Turno(
+                        turno.getNumeroCombate(),
+                        turno.getNumeroTurno(),
+                        accionUsuario,
+                        accionRival
+                )
+        );
+    }
+
+    public void cambiarPokemon(){
+         pokemonUsuarioActivo = 2;
+        //AMPLIAR LA LÓGICA DLE CAMBIO DE POKEMON
     }
 }
