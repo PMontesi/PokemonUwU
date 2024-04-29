@@ -14,6 +14,8 @@ public class Objeto {
     private int reduccion;
 
 
+    public Objeto() {
+    }
 
     public void aumentarEstadistica(String estadistica) throws SQLException {
         String sqlEstadistica = "SELECT " + estadistica + " FROM OBJETO";

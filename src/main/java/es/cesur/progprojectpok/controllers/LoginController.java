@@ -54,9 +54,9 @@ public class LoginController implements Initializable {
             statement.setString(2, pass);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                Entrenador.setNombre(username);
-                Entrenador.setPokedolares(resultSet.getInt("POKEDOLLARS"));
-                Entrenador.setId(resultSet.getInt("ID_ENTRENADOR"));
+               Entrenador.setPokedolares(resultSet.getInt("POKEDOLLARS"));
+               Entrenador.setIdUsuario(resultSet.getInt("ID_ENTRENADOR"));
+               Entrenador.setNombreUsuario(resultSet.getString("NOM_ENTRENADOR"));
                 Stage stage = (Stage) loginUsuario.getScene().getWindow();
                 stage.close();
                 FXMLLoader fxmlLoader = new FXMLLoader(SplashApplication.class.getResource("view/mainMenu-view.fxml"));
