@@ -149,16 +149,51 @@ public class Pokemon {
 
     public void subirNivel(){
         while (experiencia == nivel*10){
-            setAtaque(getAtaque() + ((int) ((Math.random()*5 + 1))));
-            setAtaqueEspecial(getAtaqueEspecial() + ((int) ((Math.random()*5 + 1))));
-            setDefensa(getDefensa() + ((int) ((Math.random()*5 + 1))));
-            setDefensaEspecial(getDefensaEspecial() + ((int) ((Math.random()*5 + 1))));
-            setVelocidad(getVelocidad() + ((int) ((Math.random()*5 + 1))));
-            setVitalidad(getVitalidad() + ((int) ((Math.random()*5 + 1))));
-            experiencia -= nivel*10;
-            nivel++;
+            try{Connection connection = DBConnection.getConnection();
+
+                String sqlRecuperarStats = "SELECT * FROM POKEMON WHERE ID_POKEMON = ?";
+                PreparedStatement statementRecuperarStats = connection.prepareStatement(sqlRecuperarStats);
+                statementRecuperarStats.setInt(1, getId());
+                ResultSet resultSetRecuperarStats = statementRecuperarStats.executeQuery();
+                setAtaque(resultSetRecuperarStats.getInt("ATAQUE"));
+                setAtaqueEspecial(resultSetRecuperarStats.getInt("AT_ESPECIAL"));
+                setDefensa(resultSetRecuperarStats.getInt("DEFENSA"));
+                setDefensaEspecial(resultSetRecuperarStats.getInt("DEF_ESPECIAL"));
+                setVelocidad(resultSetRecuperarStats.getInt("VELOCIDAD"));
+                setVitalidad(resultSetRecuperarStats.getInt("VITALIDAD"));
+
+                String sqlSubirNivel = "UPDATE POKEMON\n" +
+                        "SET \n" +
+                        "\tATAQUE = ?, \n" +
+                        "    AT_ESPECIAL = ?, \n" +
+                        "    DEFENSA = ?, \n" +
+                        "    DEF_ESPECIAL = ?,\n" +
+                        "    VELOCIDAD = ?\n" +
+                        "    VITALIDAD = ?,\n" +
+                        "    EXPERIENCIA = ?,\n" +
+                        "    NIVEL= ?\n" +
+                        "WHERE ID_POKEMON = ?";
+
+                PreparedStatement statementSubirNivel = connection.prepareStatement(sqlSubirNivel);
+                statementSubirNivel.setInt(1, getAtaque() + ((int) ((Math.random()*5 + 1))));
+                statementSubirNivel.setInt(2, getAtaqueEspecial() + ((int) ((Math.random()*5 + 1))));
+                statementSubirNivel.setInt(3, getDefensa() + ((int) ((Math.random()*5 + 1))));
+                statementSubirNivel.setInt(4, getDefensaEspecial() + ((int) ((Math.random()*5 + 1))));
+                statementSubirNivel.setInt(5, getVelocidad() + ((int) ((Math.random()*5 + 1))));
+                statementSubirNivel.setInt(6, getVitalidad() + ((int) ((Math.random()*5 + 1))));
+                statementSubirNivel.setInt(7, getExperiencia() - nivel*10);
+                statementSubirNivel.setInt(8, getNivel()+1);
+                statementSubirNivel.setInt(9, getId());
+                statementSubirNivel.executeUpdate();
+
+            } catch(SQLException e){
+                e.printStackTrace();
+            }
+            setExperiencia(getExperiencia() - nivel*10);
+            setNivel(getNivel()+1);
             if(nivel % 4 == 0){
                 //YA VEREMOS CÓMO HACEMOS LA MOVIDA DE APRENDER MOVIMIENTOS CUANDO SE SUBA DE NIVEL.
+                //ESTO EN VERDAD HAY QUE MOVERLO AL COMBATE Y ENTRENAMIENTO CONTROLLER.
             }
         }
     }
@@ -173,6 +208,7 @@ public class Pokemon {
 
      */
     public Movimiento selecionarMovimientoDB(){
+
         String sqlMovimiento = "";
         Movimiento movimiento = null;
         try{
@@ -343,7 +379,7 @@ public class Pokemon {
                     );
                 }
 
-                setMovimiento(i, movimiento);
+                setMovimiento(i);
                 i++;
             }
 
@@ -358,8 +394,35 @@ public class Pokemon {
         MOVIMIENTOS[indice] = null;
     }
 
-    public void setMovimiento(int indice, Movimiento movimiento){
-        MOVIMIENTOS[indice] = movimiento;
+    public void setMovimiento(int indice){
+        Movimiento nuevoMov = null;
+        boolean repetirProceso = true;
+        while (repetirProceso){
+            nuevoMov = selecionarMovimientoDB();
+            if (indice == 0) {
+                MOVIMIENTOS[indice] = nuevoMov;
+                repetirProceso = false;
+            }
+            else if (indice == 1
+                    && nuevoMov.getIdMovimiento() != MOVIMIENTOS[indice-1].getIdMovimiento()){
+                MOVIMIENTOS[indice] = nuevoMov;
+                repetirProceso = false;
+            }
+            else if (indice == 2
+                    && nuevoMov.getIdMovimiento() != MOVIMIENTOS[indice-1].getIdMovimiento()
+                    && nuevoMov.getIdMovimiento() != MOVIMIENTOS[indice-2].getIdMovimiento()){
+                MOVIMIENTOS[indice] = nuevoMov;
+                repetirProceso = false;
+            }
+            else if (indice == 3
+                    && nuevoMov.getIdMovimiento() != MOVIMIENTOS[indice-1].getIdMovimiento()
+                    && nuevoMov.getIdMovimiento() != MOVIMIENTOS[indice-2].getIdMovimiento()
+                    && nuevoMov.getIdMovimiento() != MOVIMIENTOS[indice-3].getIdMovimiento()){
+                MOVIMIENTOS[indice] = nuevoMov;
+                repetirProceso = false;
+            }
+
+        }
     }
     public Movimiento getMovimiento(int indice){
         return MOVIMIENTOS[indice];

@@ -72,11 +72,12 @@ public class LoginController implements Initializable {
                 Scene scene = scene = new Scene(fxmlLoader.load(), 800, 480);
                     stage.setTitle("Menu");
                     stage.setScene(scene);
+                    MainMenuController mainMenuController = fxmlLoader.getController();
+                    mainMenuController.setUsuario(usuario);
                     stage.show();
 
                 //Pasar el usuario al main menu
-                MainMenuController mainMenuController = fxmlLoader.getController();
-                mainMenuController.setUsuario(usuario);
+
                 //Estas dos líneas de arriba
             } else {
                 textoError.setText("Sos un putiaso");

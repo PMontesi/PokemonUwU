@@ -62,6 +62,7 @@ public class CombateController implements Initializable {
 
     public void setUsuario(Entrenador usuario){
         this.usuario = usuario;
+        empezarCombate();
     }
     /*
     Al comenzar el combate se crean los dos entrenadores y ambos equipos.
@@ -114,7 +115,7 @@ public class CombateController implements Initializable {
                     String estadoPermanente = resultSetPokemon.getString("ESTADO");
                     int idObjeto = resultSetPokemon.getInt("ID_OBJETO");
                     String estadoPersistenteNulo = "saludable";
-                    String estadotemporalNulo = "normal";
+                    String estadotemporalNulo = "ninguno";
                     Objeto objetoNulo = new Objeto();
 
 
@@ -137,6 +138,7 @@ public class CombateController implements Initializable {
                     pokemonUsuario.asignarMovimientos(pokemonUsuario.getId());
                     usuario.setPokemon(pokemonUsuario, indice);
                     indice++;
+                    System.out.println(usuario.toString());
                 }
             }
 
@@ -175,11 +177,11 @@ public class CombateController implements Initializable {
                     );
 
                     for (int j = 0; j < pokemonRival.getMovimientos().length; j++) {
-                        pokemonRival.setMovimiento(j, pokemonRival.selecionarMovimientoDB());
+                        pokemonRival.setMovimiento(j);
                     }
 
                     rival.setPokemon(pokemonRival, i);
-                    System.out.println(rival.getPokemon(1));
+                    System.out.println(rival.getPokemon(i));
                     System.out.println("Movimiento rival: " + pokemonRival.getMovimiento(0).getNombre());
                     System.out.println("Movimiento rival: " + pokemonRival.getMovimiento(1).getNombre());
                     System.out.println("Movimiento rival: " + pokemonRival.getMovimiento(2).getNombre());

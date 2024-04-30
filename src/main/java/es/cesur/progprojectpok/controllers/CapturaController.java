@@ -56,6 +56,7 @@ public class CapturaController implements Initializable {
         moteNo.setVisible(false);
         textoMote.setVisible(false);
         pokemonNuevo();
+        //System.out.println(usuario.getIdUsuario());
 
     }
     public void setUsuario(Entrenador usuario){

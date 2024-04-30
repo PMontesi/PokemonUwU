@@ -161,12 +161,13 @@ public class MainMenuController implements Initializable {
         Scene scene = null;
         try {
             scene = new Scene(fxmlLoader.load(), 800, 480);
-            stage.setTitle("Menu");
-            stage.setScene(scene);
-            stage.show();
-
             CapturaController capturaController = fxmlLoader.getController();
             capturaController.setUsuario(usuario);
+            stage.setTitle("Menu");
+            stage.setScene(scene);
+
+            stage.show();
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

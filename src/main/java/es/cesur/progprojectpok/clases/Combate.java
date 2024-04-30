@@ -42,8 +42,8 @@ public class Combate {
     }
     public void retirarse(Entrenador usuario){}
     public void determinarGanador(){}
-    public void entregarPokedolares(){}
-    public void recibirExperiencia(){}
+    public void entregarPokedolares(Entrenador entrenador){}
+    public void recibirExperiencia(Pokemon pokemon){}
 
     public void crearLog(){
         //Lógica de crear log.
