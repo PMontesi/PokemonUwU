@@ -38,7 +38,10 @@ public class Entrenador {
     //MÉTODOS
     public void capturarPokemon(Pokemon pokemon){
         System.out.println("Método invocado con éxito");
-        String sqlInsertPokemonCap = "INSERT INTO POKEMON (NUM_POKEDEX, ID_ENTRENADOR, MOTE, CAJA, ATAQUE, AT_ESPECIAL, DEFENSA, DEF_ESPECIAL, VELOCIDAD, NIVEL, FERTILIDAD, SEXO, ESTADO, EXPERIENCIA, VITALIDAD) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sqlInsertPokemonCap = "INSERT INTO POKEMON " +
+                "(NUM_POKEDEX, ID_ENTRENADOR, MOTE, CAJA, ATAQUE, AT_ESPECIAL, DEFENSA, DEF_ESPECIAL, VELOCIDAD, NIVEL, " +
+                "FERTILIDAD, SEXO, ESTADO, EXPERIENCIA, VITALIDAD, VIT_MAX) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try(Connection connection = DBConnection.getConnection();
             PreparedStatement statementPokemonCapturado = connection.prepareStatement(sqlInsertPokemonCap)){
             statementPokemonCapturado.setInt(1, pokemon.getNumPokedex());
@@ -55,10 +58,15 @@ public class Entrenador {
             statementPokemonCapturado.setInt(10, pokemon.getNivel());
             statementPokemonCapturado.setInt(11, pokemon.getFertilidad());
             statementPokemonCapturado.setString(12, String.valueOf(pokemon.getSexo()));
-            statementPokemonCapturado.setString(13, "sinEstado");
+            statementPokemonCapturado.setString(13, "Saludable");
             statementPokemonCapturado.setInt(14, pokemon.getExperiencia());
             statementPokemonCapturado.setInt(15, pokemon.getVitalidad());
+            statementPokemonCapturado.setInt(16, pokemon.getVitalidad());
             statementPokemonCapturado.executeUpdate();
+
+
+            statementPokemonCapturado.close();
+            connection.close();
 
         } catch(SQLException e){
             e.printStackTrace();
@@ -67,7 +75,7 @@ public class Entrenador {
 
     public void setPokemon(Pokemon pokemon, int indice){
         equipoPokemon[indice] = pokemon;
-        System.out.println("Insertado pokemon " + indice + ": " + pokemon.toString());
+        //System.out.println("Insertado pokemon " + indice + ": " + pokemon.toString());
     }
     public Pokemon getPokemon(int indice){
         return equipoPokemon[indice];

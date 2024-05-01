@@ -113,34 +113,16 @@ public class CapturaController implements Initializable {
     }
 
     public void pokemonNuevo(){
-        int numPokedexTotal = 0;
+
         String imagenURL = "";
         pokemonSalvajeImagen.setVisible(true);
         pokemonSalvaje = new Pokemon();
 
-        //Primer select para que el rango del math.random funcione.
-        String sqlSelectTotalPokedex = "SELECT MAX(NUM_POKEDEX) FROM POKEDEX";
-        try (Connection connection = DBConnection.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sqlSelectTotalPokedex)) {
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                numPokedexTotal = resultSet.getInt(1);
-            }
-            System.out.println("Maxnumpokedex: " + numPokedexTotal);
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        int pokemonAleatorio = (int) (Math.random() * numPokedexTotal + 1);
-        System.out.println(pokemonAleatorio);
-
         //Segundo select para obtener el Pokemon con el número aleatorio generado.
-        String sqlSelectPokemon = "SELECT * FROM POKEDEX WHERE NUM_POKEDEX = ?";
+        String sqlSelectPokemon = "SELECT * FROM POKEDEX ORDER BY RAND() LIMIT 1";
         try (Connection connection = DBConnection.getConnection();
              PreparedStatement statementSelectPokemon = connection.prepareStatement(sqlSelectPokemon)
         ) {
-            statementSelectPokemon.setInt(1, pokemonAleatorio);
             ResultSet resultSetPokemon = statementSelectPokemon.executeQuery();
 
             //Construcción del Pokemon en base a las columnas del segundo SELECT y obtención de la URL de la imagen.
@@ -152,6 +134,9 @@ public class CapturaController implements Initializable {
                     imagenURL = resultSetPokemon.getString("IMAGEN_DELANTE_F");
                 }else imagenURL = resultSetPokemon.getString("IMAGEN_DELANTE");
             }
+            resultSetPokemon.close();
+            statementSelectPokemon.close();
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }

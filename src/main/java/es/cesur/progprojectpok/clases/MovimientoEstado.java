@@ -9,8 +9,8 @@ public class MovimientoEstado extends Movimiento{
         super(nombre, idMovimiento);
     }
 
-    public MovimientoEstado(String nombre, int ppMax, int ppRest, Tipos tipo, int prioridad, String estado, int duracionTurnos) {
-        super(nombre, ppMax, ppRest, tipo, prioridad);
+    public MovimientoEstado(String nombre, int ppMax, int ppRest, Tipos tipo, int prioridad, String estado, int duracionTurnos, int idMovimiento) {
+        super(nombre, ppMax, ppRest, tipo, prioridad, idMovimiento);
         this.estado = estado;
         this.duracionTurnos = duracionTurnos;
     }
@@ -62,5 +62,13 @@ public class MovimientoEstado extends Movimiento{
 
     public void setDuracionTurnos(int duracionTurnos) {
         this.duracionTurnos = duracionTurnos;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + "MovimientoEstado{" +
+                "estado='" + estado + '\'' +
+                ", duracionTurnos=" + duracionTurnos +
+                '}';
     }
 }

@@ -9,8 +9,8 @@ public class MovimientoMejora extends Movimiento{
         super(nombre, idMovimiento);
     }
 
-    public MovimientoMejora(String nombre, int ppMax, int ppRest, Tipos tipo, int prioridad, int duracionTurnos, String estadistica, int cantidadMejora) {
-        super(nombre, ppMax, ppRest, tipo, prioridad);
+    public MovimientoMejora(String nombre, int ppMax, int ppRest, Tipos tipo, int prioridad, int duracionTurnos, String estadistica, int cantidadMejora, int idMovimiento) {
+        super(nombre, ppMax, ppRest, tipo, prioridad, idMovimiento);
         this.duracionTurnos = duracionTurnos;
         this.estadistica = estadistica;
         this.cantidadMejora = cantidadMejora;
@@ -19,7 +19,10 @@ public class MovimientoMejora extends Movimiento{
     //Esto quizá haya que hacerlo por cada movimiento.
     public void mejoraAplica(Pokemon pokemonObjetivo){
         switch (getEstadistica()){
-            case "ATAQUE" -> pokemonObjetivo.setAtaque(pokemonObjetivo.getAtaque()*(1+getCantidadMejora()/100));
+            case "ATAQUE" -> {
+                pokemonObjetivo.setAtaque(pokemonObjetivo.getAtaque()*(1+getCantidadMejora()/100));
+                System.out.println("ATAQUE:" + pokemonObjetivo.getAtaque() + "\n ------------------------------");
+            }
             case "DEFENSA" -> pokemonObjetivo.setDefensa(pokemonObjetivo.getDefensa()*(1+getCantidadMejora()/100));
             case "AT_ESP" -> pokemonObjetivo.setAtaqueEspecial(pokemonObjetivo.getAtaqueEspecial()*(1+getCantidadMejora()/100));
             case "DEF_ESP" -> pokemonObjetivo.setDefensaEspecial(pokemonObjetivo.getDefensaEspecial()*(1+getCantidadMejora()/100));
@@ -49,5 +52,14 @@ public class MovimientoMejora extends Movimiento{
 
     public void setCantidadMejora(int cantidadMejora) {
         this.cantidadMejora = cantidadMejora;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + "MovimientoMejora{" +
+                "duracionTurnos=" + duracionTurnos +
+                ", estadistica='" + estadistica + '\'' +
+                ", cantidadMejora=" + cantidadMejora +
+                '}';
     }
 }

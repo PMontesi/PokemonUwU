@@ -10,17 +10,20 @@ public class Pokemon {
     private String nombre;
     private String mote;
     private int vitalidad;
+    private int vitMax;
     private int ataque;
     private int defensa;
     private int ataqueEspecial;
     private int defensaEspecial;
     private int velocidad;
+    private int prioridad = 0;
     private int nivel;
     private int experiencia;
     private char sexo;
     private int fertilidad;
     private int numPokedex;
     private int id;
+    private String imagenUrl;
     private static final int VALOR_INICIAL_FERT = 5;
     private Tipos tipo1;
     private Tipos tipo2;
@@ -35,12 +38,12 @@ public class Pokemon {
     //Constructor de pokemons para capturarlos.
     public Pokemon(String nombre, int numPokedex) {
         this.nombre = nombre;
-        this.vitalidad = (int) (Math.random()*10 + 1);
-        this.ataque = (int) (Math.random()*10 + 1);
-        this.defensa = (int) (Math.random()*10 + 1);
-        this.ataqueEspecial = (int) (Math.random()*10 + 1);
-        this.defensaEspecial = (int) (Math.random()*10 + 1);
-        this.velocidad = (int) (Math.random()*10 + 1);
+        this.vitalidad =    5 + (int) (Math.random()*10 + 1);
+        this.ataque =           (int) (Math.random()*10 + 1);
+        this.defensa =          (int) (Math.random()*10 + 1);
+        this.ataqueEspecial =   (int) (Math.random()*10 + 1);
+        this.defensaEspecial =  (int) (Math.random()*10 + 1);
+        this.velocidad =        (int) (Math.random()*10 + 1);
         this.nivel = 1;
         this.experiencia = 0;
         this.sexo = randomSex();
@@ -48,12 +51,13 @@ public class Pokemon {
         this.fertilidad = VALOR_INICIAL_FERT;
     }
 
-    //Constructor para el combate pokemon.
-    public Pokemon(String mote, int vitalidad, int ataque, int defensa, int ataqueEspecial, int defensaEspecial,
-                   int velocidad, int nivel, int experiencia, int numPokedex, int id, String tipo1, String tipo2,
+    //Constructor para el combate pokemon. Principalmente para los pokemons del usuario.
+    public Pokemon(String mote, int vitalidad, int vitMax, int ataque, int defensa, int ataqueEspecial, int defensaEspecial,
+                   int velocidad, int nivel, int experiencia, int numPokedex, int id, String imagenUrl, String tipo1, String tipo2,
                    String estadosPersistentes, String estadosTemporales, Objeto objetoEquipado) {
         this.mote = mote;
         this.vitalidad = vitalidad;
+        this.vitMax = vitMax;
         this.ataque = ataque;
         this.defensa = defensa;
         this.ataqueEspecial = ataqueEspecial;
@@ -63,6 +67,7 @@ public class Pokemon {
         this.experiencia = experiencia;
         this.numPokedex = numPokedex;
         this.id = id;
+        this.imagenUrl = imagenUrl;
         this.tipo1 = Pokemon.TipoStringToEnum(tipo1);
         this.tipo2 = Pokemon.TipoStringToEnum(tipo2);
         this.estadosPersistentes = MovimientoEstado.estadosPersitentesStringtoEnum(estadosPersistentes);
@@ -72,8 +77,9 @@ public class Pokemon {
 
     //Constructor para pokemons que no estén en la BBDD para usar en combate.
     //Por ahora solo para la vista combate (probablemente también para la de entrenamiento)
-    public Pokemon(String nombre, int mediaNivel, int numPokedex, String tipo1, String tipo2, Objeto objetoEquipado) {
+    public Pokemon(String nombre, int mediaNivel, int numPokedex, String imagenUrl, String tipo1, String tipo2, Objeto objetoEquipado) {
         this.nombre = nombre;
+        this.mote = nombre;
         this.nivel = mediaNivel + nivelAleatorio();
             if (this.nivel < 1) this.nivel = 1;
         this.ataque =           (int) ((Math.random()*10 + 1) + subidaEstadisticasInstananea(this.nivel));
@@ -81,9 +87,11 @@ public class Pokemon {
         this.ataqueEspecial =   (int) ((Math.random()*10 + 1) + subidaEstadisticasInstananea(this.nivel));
         this.defensaEspecial =  (int) ((Math.random()*10 + 1) + subidaEstadisticasInstananea(this.nivel));
         this.velocidad =        (int) ((Math.random()*10 + 1) + subidaEstadisticasInstananea(this.nivel));
-        this.vitalidad =        (int) ((Math.random()*10 + 1) + subidaEstadisticasInstananea(this.nivel));
+        this.vitalidad =    5 + (int) ((Math.random()*10 + 1) + subidaEstadisticasInstananea(this.nivel));
+        this.vitMax = this.vitalidad;
         this.sexo = randomSex();
         this.numPokedex = numPokedex;
+        this.imagenUrl = imagenUrl;
         this.tipo1 = Pokemon.TipoStringToEnum(tipo1);
         this.tipo2 = Pokemon.TipoStringToEnum(tipo2);
         this.estadosPersistentes = EstadosPersitentes.SALUDABLE;
@@ -287,8 +295,56 @@ public class Pokemon {
 
             ResultSet resultSetMovimiento = statementMovimiento.executeQuery();
             while (resultSetMovimiento.next()){
-                movimiento = new Movimiento(resultSetMovimiento.getString("NOM_MOVIMIENTO"), resultSetMovimiento.getInt("ID_MOVIMIENTO"));
+                if(resultSetMovimiento.getString("TIPO_DAÑO") != null){
+                    movimiento = new MovimientoAtaque(
+                            resultSetMovimiento.getString("NOM_MOVIMIENTO"),
+                            resultSetMovimiento.getInt("PP_MAX"),
+                            resultSetMovimiento.getInt("PP_REST"),
+                            TipoStringToEnum(resultSetMovimiento.getString("TIPO")),
+                            0,
+                            resultSetMovimiento.getInt("POTENCIA"),
+                            resultSetMovimiento.getString("TIPO_DAÑO"),
+                            resultSetMovimiento.getInt("ID_MOVIMIENTO")
+                    );
+                    System.out.println("SE HIZO UN MOVIMIENTO DE ATAQUE");
+                    System.out.println(movimiento.toString());
+                }
+                else if(resultSetMovimiento.getString("ESTADO") != null){
+                    movimiento = new MovimientoEstado(
+                            resultSetMovimiento.getString("NOM_MOVIMIENTO"),
+                            resultSetMovimiento.getInt("PP_MAX"),
+                            resultSetMovimiento.getInt("PP_REST"),
+                            TipoStringToEnum(resultSetMovimiento.getString("TIPO")),
+                            0,
+                            resultSetMovimiento.getString("ESTADO"),
+                            resultSetMovimiento.getInt("TURNOS"),
+                            resultSetMovimiento.getInt("ID_MOVIMIENTO")
+
+                    );
+                    System.out.println("SE HIZO UN MOVIMIENTO DE ESTADO");
+                    System.out.println(movimiento.toString());
+                }
+                else if(resultSetMovimiento.getString("MEJORA") != null){
+                    movimiento = new MovimientoMejora(
+                            resultSetMovimiento.getString("NOM_MOVIMIENTO"),
+                            resultSetMovimiento.getInt("PP_MAX"),
+                            resultSetMovimiento.getInt("PP_REST"),
+                            TipoStringToEnum(resultSetMovimiento.getString("TIPO")),
+                            0,
+                            resultSetMovimiento.getInt("TURNOS"),
+                            resultSetMovimiento.getString("MEJORA"),
+                            resultSetMovimiento.getInt("CANT_MEJORA"),
+                            resultSetMovimiento.getInt("ID_MOVIMIENTO")
+                    );
+                    System.out.println("SE HIZO UN MOVIMIENTO DE MEJORA");
+                    System.out.println(movimiento.toString());
+                }
             }
+            System.out.println(movimiento.toString());
+
+            resultSetMovimiento.close();
+            statementMovimiento.close();
+            connection.close();
 
         }catch (SQLException e){
             e.printStackTrace();
@@ -312,7 +368,7 @@ public class Pokemon {
 
     //BASTANTES DUDAS DE QUE ESTO FURULE.
     public void usarMovimiento(int indice, Pokemon pokemonObjetivo){
-        System.out.println("MOVIMIENTO " +  indice + " USADO SOBRE " + pokemonObjetivo.getNombre());
+        System.out.println(MOVIMIENTOS[indice].getNombre() + " USADO SOBRE " + pokemonObjetivo.getMote());
         if (MOVIMIENTOS[indice] instanceof MovimientoAtaque){
             if((((MovimientoAtaque) MOVIMIENTOS[indice]).getTipoAtaque().equalsIgnoreCase("FISICO"))){
                 ((MovimientoAtaque) MOVIMIENTOS[indice]).aplicarDamage(pokemonObjetivo, getAtaque());
@@ -329,7 +385,8 @@ public class Pokemon {
         }
     }
 
-    //Quizá haya que renombrar el método porque ni puñetera idea de lo que hace exactamente.
+    //Asigna los movimientos que los pokemons saben.
+    //Actualmente no distingue entre los que tienen equipados y los que no.
     public void asignarMovimientos (int pokemonId){
         String sqlMovimiento = "SELECT M.* \n" +
                 "FROM MOVIMIENTOS M\n" +
@@ -352,8 +409,11 @@ public class Pokemon {
                             TipoStringToEnum(resultSetMovimiento.getString("TIPO")),
                             0,
                             resultSetMovimiento.getInt("POTENCIA"),
-                            resultSetMovimiento.getString("TIPO_DAÑO")
+                            resultSetMovimiento.getString("TIPO_DAÑO"),
+                            resultSetMovimiento.getInt("ID_MOVIMIENTO")
                     );
+                    System.out.println("SE HIZO UN MOVIMIENTO DE ATAQUE");
+                    System.out.println(movimiento.toString());
                 }
                 else if(resultSetMovimiento.getString("ESTADO") != null){
                     movimiento = new MovimientoEstado(
@@ -363,10 +423,14 @@ public class Pokemon {
                             TipoStringToEnum(resultSetMovimiento.getString("TIPO")),
                             0,
                             resultSetMovimiento.getString("ESTADO"),
-                            resultSetMovimiento.getInt("TURNOS")
+                            resultSetMovimiento.getInt("TURNOS"),
+                            resultSetMovimiento.getInt("ID_MOVIMIENTO")
+
                     );
+                    System.out.println("SE HIZO UN MOVIMIENTO DE ESTADO");
+                    System.out.println(movimiento.toString());
                 }
-                if(resultSetMovimiento.getString("MEJORA") != null){
+                else if(resultSetMovimiento.getString("MEJORA") != null){
                     movimiento = new MovimientoMejora(
                             resultSetMovimiento.getString("NOM_MOVIMIENTO"),
                             resultSetMovimiento.getInt("PP_MAX"),
@@ -375,13 +439,21 @@ public class Pokemon {
                             0,
                             resultSetMovimiento.getInt("TURNOS"),
                             resultSetMovimiento.getString("MEJORA"),
-                            resultSetMovimiento.getInt("CANT_MEJORA")
+                            resultSetMovimiento.getInt("CANT_MEJORA"),
+                            resultSetMovimiento.getInt("ID_MOVIMIENTO")
                     );
+                    System.out.println("SE HIZO UN MOVIMIENTO DE MEJORA");
+                    System.out.println(movimiento.toString());
                 }
 
-                setMovimiento(i);
+                MOVIMIENTOS[i] = movimiento;
+                System.out.println(MOVIMIENTOS[i].getNombre() + "Insertado en la posición " + i);
                 i++;
             }
+
+            resultSetMovimiento.close();
+            statementMovimiento.close();
+            connection.close();
 
         }catch (SQLException e){
             e.printStackTrace();
@@ -394,8 +466,11 @@ public class Pokemon {
         MOVIMIENTOS[indice] = null;
     }
 
+    //Añade un movimiento aleatorio al array de 4 movimientos del pokemon.
+    //Si el pokemon ya conoce ese movimiento, se repite el proceso.
+    //Solo para pokemons generados aleatoriamente.
     public void setMovimiento(int indice){
-        Movimiento nuevoMov = null;
+        Movimiento nuevoMov;
         boolean repetirProceso = true;
         while (repetirProceso){
             nuevoMov = selecionarMovimientoDB();
@@ -522,6 +597,22 @@ public class Pokemon {
         this.velocidad = velocidad;
     }
 
+    public int getPrioridad() {
+        return prioridad;
+    }
+
+    public void setPrioridad(int prioridad) {
+        this.prioridad = prioridad;
+    }
+
+    public int getVitMax() {
+        return vitMax;
+    }
+
+    public void setVitMax(int vitMax) {
+        this.vitMax = vitMax;
+    }
+
     public int getNivel() {
         return nivel;
     }
@@ -544,6 +635,14 @@ public class Pokemon {
 
     public void setSexo(char sexo) {
         this.sexo = sexo;
+    }
+
+    public String getImagenUrl() {
+        return imagenUrl;
+    }
+
+    public void setImagenUrl(String imagenUrl) {
+        this.imagenUrl = imagenUrl;
     }
 
     public int getFertilidad() {

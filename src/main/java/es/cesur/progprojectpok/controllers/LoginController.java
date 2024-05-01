@@ -82,10 +82,14 @@ public class LoginController implements Initializable {
             } else {
                 textoError.setText("Sos un putiaso");
             }
+            resultSet.close();
+            statement.close();
+            connection.close();
         } catch (SQLException | IOException e) {
             textoError.setText("La base de datos es una putisasa");
             e.printStackTrace();
         }
+
     }
 
     @FXML
@@ -117,6 +121,8 @@ public class LoginController implements Initializable {
             }
 
              */
+            statement.close();
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
