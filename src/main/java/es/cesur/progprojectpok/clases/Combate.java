@@ -23,34 +23,48 @@ public class Combate {
     public void combatir (Pokemon pokemonA, int movimientoA, Pokemon pokemonB, int movimientoB){
         setPrioridad(pokemonA, pokemonB);
         if (pokemonA.getPrioridad() > pokemonB.getPrioridad()){
-            if(checkSelfCast(pokemonA, movimientoA)){
-                pokemonA.usarMovimiento(movimientoA, pokemonA);
+            if(checkStun(pokemonA)){
+                System.out.println("NO PUEDE ATACAR");
             }
-            else pokemonA.usarMovimiento(movimientoA, pokemonB);
-            if(checkSelfCast(pokemonB, movimientoB)){
-                pokemonB.usarMovimiento(movimientoB, pokemonB);
+            else if(checkSelfCast(pokemonA, movimientoA)){
+                pokemonA.usarMovimiento(movimientoA, pokemonA, pokemonA);
             }
-            else pokemonB.usarMovimiento(movimientoB, pokemonA);
+            else pokemonA.usarMovimiento(movimientoA, pokemonB, pokemonA);
+
+            if(checkStun(pokemonB)){
+                System.out.println("NO PUEDE ATACAR");
+            }
+            else if(checkSelfCast(pokemonB, movimientoB)){
+                pokemonB.usarMovimiento(movimientoB, pokemonB, pokemonB);
+            }
+            else pokemonB.usarMovimiento(movimientoB, pokemonA, pokemonB);
 
             setPrimerPoke(pokemonA);
             setMovimientoUsadoPrimer(movimientoA);
             setSegundoPoke(pokemonB);
-            setMovimientoUsadoPrimer(movimientoB);
+            setMovimientoUsadoSegund(movimientoB);
         }
         else if (pokemonA.getPrioridad() < pokemonB.getPrioridad()) {
-            if(checkSelfCast(pokemonB, movimientoB)){
-                pokemonB.usarMovimiento(movimientoB, pokemonB);
+            if(checkStun(pokemonA)){
+                System.out.println("NO PUEDE ATACAR");
             }
-            else pokemonB.usarMovimiento(movimientoB, pokemonA);
-            if(checkSelfCast(pokemonA, movimientoA)){
-                pokemonA.usarMovimiento(movimientoA, pokemonA);
+            else if(checkSelfCast(pokemonB, movimientoB)){
+                pokemonB.usarMovimiento(movimientoB, pokemonB, pokemonB);
             }
-            else pokemonA.usarMovimiento(movimientoA, pokemonB);
+            else pokemonB.usarMovimiento(movimientoB, pokemonA, pokemonB);
+
+            if(checkStun(pokemonB)){
+                System.out.println("NO PUEDE ATACAR");
+            }
+            else if(checkSelfCast(pokemonA, movimientoA)){
+                pokemonA.usarMovimiento(movimientoA, pokemonA, pokemonB);
+            }
+            else pokemonA.usarMovimiento(movimientoA, pokemonB, pokemonB);
 
             setPrimerPoke(pokemonB);
             setMovimientoUsadoPrimer(movimientoA);
             setSegundoPoke(pokemonA);
-            setMovimientoUsadoPrimer(movimientoB);
+            setMovimientoUsadoSegund(movimientoB);
         }
     }
 
@@ -78,6 +92,18 @@ public class Combate {
         else if (pokemon.getEstadosTemporales() == EstadosTemporales.CONFUSO) return true;
         //AMPLIAR CON MÁS POSIBLES AUTOESTADOS
         return false;
+    }
+
+    public boolean checkStun(Pokemon pokemon){
+        if (pokemon.getEstadosPersistentes() == EstadosPersitentes.DORMIDO
+                || pokemon.getEstadosPersistentes() == EstadosPersitentes.CONGELADO
+                || pokemon.getEstadosPersistentes() == EstadosPersitentes.PARALIZADO
+                || pokemon.getEstadosTemporales() == EstadosTemporales.AMEDRENTADO
+                || pokemon.getEstadosTemporales() == EstadosTemporales.ENAMORADO){
+            return true;
+        }
+
+        return false:
     }
 
     //PROBABLMENTE HAYA QUE HACER UN CHECK PARA QUITAR OBJETIVOS O TURNOS O IO K SE

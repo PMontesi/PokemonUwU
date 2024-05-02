@@ -388,6 +388,10 @@ public class CombateController implements Initializable {
 
     public void progresoCombate() {
         textDescripCombate.setText("El combate está teniendo lugar" + "Turno: " + turno.getNumeroTurno());
+        System.out.println("______________________");
+        System.out.println(combate.getPrimerPoke().toString());
+        System.out.println(combate.getPrimerPoke().getMovimiento(combate.getMovimientoUsadoPrimer()).toString());
+        System.out.println("indice: " + (combate.getMovimientoUsadoPrimer()));
         String primeraAccion = combate.getPrimerPoke().getMote() + " usó " + combate.getPrimerPoke().getMovimiento(combate.getMovimientoUsadoPrimer()).getNombre();
         String segundaAccion = combate.getSegundoPoke().getMote() + " usó " + combate.getSegundoPoke().getMovimiento(combate.getMovimientoUsadoSegund()).getNombre();
 
@@ -396,11 +400,11 @@ public class CombateController implements Initializable {
                     checkCambios();
                     textDescripCombate.setText(primeraAccion);
                 }),
-                new KeyFrame(Duration.seconds(6), event -> {
+                new KeyFrame(Duration.seconds(4), event -> {
                     checkCambios();
                     textDescripCombate.setText(segundaAccion);
                 }),
-                new KeyFrame(Duration.seconds(10), event -> {
+                new KeyFrame(Duration.seconds(6), event -> {
                     turno.setNumeroTurno(turno.getNumeroTurno() + 1);
                     combate.getTurnos().add(
                             new Turno(
@@ -451,6 +455,12 @@ public class CombateController implements Initializable {
     }
 
     public void checkCambios(){
+        if (usuario.getPokemon(pokemonUsuarioActivo).getEstadosPersistentes() == EstadosPersitentes.ENVENENADO){
+            int veneno = usuario.getPokemon(pokemonUsuarioActivo).getVitalidad()/16;
+            usuario.getPokemon(pokemonUsuarioActivo).setVitalidad(usuario.getPokemon(pokemonUsuarioActivo).getVitalidad() - veneno);
+        }
+
+
         double progreso1 = ((double) usuario.getPokemon(pokemonUsuarioActivo).getVitalidad() /usuario.getPokemon(pokemonUsuarioActivo).getVitMax());
         barVitJugador.setProgress(progreso1);
         barVitRival.setProgress(((double) rival.getPokemon(pokemonRivalActivo).getVitalidad() /rival.getPokemon(pokemonRivalActivo).getVitMax()));

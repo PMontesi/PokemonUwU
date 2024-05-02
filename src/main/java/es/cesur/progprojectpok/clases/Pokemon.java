@@ -367,14 +367,14 @@ public class Pokemon {
     }
 
     //BASTANTES DUDAS DE QUE ESTO FURULE.
-    public void usarMovimiento(int indice, Pokemon pokemonObjetivo){
+    public void usarMovimiento(int indice, Pokemon pokemonObjetivo, Pokemon pokemonCaster){
         System.out.println(MOVIMIENTOS[indice].getNombre() + " USADO SOBRE " + pokemonObjetivo.getMote());
         if (MOVIMIENTOS[indice] instanceof MovimientoAtaque){
             if((((MovimientoAtaque) MOVIMIENTOS[indice]).getTipoAtaque().equalsIgnoreCase("FISICO"))){
-                ((MovimientoAtaque) MOVIMIENTOS[indice]).aplicarDamage(pokemonObjetivo, getAtaque());
+                ((MovimientoAtaque) MOVIMIENTOS[indice]).aplicarDamage(pokemonObjetivo, getAtaque(), pokemonCaster);
             }
             else if ((((MovimientoAtaque) MOVIMIENTOS[indice]).getTipoAtaque().equalsIgnoreCase("ESPECIAL"))){
-                ((MovimientoAtaque) MOVIMIENTOS[indice]).aplicarDamage(pokemonObjetivo, getAtaqueEspecial());
+                ((MovimientoAtaque) MOVIMIENTOS[indice]).aplicarDamage(pokemonObjetivo, getAtaqueEspecial(), pokemonCaster);
             }
         }
         else if (MOVIMIENTOS[indice] instanceof MovimientoMejora){

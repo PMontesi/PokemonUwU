@@ -15,22 +15,29 @@ public class MovimientoAtaque extends Movimiento{
     }
 
     //Pedir AT/AT_ESP como argumentos
-    public void aplicarDamage(Pokemon pokemonObjetivo, int estadistica){
+    public void aplicarDamage(Pokemon pokemonObjetivo, int estadistica, Pokemon pokemonCaster){
         if(getTipoAtaque().toUpperCase().equals("FISICO")){
-            if((pokemonObjetivo.getVitalidad()) - estadistica/pokemonObjetivo.getDefensa() <= 0){
+            if((damageCalc(pokemonCaster, pokemonCaster.getAtaque(), pokemonObjetivo.getDefensa()) <= 0)){
                 pokemonObjetivo.setVitalidad((pokemonObjetivo.getVitalidad()) -1);
             }
-            else pokemonObjetivo.setVitalidad((pokemonObjetivo.getVitalidad()) - estadistica/pokemonObjetivo.getDefensa());
+            else pokemonObjetivo.setVitalidad((pokemonObjetivo.getVitalidad()) - damageCalc(pokemonCaster, pokemonCaster.getAtaque(), pokemonObjetivo.getDefensa()));
 
             System.out.println("Daño: " + estadistica/pokemonObjetivo.getDefensa() + "\n ------------------------------");
         } else if (getTipoAtaque().toUpperCase().equals("ESPECIAL")) {
-            if ((pokemonObjetivo.getVitalidad()) - estadistica/pokemonObjetivo.getDefensaEspecial() <= 0){
+            if ((damageCalc(pokemonCaster, pokemonCaster.getAtaqueEspecial(), pokemonObjetivo.getDefensaEspecial()) <= 0)){
                 pokemonObjetivo.setVitalidad((pokemonObjetivo.getVitalidad()) -1);
             }
-            else pokemonObjetivo.setVitalidad((pokemonObjetivo.getVitalidad()) - estadistica/pokemonObjetivo.getDefensaEspecial());
+            else pokemonObjetivo.setVitalidad((pokemonObjetivo.getVitalidad()) - damageCalc(pokemonCaster, pokemonCaster.getAtaque(), pokemonObjetivo.getDefensa()));
 
             System.out.println("Daño: " + estadistica/pokemonObjetivo.getDefensaEspecial() + "\n ------------------------------");
         }
+    }
+
+    public int damageCalc(Pokemon pokemon, int ataque, int defensa){
+        float damageNivel = (float) (2*pokemon.getNivel()/5 + 2);
+        float potencia = (float) getPotencia()/100;
+        float ataDef = (float) ataque/defensa;
+        return ((int)(damageNivel * potencia * ataDef)+2);
     }
 
     public int getPotencia() {
