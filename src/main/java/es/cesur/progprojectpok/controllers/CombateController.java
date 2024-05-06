@@ -223,7 +223,7 @@ public class CombateController implements Initializable {
             if(System.getProperty("os.name").startsWith("Windows")){
                 rutaAbsoluta = rutaAbsoluta.replace("/", "\\");
             }
-            String fileURL ="file:///" + rutaAbsoluta.replace("\\", "/");
+
             Image imagenPokemonGenerado = new Image(rutaAbsoluta);
             pokemonJugador.setImage(imagenPokemonGenerado);
 
@@ -289,7 +289,7 @@ public class CombateController implements Initializable {
             if(System.getProperty("os.name").startsWith("Windows")){
                 rutaAbsoluta = rutaAbsoluta.replace("/", "\\");
             }
-            String fileURL2 ="file:///" + rutaAbsoluta.replace("\\", "/");
+
             Image imagenPokemonGenerado2 = new Image(rutaAbsoluta2);
             pokemonRival.setImage(imagenPokemonGenerado2);
             System.out.println("////////////////////////");
@@ -450,7 +450,7 @@ public class CombateController implements Initializable {
         if(System.getProperty("os.name").startsWith("Windows")){
             rutaAbsoluta = rutaAbsoluta.replace("/", "\\");
         }
-        String fileURL ="file:///" + rutaAbsoluta.replace("\\", "/");
+
         Image imagenPokemonGenerado = new Image(rutaAbsoluta);
         pokemonJugador.setImage(imagenPokemonGenerado);
         System.out.println("Botón cambiar pulsado");

@@ -5,6 +5,7 @@ import es.cesur.progprojectpok.database.DBConnection;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Random;
 
 public class Pokemon {
 
@@ -35,6 +36,7 @@ public class Pokemon {
     private int duracionConfusion;
     private int duracionCantoMortal = 3;
     private Objeto objetoEquipado;
+    private Random random = new Random();
 
     public Pokemon() {
     }
@@ -42,12 +44,12 @@ public class Pokemon {
     //Constructor de pokemons para capturarlos.
     public Pokemon(String nombre, int numPokedex) {
         this.nombre = nombre;
-        this.vitalidad =    5 + (int) (Math.random()*10 + 1);
-        this.ataque =           (int) (Math.random()*10 + 1);
-        this.defensa =          (int) (Math.random()*10 + 1);
-        this.ataqueEspecial =   (int) (Math.random()*10 + 1);
-        this.defensaEspecial =  (int) (Math.random()*10 + 1);
-        this.velocidad =        (int) (Math.random()*10 + 1);
+        this.vitalidad =    5 + random.nextInt(5) + 1;
+        this.ataque =           random.nextInt(5) + 1;
+        this.defensa =          random.nextInt(5) + 1;
+        this.ataqueEspecial =   random.nextInt(5) + 1;
+        this.defensaEspecial =  random.nextInt(5) + 1;
+        this.velocidad =        random.nextInt(5) + 1;
         this.nivel = 1;
         this.experiencia = 0;
         this.sexo = randomSex();
@@ -86,12 +88,12 @@ public class Pokemon {
         this.mote = nombre;
         this.nivel = mediaNivel + nivelAleatorio();
             if (this.nivel < 1) this.nivel = 1;
-        this.ataque =           (int) ((Math.random()*10 + 1) + subidaEstadisticasInstananea(this.nivel));
-        this.defensa =          (int) ((Math.random()*10 + 1) + subidaEstadisticasInstananea(this.nivel));
-        this.ataqueEspecial =   (int) ((Math.random()*10 + 1) + subidaEstadisticasInstananea(this.nivel));
-        this.defensaEspecial =  (int) ((Math.random()*10 + 1) + subidaEstadisticasInstananea(this.nivel));
-        this.velocidad =        (int) ((Math.random()*10 + 1) + subidaEstadisticasInstananea(this.nivel));
-        this.vitalidad =    5 + (int) ((Math.random()*10 + 1) + subidaEstadisticasInstananea(this.nivel));
+        this.ataque =           random.nextInt(10) + 1 + subidaEstadisticasInstananea(this.nivel);
+        this.defensa =          random.nextInt(10) + 1 + subidaEstadisticasInstananea(this.nivel);
+        this.ataqueEspecial =   random.nextInt(10) + 1 + subidaEstadisticasInstananea(this.nivel);
+        this.defensaEspecial =  random.nextInt(10) + 1 + subidaEstadisticasInstananea(this.nivel);
+        this.velocidad =        random.nextInt(10) + 1 + subidaEstadisticasInstananea(this.nivel);
+        this.vitalidad =    5 + random.nextInt(10) + 1 + subidaEstadisticasInstananea(this.nivel);
         this.vitMax = this.vitalidad;
         this.sexo = randomSex();
         this.numPokedex = numPokedex;
@@ -105,7 +107,7 @@ public class Pokemon {
 
     public char randomSex(){
         char sexo;
-        int sexoBinario = (int) (Math.random()*2);
+        int sexoBinario = random.nextInt(2);
         if (sexoBinario == 0) sexo = 'H';
         else sexo = 'M';
         return sexo;
@@ -512,17 +514,17 @@ public class Pokemon {
     public int subidaEstadisticasInstananea(int nivel){
         int estadistica = 0;
         for (int i = 1; i < nivel; i++) {
-           estadistica += (int) ((Math.random()*5 + 1));
+           estadistica += random.nextInt(5) + 1;
         }
         return estadistica;
     }
 
     //Mëtodo para aumentar el nivel aleatoriamente de los pokemons que se generan en combate
     public int nivelAleatorio(){
-        int probabilidad = ((int) (Math.random()*100 + 1));
+        int probabilidad = random.nextInt(100) + 1;
         if (probabilidad < 51) return 0;
         else {
-            int sumaroRestar = (int) (Math.random()*2);
+            int sumaroRestar = random.nextInt(2);
             if (sumaroRestar == 0){
                 if (probabilidad >= 51 && probabilidad <= 80) return 1;
                 else if (probabilidad >= 81 && probabilidad <= 95) return 2;
