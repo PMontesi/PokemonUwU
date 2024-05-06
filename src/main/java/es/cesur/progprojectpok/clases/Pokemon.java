@@ -3,6 +3,7 @@ package es.cesur.progprojectpok.clases;
 import es.cesur.progprojectpok.database.DBConnection;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Pokemon {
@@ -28,8 +29,11 @@ public class Pokemon {
     private Tipos tipo1;
     private Tipos tipo2;
     private final Movimiento[] MOVIMIENTOS = new Movimiento[4];
-    private EstadosPersitentes estadosPersistentes;
-    private EstadosTemporales estadosTemporales;
+    private EstPersitentesEnum estadosPersistentes;
+    private int duracionPersistente;
+    private ArrayList<EstTemporalesEnum> estTemporalesEnums;
+    private int duracionConfusion;
+    private int duracionCantoMortal = 3;
     private Objeto objetoEquipado;
 
     public Pokemon() {
@@ -54,7 +58,7 @@ public class Pokemon {
     //Constructor para el combate pokemon. Principalmente para los pokemons del usuario.
     public Pokemon(String mote, int vitalidad, int vitMax, int ataque, int defensa, int ataqueEspecial, int defensaEspecial,
                    int velocidad, int nivel, int experiencia, int numPokedex, int id, String imagenUrl, String tipo1, String tipo2,
-                   String estadosPersistentes, String estadosTemporales, Objeto objetoEquipado) {
+                   String estadosPersistentes, Objeto objetoEquipado) {
         this.mote = mote;
         this.vitalidad = vitalidad;
         this.vitMax = vitMax;
@@ -71,7 +75,7 @@ public class Pokemon {
         this.tipo1 = Pokemon.TipoStringToEnum(tipo1);
         this.tipo2 = Pokemon.TipoStringToEnum(tipo2);
         this.estadosPersistentes = MovimientoEstado.estadosPersitentesStringtoEnum(estadosPersistentes);
-        this.estadosTemporales = MovimientoEstado.estadosTemporalesStringtoEnum(estadosTemporales);
+        this.estTemporalesEnums = new ArrayList<>();
         this.objetoEquipado = objetoEquipado;
     }
 
@@ -94,8 +98,8 @@ public class Pokemon {
         this.imagenUrl = imagenUrl;
         this.tipo1 = Pokemon.TipoStringToEnum(tipo1);
         this.tipo2 = Pokemon.TipoStringToEnum(tipo2);
-        this.estadosPersistentes = EstadosPersitentes.SALUDABLE;
-        this.estadosTemporales = EstadosTemporales.NINGUNO;
+        this.estadosPersistentes = EstPersitentesEnum.SALUDABLE;
+        this.estTemporalesEnums = new ArrayList<>();
         this.objetoEquipado = objetoEquipado;
     }
 
@@ -366,7 +370,7 @@ public class Pokemon {
         }
     }
 
-    //BASTANTES DUDAS DE QUE ESTO FURULE.
+    //Filtra los movimientos para llamar el método correspondiente, según el tipo de movimiento.
     public void usarMovimiento(int indice, Pokemon pokemonObjetivo, Pokemon pokemonCaster){
         System.out.println(MOVIMIENTOS[indice].getNombre() + " USADO SOBRE " + pokemonObjetivo.getMote());
         if (MOVIMIENTOS[indice] instanceof MovimientoAtaque){
@@ -513,6 +517,7 @@ public class Pokemon {
         return estadistica;
     }
 
+    //Mëtodo para aumentar el nivel aleatoriamente de los pokemons que se generan en combate
     public int nivelAleatorio(){
         int probabilidad = ((int) (Math.random()*100 + 1));
         if (probabilidad < 51) return 0;
@@ -689,21 +694,20 @@ public class Pokemon {
         return MOVIMIENTOS;
     }
 
-
-    public EstadosPersitentes getEstadosPersistentes() {
+    public EstPersitentesEnum getEstadosPersistentes() {
         return estadosPersistentes;
     }
 
-    public void setEstadosPersistentes(EstadosPersitentes estadosPersistentes) {
+    public void setEstadosPersistentes(EstPersitentesEnum estadosPersistentes) {
         this.estadosPersistentes = estadosPersistentes;
     }
 
-    public EstadosTemporales getEstadosTemporales() {
-        return estadosTemporales;
+    public ArrayList<EstTemporalesEnum> getEstTemporalesEnums() {
+        return estTemporalesEnums;
     }
 
-    public void setEstadosTemporales(EstadosTemporales estadosTemporales) {
-        this.estadosTemporales = estadosTemporales;
+    public void setEstTemporal(EstTemporalesEnum estadoTemporal){
+        estTemporalesEnums.add(estadoTemporal);
     }
 
     public Objeto getObjetoEquipado() {
@@ -714,9 +718,31 @@ public class Pokemon {
         this.objetoEquipado = objetoEquipado;
     }
 
+    public int getDuracionPersistente() {
+        return duracionPersistente;
+    }
+
+    public void setDuracionPersistente(int duracionPersistente) {
+        this.duracionPersistente = duracionPersistente;
+    }
+
+    public int getDuracionConfusion() {
+        return duracionConfusion;
+    }
+
+    public void setDuracionConfusion(int duracionConfusion) {
+        this.duracionConfusion = duracionConfusion;
+    }
+
+    public int getDuracionCantoMortal() {
+        return duracionCantoMortal;
+    }
+
+    public void setDuracionCantoMortal(int duracionCantoMortal) {
+        this.duracionCantoMortal = duracionCantoMortal;
+    }
+
     //TO STRING
-
-
     @Override
     public String toString() {
         return "Pokemon{" +
@@ -738,7 +764,7 @@ public class Pokemon {
                 ", tipo2=" + tipo2 +
                 ", MOVIMIENTOS=" + Arrays.toString(MOVIMIENTOS) +
                 ", estadosPersistentes=" + estadosPersistentes +
-                ", estadosTemporales=" + estadosTemporales +
+                ", estadosTemporales=" + estTemporalesEnums +
                 ", objetoEquipado=" + objetoEquipado +
                 '}';
     }

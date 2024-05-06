@@ -16,18 +16,31 @@ public class MovimientoAtaque extends Movimiento{
 
     //Pedir AT/AT_ESP como argumentos
     public void aplicarDamage(Pokemon pokemonObjetivo, int estadistica, Pokemon pokemonCaster){
+        int ataque = pokemonCaster.getAtaque();
+        if (pokemonCaster.getEstadosPersistentes() == EstPersitentesEnum.QUEMADO)  ataque *= 0.5;
+        if (ataque <= 0) ataque = 1;
+
+        int ataqueEsp = pokemonCaster.getAtaqueEspecial();
+        if (pokemonCaster.getEstadosPersistentes() == EstPersitentesEnum.HELADO) ataqueEsp *= 0.5;
+        if (ataqueEsp <= 0) ataqueEsp = 1;
+
+        float multEstado = 1f;
+        if (pokemonObjetivo.getEstadosPersistentes() == EstPersitentesEnum.SOMNOLIENTO) multEstado += 0.5f;
+
         if(getTipoAtaque().toUpperCase().equals("FISICO")){
-            if((damageCalc(pokemonCaster, pokemonCaster.getAtaque(), pokemonObjetivo.getDefensa()) <= 0)){
+
+            if((damageCalc(pokemonCaster, ataque, pokemonObjetivo.getDefensa()) <= 0)){
                 pokemonObjetivo.setVitalidad((pokemonObjetivo.getVitalidad()) -1);
             }
-            else pokemonObjetivo.setVitalidad((pokemonObjetivo.getVitalidad()) - damageCalc(pokemonCaster, pokemonCaster.getAtaque(), pokemonObjetivo.getDefensa()));
+            else pokemonObjetivo.setVitalidad((int) ((pokemonObjetivo.getVitalidad()) - (damageCalc(pokemonCaster, ataque, pokemonObjetivo.getDefensa())) * multEstado));
 
             System.out.println("Daño: " + estadistica/pokemonObjetivo.getDefensa() + "\n ------------------------------");
-        } else if (getTipoAtaque().toUpperCase().equals("ESPECIAL")) {
-            if ((damageCalc(pokemonCaster, pokemonCaster.getAtaqueEspecial(), pokemonObjetivo.getDefensaEspecial()) <= 0)){
+        }
+        else if (getTipoAtaque().toUpperCase().equals("ESPECIAL")) {
+            if ((damageCalc(pokemonCaster, ataqueEsp, pokemonObjetivo.getDefensaEspecial()) <= 0)){
                 pokemonObjetivo.setVitalidad((pokemonObjetivo.getVitalidad()) -1);
             }
-            else pokemonObjetivo.setVitalidad((pokemonObjetivo.getVitalidad()) - damageCalc(pokemonCaster, pokemonCaster.getAtaque(), pokemonObjetivo.getDefensa()));
+            else pokemonObjetivo.setVitalidad((pokemonObjetivo.getVitalidad()) - damageCalc(pokemonCaster, ataqueEsp, pokemonObjetivo.getDefensa()));
 
             System.out.println("Daño: " + estadistica/pokemonObjetivo.getDefensaEspecial() + "\n ------------------------------");
         }

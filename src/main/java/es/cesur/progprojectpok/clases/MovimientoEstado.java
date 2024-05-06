@@ -4,6 +4,9 @@ public class MovimientoEstado extends Movimiento{
     //Estudiar el cambiarlo a un Enum
     String estado;
     int duracionTurnos;
+    //HACERLO QUE NO VA A FUNCIONAR
+    EstPersitentesEnum estPersitentesEnum;
+    EstTemporalesEnum estTemporalesEnum;
 
     public MovimientoEstado(String nombre, int idMovimiento) {
         super(nombre, idMovimiento);
@@ -16,36 +19,87 @@ public class MovimientoEstado extends Movimiento{
     }
 
     public void aplicarEstado(Pokemon pokemon, String estado){
-        if (estadosPersitentesStringtoEnum(estado) != null){
+        if (estadosPersitentesStringtoEnum(estado) != null && pokemon.getEstadosPersistentes() == EstPersitentesEnum.SALUDABLE){
             switch (estadosPersitentesStringtoEnum(estado)){
-                case PARALIZADO, QUEMADO, ENVENENADO, GRAV_ENVENENADO, DORMIDO, CONGELADO, HELADO,
-                        SOMNOLIENTO, POKERUS, DEBILITADO, SALUDABLE
-                        -> pokemon.setEstadosPersistentes(estadosPersitentesStringtoEnum(estado));
+                case PARALIZADO, QUEMADO, ENVENENADO, GRAV_ENVENENADO, CONGELADO, HELADO,
+                        SOMNOLIENTO, POKERUS, DEBILITADO
+                        ->{
+                    pokemon.setEstadosPersistentes(estadosPersitentesStringtoEnum(estado));
+                    pokemon.setDuracionPersistente(duracionTurnos);
+                }
+                case DORMIDO -> {
+                    pokemon.setEstadosPersistentes(estadosPersitentesStringtoEnum(estado));
+                    pokemon.setDuracionPersistente((int) (Math.random()*3) + 1);
+                }
             }
         }
-        else if (estadosTemporalesStringtoEnum(estado) != null) {
+        else if (estadosTemporalesStringtoEnum(estado) != null && !pokemon.getEstTemporalesEnums().contains(estadosTemporalesStringtoEnum(estado))) {
             switch (estadosTemporalesStringtoEnum(estado)){
-                case CONFUSO, ENAMORADO, ATRAPADO, MALDITO, DRENADORAS, CANTO_MORTAL, CENTRO_ATENCION,
-                        AMEDRENTADO, NINGUNO
-                        -> pokemon.setEstadosTemporales(estadosTemporalesStringtoEnum(estado));
+                case ENAMORADO, ATRAPADO, MALDITO, DRENADORAS, CANTO_MORTAL,
+                        AMEDRENTADO -> pokemon.setEstTemporal(estadosTemporalesStringtoEnum(estado));
+                case CONFUSO -> {
+                    pokemon.setEstTemporal(estadosTemporalesStringtoEnum(estado));
+                    pokemon.setDuracionConfusion((int) (Math.random()*4) + 1);
+                }
             }
         }
     }
 
-    public static String estadosPersistentesEnumToString (EstadosPersitentes estadosPersitentes){
-        return estadosPersitentes.name();
+    public static void damageOverTime(Pokemon pokemon){
+
+        if(pokemon.getEstadosPersistentes() == EstPersitentesEnum.GRAV_ENVENENADO
+                || pokemon.getEstadosPersistentes() == EstPersitentesEnum.ENVENENADO
+                ||pokemon.getEstadosPersistentes() == EstPersitentesEnum.QUEMADO
+                && pokemon.getDuracionPersistente() > 0){
+
+            int dot = pokemon.getVitMax()/16;
+            if(pokemon.getEstadosPersistentes() == EstPersitentesEnum.GRAV_ENVENENADO){
+                dot = (pokemon.getVitMax()/16)*(6-pokemon.getDuracionPersistente());
+            }
+            if (dot <= 0) dot = 1;
+
+            pokemon.setVitalidad(pokemon.getVitalidad()-dot);
+            pokemon.setDuracionPersistente(pokemon.getDuracionPersistente()-1);
+
+            quitarEstado(pokemon);
+
+        }
+        if (pokemon.getEstTemporalesEnums().contains(EstTemporalesEnum.MALDITO)){
+            pokemon.setVitalidad(pokemon.getVitalidad()-(pokemon.getVitMax()/4));
+        }
+
     }
 
-    public static EstadosPersitentes estadosPersitentesStringtoEnum (String estadoPersistenteString){
-        return EstadosPersitentes.valueOf(estadoPersistenteString.toUpperCase());
+    public static void quitarEstado(Pokemon pokemon){
+        if (pokemon.getDuracionPersistente() == 0){
+            pokemon.setEstadosPersistentes(EstPersitentesEnum.SALUDABLE);
+        }
+
+        if (pokemon.getEstadosPersistentes() == EstPersitentesEnum.CONGELADO && (((int) (Math.random() * 5 + 1) == 1))) {
+            pokemon.setEstadosPersistentes(EstPersitentesEnum.SALUDABLE);
+        }
     }
 
-    public static String estadosTemporalesEnumToString (EstadosPersitentes estadosTemporales){
+    public static void quitarConfusion(Pokemon pokemon){
+        if (pokemon.getEstTemporalesEnums().contains(EstTemporalesEnum.CONFUSO) && pokemon.getDuracionConfusion() == 0 ){
+            pokemon.getEstTemporalesEnums().remove(EstTemporalesEnum.CONFUSO);
+        }
+    }
+
+    public static String estadosPersistentesEnumToString (EstPersitentesEnum estPersitentesEnum){
+        return estPersitentesEnum.name();
+    }
+
+    public static EstPersitentesEnum estadosPersitentesStringtoEnum (String estadoPersistenteString){
+        return EstPersitentesEnum.valueOf(estadoPersistenteString.toUpperCase());
+    }
+
+    public static String estadosTemporalesEnumToString (EstPersitentesEnum estadosTemporales){
         return estadosTemporales.name();
     }
 
-    public static EstadosTemporales estadosTemporalesStringtoEnum (String estadosTemporalesString){
-        return EstadosTemporales.valueOf(estadosTemporalesString.toUpperCase());
+    public static EstTemporalesEnum estadosTemporalesStringtoEnum (String estadosTemporalesString){
+        return EstTemporalesEnum.valueOf(estadosTemporalesString.toUpperCase());
     }
 
     public String getEstado() {

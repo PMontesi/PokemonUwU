@@ -1,5 +1,5 @@
 package es.cesur.progprojectpok.clases;
 
-public enum EstadosPersitentes {
+public enum EstPersitentesEnum {
     PARALIZADO, QUEMADO, ENVENENADO, GRAV_ENVENENADO, DORMIDO, CONGELADO, HELADO, SOMNOLIENTO, POKERUS, DEBILITADO, SALUDABLE
 }

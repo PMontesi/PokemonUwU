@@ -4,10 +4,6 @@ import es.cesur.progprojectpok.clases.*;
 import es.cesur.progprojectpok.database.DBConnection;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.application.Platform;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -189,7 +185,6 @@ public class CombateController implements Initializable {
                             resultSetPokemon.getString("TIPO1"),
                             resultSetPokemon.getString("TIPO2"),
                             resultSetPokemon.getString("ESTADO"),
-                            "Ninguno",
                             objetoNulo
                     );
                     pokemonUsuario.asignarMovimientos(pokemonUsuario.getId());
@@ -328,6 +323,8 @@ public class CombateController implements Initializable {
         paneMovimientos.setDisable(true);
         paneDescCombate.setVisible(true);
         int indice = 0;
+        checkBeforeTurn(usuario.getPokemon(pokemonUsuarioActivo));
+        checkBeforeTurn(rival.getPokemon(pokemonRivalActivo));
         combate.combatir(usuario.getPokemon(pokemonUsuarioActivo), indice, rival.getPokemon(pokemonRivalActivo), (int) (Math.random()*4));
 
         System.out.println(usuario.getPokemon(pokemonUsuarioActivo).getVitalidad());
@@ -344,6 +341,8 @@ public class CombateController implements Initializable {
         paneMovimientos.setDisable(true);
         paneDescCombate.setVisible(true);
         int indice = 1;
+        checkBeforeTurn(usuario.getPokemon(pokemonUsuarioActivo));
+        checkBeforeTurn(rival.getPokemon(pokemonRivalActivo));
         combate.setPrioridad(usuario.getPokemon(pokemonUsuarioActivo), rival.getPokemon(pokemonRivalActivo));
 
         combate.combatir(usuario.getPokemon(pokemonUsuarioActivo), indice, rival.getPokemon(pokemonRivalActivo), ((int) (Math.random()*4)));
@@ -367,6 +366,8 @@ public class CombateController implements Initializable {
         paneMovimientos.setDisable(true);
         paneDescCombate.setVisible(true);
         int indice = 2;
+        checkBeforeTurn(usuario.getPokemon(pokemonUsuarioActivo));
+        checkBeforeTurn(rival.getPokemon(pokemonRivalActivo));
         combate.combatir(usuario.getPokemon(pokemonUsuarioActivo), indice, rival.getPokemon(pokemonRivalActivo), (int) (Math.random()*4));
 
         progresoCombate();
@@ -379,6 +380,8 @@ public class CombateController implements Initializable {
         paneMovimientos.setDisable(true);
         paneDescCombate.setVisible(true);
         int indice = 3;
+        checkBeforeTurn(usuario.getPokemon(pokemonUsuarioActivo));
+        checkBeforeTurn(rival.getPokemon(pokemonRivalActivo));
         combate.combatir(usuario.getPokemon(pokemonUsuarioActivo), indice, rival.getPokemon(pokemonRivalActivo), (int) (Math.random()*4));
 
         progresoCombate();
@@ -397,11 +400,11 @@ public class CombateController implements Initializable {
 
         Timeline timeline = new Timeline(
                 new KeyFrame(Duration.seconds(2), event -> {
-                    checkCambios();
+                    checkAfterTurn(combate.getPrimerPoke());
                     textDescripCombate.setText(primeraAccion);
                 }),
                 new KeyFrame(Duration.seconds(4), event -> {
-                    checkCambios();
+                    checkAfterTurn(combate.getSegundoPoke());
                     textDescripCombate.setText(segundaAccion);
                 }),
                 new KeyFrame(Duration.seconds(6), event -> {
@@ -426,6 +429,7 @@ public class CombateController implements Initializable {
         timeline.play();
     }
 
+    //HAY QUE AÑADIR LA CONDICIÓN DE ATRAPADO PARA QUE NO DEJE CAMBIAR DE POKEMON
     public void cambiarPokemon(){
         System.out.println("Botón cambiar pulsado");
          pokemonUsuarioActivo = 1;
@@ -454,15 +458,36 @@ public class CombateController implements Initializable {
 
     }
 
-    public void checkCambios(){
-        if (usuario.getPokemon(pokemonUsuarioActivo).getEstadosPersistentes() == EstadosPersitentes.ENVENENADO){
-            int veneno = usuario.getPokemon(pokemonUsuarioActivo).getVitalidad()/16;
-            usuario.getPokemon(pokemonUsuarioActivo).setVitalidad(usuario.getPokemon(pokemonUsuarioActivo).getVitalidad() - veneno);
+    //ESTE MÉTODO TIENE QUE IR ANTES DEL MÉTODO COMBATIR DE CADA BOTÓN.
+    //NO TIENE QUE ACTUALIZAR LA INTERFAZ, ESO SE HARÁ O EN EL MÉTODO CHECKAFTER
+    //O HABRÁ QUE HACER UN MÉTODO DIFERENTE PARA ACRTUALIZAR INTERFAZ
+    public void checkBeforeTurn(Pokemon pokemon){
+        MovimientoEstado.quitarEstado(pokemon);
+        MovimientoEstado.quitarConfusion(pokemon);
+    }
+
+    public void checkAfterTurn(Pokemon pokemon){
+        if (pokemon.getEstadosPersistentes() == EstPersitentesEnum.ENVENENADO
+            || pokemon.getEstadosPersistentes() == EstPersitentesEnum.QUEMADO
+            || pokemon.getEstadosPersistentes() == EstPersitentesEnum.GRAV_ENVENENADO
+            || pokemon.getEstadosPersistentes() == EstPersitentesEnum.HELADO
+            || pokemon.getEstTemporalesEnums().contains(EstTemporalesEnum.MALDITO))
+        {
+            MovimientoEstado.damageOverTime(pokemon);
+        }
+
+        if (pokemon.getEstTemporalesEnums().contains(EstTemporalesEnum.CANTO_MORTAL)) pokemon.setDuracionCantoMortal(pokemon.getDuracionCantoMortal()-1);
+        if (pokemon.getDuracionCantoMortal() == 0) pokemon.setVitalidad(0);
+        pokemon.getEstTemporalesEnums().remove(EstTemporalesEnum.AMEDRENTADO);
+
+        if (pokemon.getPrioridad() == usuario.getPokemon(pokemonUsuarioActivo).getPrioridad()){
+            barVitJugador.setProgress(((double) usuario.getPokemon(pokemonUsuarioActivo).getVitalidad() /usuario.getPokemon(pokemonUsuarioActivo).getVitMax()));
+        }
+        else if (pokemon.getPrioridad() == rival.getPokemon(pokemonRivalActivo).getPrioridad()){
+            barVitRival.setProgress(((double) rival.getPokemon(pokemonRivalActivo).getVitalidad() /rival.getPokemon(pokemonRivalActivo).getVitMax()));
         }
 
 
-        double progreso1 = ((double) usuario.getPokemon(pokemonUsuarioActivo).getVitalidad() /usuario.getPokemon(pokemonUsuarioActivo).getVitMax());
-        barVitJugador.setProgress(progreso1);
-        barVitRival.setProgress(((double) rival.getPokemon(pokemonRivalActivo).getVitalidad() /rival.getPokemon(pokemonRivalActivo).getVitMax()));
+
     }
 }

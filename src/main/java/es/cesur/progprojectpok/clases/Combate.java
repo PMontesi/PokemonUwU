@@ -22,6 +22,7 @@ public class Combate {
 
     public void combatir (Pokemon pokemonA, int movimientoA, Pokemon pokemonB, int movimientoB){
         setPrioridad(pokemonA, pokemonB);
+
         if (pokemonA.getPrioridad() > pokemonB.getPrioridad()){
             if(checkStun(pokemonA)){
                 System.out.println("NO PUEDE ATACAR");
@@ -62,14 +63,28 @@ public class Combate {
             else pokemonA.usarMovimiento(movimientoA, pokemonB, pokemonB);
 
             setPrimerPoke(pokemonB);
-            setMovimientoUsadoPrimer(movimientoA);
+            setMovimientoUsadoPrimer(movimientoB);
             setSegundoPoke(pokemonA);
-            setMovimientoUsadoSegund(movimientoB);
+            setMovimientoUsadoSegund(movimientoA);
         }
     }
 
 
     public void setPrioridad (Pokemon pokemonA, Pokemon pokemonB){
+        int velPokeA = pokemonA.getVelocidad();
+        if (pokemonA.getEstadosPersistentes() == EstPersitentesEnum.PARALIZADO
+            || pokemonA.getEstadosPersistentes() == EstPersitentesEnum.DORMIDO){
+            velPokeA *= 0.5;
+        }
+        if (velPokeA <= 1) velPokeA = 1;
+
+        int velPokeB = pokemonB.getVelocidad();
+        if (pokemonB.getEstadosPersistentes() == EstPersitentesEnum.PARALIZADO
+            || pokemonB.getEstadosPersistentes() == EstPersitentesEnum.DORMIDO) {
+            velPokeB *= 0.5;
+        }
+        if (velPokeB <= 1) velPokeB = 1;
+
         if (pokemonA.getVelocidad() > pokemonB.getVelocidad()){
             pokemonA.setPrioridad(pokemonA.getPrioridad()+1);
         }
@@ -89,21 +104,26 @@ public class Combate {
 
     public boolean checkSelfCast(Pokemon pokemon, int movimiento){
         if (pokemon.getMovimiento(movimiento) instanceof MovimientoMejora) return true;
-        else if (pokemon.getEstadosTemporales() == EstadosTemporales.CONFUSO) return true;
+        else if (pokemon.getEstTemporalesEnums().contains(EstTemporalesEnum.CONFUSO) && (((int) (Math.random() * 3 + 1) == 1))) return true;
         //AMPLIAR CON MÁS POSIBLES AUTOESTADOS
         return false;
     }
 
     public boolean checkStun(Pokemon pokemon){
-        if (pokemon.getEstadosPersistentes() == EstadosPersitentes.DORMIDO
-                || pokemon.getEstadosPersistentes() == EstadosPersitentes.CONGELADO
-                || pokemon.getEstadosPersistentes() == EstadosPersitentes.PARALIZADO
-                || pokemon.getEstadosTemporales() == EstadosTemporales.AMEDRENTADO
-                || pokemon.getEstadosTemporales() == EstadosTemporales.ENAMORADO){
+        if (    pokemon.getEstadosPersistentes() != null
+                || pokemon.getEstTemporalesEnums() != null
+                || pokemon.getEstadosPersistentes() == EstPersitentesEnum.DORMIDO
+                || pokemon.getEstadosPersistentes() == EstPersitentesEnum.CONGELADO
+                || (pokemon.getEstadosPersistentes() == EstPersitentesEnum.PARALIZADO && (((int) (Math.random() * 4 + 1) != 1)))
+                || (pokemon.getEstadosPersistentes() == EstPersitentesEnum.SOMNOLIENTO && (((int) (Math.random() * 2 + 1) != 1)))
+                || (pokemon.getEstTemporalesEnums().contains(EstTemporalesEnum.ENAMORADO) && (((int) (Math.random() * 2 + 1) != 1)))
+                || pokemon.getEstTemporalesEnums().contains(EstTemporalesEnum.AMEDRENTADO))
+        {
             return true;
         }
 
-        return false:
+
+        return false;
     }
 
     //PROBABLMENTE HAYA QUE HACER UN CHECK PARA QUITAR OBJETIVOS O TURNOS O IO K SE
