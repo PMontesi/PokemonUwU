@@ -38,7 +38,7 @@
             <SepiaTone />
          </effect>
       </Button>
-      <Button fx:id="menuColeccion" layoutX="143.0" layoutY="328.0" mnemonicParsing="false" onAction="#abrirMenuColeccion" prefHeight="65.0" prefWidth="250.0" rotate="80.5" text="Colección" textAlignment="CENTER">
+      <Button fx:id="menuEquipo" layoutX="143.0" layoutY="328.0" mnemonicParsing="false" onAction="#abrirMenuEquipo" prefHeight="65.0" prefWidth="250.0" rotate="80.5" text="Equipo" textAlignment="CENTER">
          <font>
             <Font name="System Bold" size="22.0" />
          </font>

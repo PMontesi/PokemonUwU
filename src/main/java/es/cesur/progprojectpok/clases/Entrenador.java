@@ -23,6 +23,7 @@ public class Entrenador {
         this.nombreUsuario = nombreUsuario;
         this.pokedolares = pokedolares;
         this.idUsuario = idUsuario;
+        this.equipoPokemon = new Pokemon[6];
     }
 
     public Entrenador(String nombre, int longitudEquipo) {

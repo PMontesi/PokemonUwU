@@ -1,168 +1,179 @@
 package es.cesur.progprojectpok.controllers;
 
+import es.cesur.progprojectpok.clases.Entrenador;
+import es.cesur.progprojectpok.clases.Pokemon;
+import es.cesur.progprojectpok.database.DBConnection;
 import javafx.fxml.Initializable;
 
+import java.io.File;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 
 public class EquipoController implements Initializable {
 
-
     @FXML
-    private Label apodoPokEquip1;
-
-    @FXML
-    private Label apodoPokEquip2;
-
-    @FXML
-    private Label apodoPokEquip3;
-
-    @FXML
-    private Label apodoPokEquip4;
-
-    @FXML
-    private Label apodoPokEquip5;
-
-    @FXML
-    private Label apodoPokEquip6;
-
-    @FXML
-    private Button botonAtrasColeccion;
-
-    @FXML
-    private Pane colecimagenElemento1;
-
+    private Pane pane;
     @FXML
     private Pane colecpanePoke1;
-
     @FXML
-    private Pane colecpanePoke2;
-
+    private AnchorPane anchorPane;
     @FXML
-    private Pane colecpanePoke3;
-
-    @FXML
-    private Pane colecpanePoke4;
-
-    @FXML
-    private Pane colecpanePoke5;
-
-    @FXML
-    private Pane colecpanePoke6;
-
-    @FXML
-    private Pane imagenElemento2;
-
-    @FXML
-    private Pane imagenElemento3;
-
-    @FXML
-    private Pane imagenElemento4;
-
-    @FXML
-    private Pane imagenElemento5;
-
-    @FXML
-    private Pane imagenElemento6;
-
-    @FXML
-    private ImageView imgPokCaja1;
-
-    @FXML
-    private ImageView imgPokCaja2;
-
-    @FXML
-    private ImageView imgPokCaja3;
-
-    @FXML
-    private ImageView imgPokCaja4;
-
-    @FXML
-    private ImageView imgPokCaja5;
-
-    @FXML
-    private ImageView imgPokEquip1;
-
-    @FXML
-    private ImageView imgPokEquip2;
-
-    @FXML
-    private ImageView imgPokEquip3;
-
-    @FXML
-    private ImageView imgPokEquip4;
-
-    @FXML
-    private ImageView imgPokEquip5;
-
-    @FXML
-    private ImageView imgPokEquip6;
-
-    @FXML
-    private Label nivelPokEquipo1;
-
-    @FXML
-    private Label nivelPokEquipo2;
-
-    @FXML
-    private Label nivelPokEquipo3;
-
-    @FXML
-    private Label nivelPokEquipo4;
-
-    @FXML
-    private Label nivelPokEquipo5;
-
-    @FXML
-    private Label nivelPokEquipo6;
-
-    @FXML
-    private ProgressBar vitBarPokEquipo1;
-
-    @FXML
-    private ProgressBar vitBarPokEquipo2;
-
-    @FXML
-    private ProgressBar vitBarPokEquipo3;
-
-    @FXML
-    private ProgressBar vitBarPokEquipo4;
-
-    @FXML
-    private ProgressBar vitBarPokEquipo5;
-
-    @FXML
-    private ProgressBar vitBarPokEquipo6;
-
-    @FXML
-    private Label vitPokEquipo1;
-
-    @FXML
-    private Label vitPokEquipo2;
-
-    @FXML
-    private Label vitPokEquipo3;
-
-    @FXML
-    private Label vitPokEquipo4;
-
-    @FXML
-    private Label vitPokEquipo5;
-
-    @FXML
-    private Label vitPokEquipo6;
+    private ImageView pokemonPrueba;
 
 
+    private Entrenador usuario;
+    private Pokemon pokemon;
+
+    public void setUsuario(Entrenador usuario){
+        this.usuario = usuario;
+        mostrarEquipo();
+
+        File archivo = new File(usuario.getPokemon(0).getImagenUrl());
+        String rutaAbsoluta = archivo.getAbsolutePath();
+        if(System.getProperty("os.name").startsWith("Windows")){
+            rutaAbsoluta = rutaAbsoluta.replace("/", "\\");
+        }
+
+        Image imagenPokemonGenerado = new Image(rutaAbsoluta);
+        pokemonPrueba.setImage(imagenPokemonGenerado);
+
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+        /*
+        Pane pane = new Pane();
+        pane.setPrefSize(150, 50);
+        pane.setVisible(true);
+        pane.setStyle("-fx-accent: red;");
+        pane.setStyle("-fx-background-color: red;");
+        pane.toFront();
+
+
+        AnchorPane.setTopAnchor(pane, 100.0);
+        AnchorPane.setLeftAnchor(pane, 100.0);
+
+        anchorPane.getChildren().add(pane);
+
+         */
+
+
+
+
+
+    }
+
+    //TIENE QUE METER LAS IMAGENES Y DEMÁS DATOS DENTRO DE LOS PANE.
+    //QUIZÁ SE PUEDA AHORRAR ESTE PASO GUARDANDO EL EQUIPO POKEMON AL HACER LOGIN.
+    public void mostrarEquipo(){
+        System.out.println(usuario.getPokemon(0).toString());
+        pane = new Pane();
+        pane.setPrefSize(200, 50);
+        pane.setStyle("-fx-background-color: red;");
+
+        createPanel(pane, 0, -6, -6);
+
+
+
+
+        AnchorPane.setTopAnchor(pane, 300.0);
+        AnchorPane.setLeftAnchor(pane, 10.0);
+
+
+
+        anchorPane.getChildren().add(pane);
+
+        //for (int i = 0; i < usuario.getEquipoPokemon().length; i++) {
+        //
+        //}
+
+    }
+
+    //TIENE QUE METER LAS IMÁGENES Y DEMÁS EN EL GRID
+    public void mostrarCaja(){
+        String sqlCajaPokemon = "SELECT * FROM POKEMON_CAJA WHERE ID_ENTRENADOR = ?";
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement statementCajaPokemon = connection.prepareStatement(sqlCajaPokemon)){
+            statementCajaPokemon.setInt(1, usuario.getIdUsuario());
+            ResultSet resultSetEquipoPokemon = statementCajaPokemon.executeQuery();
+            while (resultSetEquipoPokemon.next()){
+                //Método para poner imágene y tal
+            }
+
+
+
+        }catch (SQLException e){
+
+        }
+    }
+
+    //QUIZÁ HAYA QUE PASARLE LA ID COMO PARÁMETRO??
+    public void cambiarPokemonCaja(){
+        String sqlCambioCaja = "MODIFY VIEW POKEMON_EQUIPO SET CAJA = 1 WHERE ID_POKEMON = ?";
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement statementCambioCaja = connection.prepareStatement(sqlCambioCaja)){
+            statementCambioCaja.setInt(1, usuario.getPokemon(1).getId());
+            statementCambioCaja.executeUpdate();
+
+
+
+
+        }catch (SQLException e){
+
+        }
+    }
+
+    public void cambiarPokemonEquipo(){
+        String sqlCambioCaja = "MODIFY VIEW POKEMON_CAJA SET CAJA = 0 WHERE ID_POKEMON = ?";
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement statementCambioCaja = connection.prepareStatement(sqlCambioCaja)){
+            statementCambioCaja.setInt(1, usuario.getPokemon(1).getId());
+            statementCambioCaja.executeUpdate();
+
+
+
+
+        }catch (SQLException e){
+
+        }
+    }
+
+
+    //AMPLIAR MÉTODO PARA RECREAR CADA PANE CON SUS MOVIDAS
+    public void createPanel(Pane pane, int indicePokemon, double x, double y){
+        File archivo = new File(usuario.getPokemon(0).getImagenUrl());
+        String rutaAbsoluta = archivo.getAbsolutePath();
+        if(System.getProperty("os.name").startsWith("Windows")){
+            rutaAbsoluta = rutaAbsoluta.replace("/", "\\");
+        }
+
+        Image imagenPokemonGenerado = new Image(rutaAbsoluta);
+        ImageView imageView = new ImageView(imagenPokemonGenerado);
+
+        Label labelNom = new Label(usuario.getPokemon(0).getMote());
+
+        imageView.setLayoutX(x);
+        imageView.setLayoutY(y);
+        imageView.setFitWidth(62);
+        imageView.setFitHeight(68);
+
+        labelNom.setLayoutX(46);
+        labelNom.setLayoutY(3);
+
+        pane.getChildren().addAll(imageView, labelNom);
     }
 }

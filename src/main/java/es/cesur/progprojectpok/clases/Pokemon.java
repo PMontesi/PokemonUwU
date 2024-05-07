@@ -745,29 +745,37 @@ public class Pokemon {
     }
 
     //TO STRING
+
     @Override
     public String toString() {
         return "Pokemon{" +
                 "nombre='" + nombre + '\'' +
                 ", mote='" + mote + '\'' +
                 ", vitalidad=" + vitalidad +
+                ", vitMax=" + vitMax +
                 ", ataque=" + ataque +
                 ", defensa=" + defensa +
                 ", ataqueEspecial=" + ataqueEspecial +
                 ", defensaEspecial=" + defensaEspecial +
                 ", velocidad=" + velocidad +
+                ", prioridad=" + prioridad +
                 ", nivel=" + nivel +
                 ", experiencia=" + experiencia +
                 ", sexo=" + sexo +
                 ", fertilidad=" + fertilidad +
                 ", numPokedex=" + numPokedex +
                 ", id=" + id +
+                ", imagenUrl='" + imagenUrl + '\'' +
                 ", tipo1=" + tipo1 +
                 ", tipo2=" + tipo2 +
                 ", MOVIMIENTOS=" + Arrays.toString(MOVIMIENTOS) +
                 ", estadosPersistentes=" + estadosPersistentes +
-                ", estadosTemporales=" + estTemporalesEnums +
+                ", duracionPersistente=" + duracionPersistente +
+                ", estTemporalesEnums=" + estTemporalesEnums +
+                ", duracionConfusion=" + duracionConfusion +
+                ", duracionCantoMortal=" + duracionCantoMortal +
                 ", objetoEquipado=" + objetoEquipado +
+                ", random=" + random +
                 '}';
     }
 }

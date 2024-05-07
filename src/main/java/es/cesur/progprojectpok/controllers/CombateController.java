@@ -432,7 +432,7 @@ public class CombateController implements Initializable {
     //HAY QUE AÑADIR LA CONDICIÓN DE ATRAPADO PARA QUE NO DEJE CAMBIAR DE POKEMON
     public void cambiarPokemon(){
         System.out.println("Botón cambiar pulsado");
-         pokemonUsuarioActivo = 1;
+        pokemonUsuarioActivo = 1;
         textNomPokeJug.setText(usuario.getPokemon(pokemonUsuarioActivo).getMote());
         textNivPokJug.setText("Nv." + usuario.getPokemon(pokemonUsuarioActivo).getNivel());
         barVitJugador.setProgress((double) usuario.getPokemon(pokemonUsuarioActivo).getVitalidad() /usuario.getPokemon(pokemonUsuarioActivo).getVitMax());

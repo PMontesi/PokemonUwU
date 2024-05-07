@@ -2,6 +2,8 @@ package es.cesur.progprojectpok.controllers;
 
 import es.cesur.progprojectpok.SplashApplication;
 import es.cesur.progprojectpok.clases.Entrenador;
+import es.cesur.progprojectpok.clases.Objeto;
+import es.cesur.progprojectpok.clases.Pokemon;
 import es.cesur.progprojectpok.database.DBConnection;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -36,6 +38,7 @@ public class LoginController implements Initializable {
     private Button loginEntrar;
     @FXML
     private Button loginSalir;
+    private Entrenador usuario;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -54,7 +57,7 @@ public class LoginController implements Initializable {
             statement.setString(2, pass);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                Entrenador usuario = new Entrenador(
+                usuario = new Entrenador(
                         resultSet.getString("NOM_ENTRENADOR"),
                         resultSet.getInt("POKEDOLLARS"),
                         resultSet.getInt("ID_ENTRENADOR")
@@ -63,6 +66,7 @@ public class LoginController implements Initializable {
                 usuario.setPokedolares(usuario.getPokedolares());
                 usuario.setIdUsuario(usuario.getIdUsuario());
                 usuario.setNombreUsuario(usuario.getNombreUsuario());
+                cargarEquipo();
 
 
                 System.out.println(usuario.getIdUsuario());
@@ -131,6 +135,49 @@ public class LoginController implements Initializable {
     public void salirPrograma (){
         Stage stage = (Stage) loginSalir.getScene().getWindow();
         stage.close();
+    }
+
+
+    public void cargarEquipo(){
+        String sqlEquipoPokemon = "SELECT * FROM POKEMON_EQUIPO WHERE ID_ENTRENADOR = ?";
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement statementEquipoPokemon = connection.prepareStatement(sqlEquipoPokemon)){
+            statementEquipoPokemon.setInt(1, usuario.getIdUsuario());
+            ResultSet resultSetEquipoPokemon = statementEquipoPokemon.executeQuery();
+            int indice = 0;
+
+            while (resultSetEquipoPokemon.next()){
+                //int idObjeto = resultSetEquipoPokemon.getInt("ID_OBJETO");
+                Objeto objetoNulo = new Objeto();
+
+
+                Pokemon pokemonUsuario = new Pokemon(
+                        resultSetEquipoPokemon.getString("MOTE"),
+                        resultSetEquipoPokemon.getInt("VITALIDAD"),
+                        resultSetEquipoPokemon.getInt("VIT_MAX"),
+                        resultSetEquipoPokemon.getInt("ATAQUE"),
+                        resultSetEquipoPokemon.getInt("DEFENSA"),
+                        resultSetEquipoPokemon.getInt("AT_ESPECIAL"),
+                        resultSetEquipoPokemon.getInt("DEF_ESPECIAL"),
+                        resultSetEquipoPokemon.getInt("VELOCIDAD"),
+                        resultSetEquipoPokemon.getInt("NIVEL"),
+                        resultSetEquipoPokemon.getInt("EXPERIENCIA"),
+                        resultSetEquipoPokemon.getInt("NUM_POKEDEX"),
+                        resultSetEquipoPokemon.getInt("ID_POKEMON"),
+                        resultSetEquipoPokemon.getString("IMAGEN_DETRAS"),
+                        resultSetEquipoPokemon.getString("TIPO1"),
+                        resultSetEquipoPokemon.getString("TIPO2"),
+                        resultSetEquipoPokemon.getString("ESTADO"),
+                        objetoNulo
+                );
+                pokemonUsuario.asignarMovimientos(pokemonUsuario.getId());
+                usuario.setPokemon(pokemonUsuario, indice);
+                indice++;
+            }
+
+        }catch (SQLException e){
+
+        }
     }
 
 
