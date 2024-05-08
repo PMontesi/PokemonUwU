@@ -2,6 +2,7 @@ package es.cesur.progprojectpok.clases;
 
 import es.cesur.progprojectpok.database.DBConnection;
 
+import java.io.File;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -536,6 +537,15 @@ public class Pokemon {
                 else return -3;
             }
         }
+    }
+
+    public static String imgRutaAbsouta(String url){
+        File archivo = new File(url);
+        String rutaAbsoluta = archivo.getAbsolutePath();
+        if(System.getProperty("os.name").startsWith("Windows")){
+            rutaAbsoluta = rutaAbsoluta.replace("/", "\\");
+        }
+        return rutaAbsoluta;
     }
 
 

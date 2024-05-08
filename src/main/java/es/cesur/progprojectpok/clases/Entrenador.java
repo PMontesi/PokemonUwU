@@ -2,10 +2,7 @@ package es.cesur.progprojectpok.clases;
 
 import es.cesur.progprojectpok.database.DBConnection;
 
-import java.sql.Array;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Arrays;
 
 public class Entrenador {
@@ -38,7 +35,9 @@ public class Entrenador {
 
     //MÉTODOS
     public void capturarPokemon(Pokemon pokemon){
+        int equipoOrCaja = 0;
         System.out.println("Método invocado con éxito");
+
         String sqlInsertPokemonCap = "INSERT INTO POKEMON " +
                 "(NUM_POKEDEX, ID_ENTRENADOR, MOTE, CAJA, ATAQUE, AT_ESPECIAL, DEFENSA, DEF_ESPECIAL, VELOCIDAD, NIVEL, " +
                 "FERTILIDAD, SEXO, ESTADO, EXPERIENCIA, VITALIDAD, VIT_MAX) " +
@@ -47,10 +46,8 @@ public class Entrenador {
             PreparedStatement statementPokemonCapturado = connection.prepareStatement(sqlInsertPokemonCap)){
             statementPokemonCapturado.setInt(1, pokemon.getNumPokedex());
             statementPokemonCapturado.setInt(2, getIdUsuario());
-            //Añadir algo para cuando no se le quiera poner un mote al pokemon
             statementPokemonCapturado.setString(3, pokemon.getMote());
-            //Añadir algo para cuando el equipo pokemon está lleno
-            statementPokemonCapturado.setInt(4, 0);
+            statementPokemonCapturado.setInt(4, equipOrCaja(pokemon));
             statementPokemonCapturado.setInt(5, pokemon.getAtaque());
             statementPokemonCapturado.setInt(6, pokemon.getAtaqueEspecial());
             statementPokemonCapturado.setInt(7, pokemon.getDefensa());
@@ -65,13 +62,27 @@ public class Entrenador {
             statementPokemonCapturado.setInt(16, pokemon.getVitalidad());
             statementPokemonCapturado.executeUpdate();
 
-
             statementPokemonCapturado.close();
             connection.close();
 
         } catch(SQLException e){
             e.printStackTrace();
         }
+    }
+
+    /*
+    Método para enviar el pokemon al equipo o a la caja.
+    Si el equipo tiene espacio, el pokemon se inserta en el array y devuelve 0 para insertarlo en la BBDD.
+    Si el equipo no tiene espacio, el pokemon no se inserta en el array y devuelve 1 para insertarlo en la BBDD.
+     */
+    public int equipOrCaja(Pokemon pokemon){
+        for (int i = 0; i < equipoPokemon.length; i++) {
+            if (getPokemon(i) == null){
+                setPokemon(pokemon, i);
+                return 0;
+            }
+        }
+        return 1;
     }
 
     public void setPokemon(Pokemon pokemon, int indice){

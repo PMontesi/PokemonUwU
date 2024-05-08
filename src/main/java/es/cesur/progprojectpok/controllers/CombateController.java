@@ -155,6 +155,7 @@ public class CombateController implements Initializable {
             //System.out.println(usuario.toString());
 
             //EXTRACCIÓN DEL EQUIPO DEL USUARIO
+            //QUIZÁ HAYA QUE BORRARLO
             String sqlSelectPokemon = "SELECT * FROM POKEMON_EQUIPO WHERE ID_ENTRENADOR = ?;";
             PreparedStatement statementSelectPokemon = connection.prepareStatement(sqlSelectPokemon);
             statementSelectPokemon.setInt(1, usuario.getIdUsuario());
