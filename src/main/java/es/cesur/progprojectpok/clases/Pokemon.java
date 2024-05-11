@@ -26,7 +26,8 @@ public class Pokemon {
     private int fertilidad;
     private int numPokedex;
     private int id;
-    private String imagenUrl;
+    private String imagenUrlDetras;
+    private String imagenUrlDelante;
     private static final int VALOR_INICIAL_FERT = 5;
     private Tipos tipo1;
     private Tipos tipo2;
@@ -60,8 +61,8 @@ public class Pokemon {
 
     //Constructor para el combate pokemon. Principalmente para los pokemons del usuario.
     public Pokemon(String mote, int vitalidad, int vitMax, int ataque, int defensa, int ataqueEspecial, int defensaEspecial,
-                   int velocidad, int nivel, int experiencia, int numPokedex, int id, String imagenUrl, String tipo1, String tipo2,
-                   String estadosPersistentes, Objeto objetoEquipado) {
+                   int velocidad, int nivel, int experiencia, int numPokedex, int id, String imagenUrlDetras, String imagenUrlDelante,
+                   String tipo1, String tipo2, String estadosPersistentes, Objeto objetoEquipado) {
         this.mote = mote;
         this.vitalidad = vitalidad;
         this.vitMax = vitMax;
@@ -74,7 +75,8 @@ public class Pokemon {
         this.experiencia = experiencia;
         this.numPokedex = numPokedex;
         this.id = id;
-        this.imagenUrl = imagenUrl;
+        this.imagenUrlDetras = imagenUrlDetras;
+        this.imagenUrlDelante = imagenUrlDelante;
         this.tipo1 = Pokemon.TipoStringToEnum(tipo1);
         this.tipo2 = Pokemon.TipoStringToEnum(tipo2);
         this.estadosPersistentes = MovimientoEstado.estadosPersitentesStringtoEnum(estadosPersistentes);
@@ -84,7 +86,7 @@ public class Pokemon {
 
     //Constructor para pokemons que no estén en la BBDD para usar en combate.
     //Por ahora solo para la vista combate (probablemente también para la de entrenamiento)
-    public Pokemon(String nombre, int mediaNivel, int numPokedex, String imagenUrl, String tipo1, String tipo2, Objeto objetoEquipado) {
+    public Pokemon(String nombre, int mediaNivel, int numPokedex, String imagenUrlDelante, String tipo1, String tipo2, Objeto objetoEquipado) {
         this.nombre = nombre;
         this.mote = nombre;
         this.nivel = mediaNivel + nivelAleatorio();
@@ -98,7 +100,7 @@ public class Pokemon {
         this.vitMax = this.vitalidad;
         this.sexo = randomSex();
         this.numPokedex = numPokedex;
-        this.imagenUrl = imagenUrl;
+        this.imagenUrlDetras = imagenUrlDelante;
         this.tipo1 = Pokemon.TipoStringToEnum(tipo1);
         this.tipo2 = Pokemon.TipoStringToEnum(tipo2);
         this.estadosPersistentes = EstPersitentesEnum.SALUDABLE;
@@ -654,12 +656,20 @@ public class Pokemon {
         this.sexo = sexo;
     }
 
-    public String getImagenUrl() {
-        return imagenUrl;
+    public String getImagenUrlDetras() {
+        return imagenUrlDetras;
     }
 
-    public void setImagenUrl(String imagenUrl) {
-        this.imagenUrl = imagenUrl;
+    public void setImagenUrlDetras(String imagenUrlDetras) {
+        this.imagenUrlDetras = imagenUrlDetras;
+    }
+
+    public String getImagenUrlDelante() {
+        return imagenUrlDelante;
+    }
+
+    public void setImagenUrlDelante(String imagenUrlDelante) {
+        this.imagenUrlDelante = imagenUrlDelante;
     }
 
     public int getFertilidad() {
@@ -775,7 +785,7 @@ public class Pokemon {
                 ", fertilidad=" + fertilidad +
                 ", numPokedex=" + numPokedex +
                 ", id=" + id +
-                ", imagenUrl='" + imagenUrl + '\'' +
+                ", imagenUrl='" + imagenUrlDetras + '\'' +
                 ", tipo1=" + tipo1 +
                 ", tipo2=" + tipo2 +
                 ", MOVIMIENTOS=" + Arrays.toString(MOVIMIENTOS) +

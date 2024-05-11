@@ -183,6 +183,7 @@ public class CombateController implements Initializable {
                             resultSetPokemon.getInt("NUM_POKEDEX"),
                             resultSetPokemon.getInt("ID_POKEMON"),
                             resultSetPokemon.getString("IMAGEN_DETRAS"),
+                            resultSetPokemon.getString("IMAGEN_DELANTE"),
                             resultSetPokemon.getString("TIPO1"),
                             resultSetPokemon.getString("TIPO2"),
                             resultSetPokemon.getString("ESTADO"),
@@ -219,7 +220,7 @@ public class CombateController implements Initializable {
             System.out.println(usuario.getPokemon(pokemonUsuarioActivo).getMovimiento(3).getNombre());
 
             //SUSTITUCIÓN DE IMAGEN
-            File archivo = new File(usuario.getPokemon(0).getImagenUrl());
+            File archivo = new File(usuario.getPokemon(0).getImagenUrlDetras());
             String rutaAbsoluta = archivo.getAbsolutePath();
             if(System.getProperty("os.name").startsWith("Windows")){
                 rutaAbsoluta = rutaAbsoluta.replace("/", "\\");
@@ -285,7 +286,7 @@ public class CombateController implements Initializable {
             barVitJugador.setStyle("-fx-accent: green;");
 
             //Sustitución imagen
-            File archivo2 = new File(rival.getPokemon(0).getImagenUrl());
+            File archivo2 = new File(rival.getPokemon(0).getImagenUrlDetras());
             String rutaAbsoluta2 = archivo2.getAbsolutePath();
             if(System.getProperty("os.name").startsWith("Windows")){
                 rutaAbsoluta = rutaAbsoluta.replace("/", "\\");
@@ -446,7 +447,7 @@ public class CombateController implements Initializable {
 
 
         //SUSTITUCIÓN DE IMAGEN
-        File archivo = new File(usuario.getPokemon(pokemonUsuarioActivo).getImagenUrl());
+        File archivo = new File(usuario.getPokemon(pokemonUsuarioActivo).getImagenUrlDetras());
         String rutaAbsoluta = archivo.getAbsolutePath();
         if(System.getProperty("os.name").startsWith("Windows")){
             rutaAbsoluta = rutaAbsoluta.replace("/", "\\");

@@ -165,6 +165,7 @@ public class LoginController implements Initializable {
                         resultSetEquipoPokemon.getInt("NUM_POKEDEX"),
                         resultSetEquipoPokemon.getInt("ID_POKEMON"),
                         resultSetEquipoPokemon.getString("IMAGEN_DETRAS"),
+                        resultSetEquipoPokemon.getString("IMAGEN_DELANTE"),
                         resultSetEquipoPokemon.getString("TIPO1"),
                         resultSetEquipoPokemon.getString("TIPO2"),
                         resultSetEquipoPokemon.getString("ESTADO"),
@@ -174,6 +175,9 @@ public class LoginController implements Initializable {
                 usuario.setPokemon(pokemonUsuario, indice);
                 indice++;
             }
+            resultSetEquipoPokemon.close();
+            statementEquipoPokemon.close();
+            connection.close();
 
         }catch (SQLException e){
 
