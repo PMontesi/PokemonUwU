@@ -37,7 +37,7 @@ public class MovimientoEstado extends Movimiento{
             switch (estadosTemporalesStringtoEnum(estado)){
                 case ENAMORADO, ATRAPADO, MALDITO, DRENADORAS, CANTO_MORTAL,
                         AMEDRENTADO -> pokemon.setEstTemporal(estadosTemporalesStringtoEnum(estado));
-                case CONFUSO -> {
+                case CONFUSION -> {
                     pokemon.setEstTemporal(estadosTemporalesStringtoEnum(estado));
                     pokemon.setDuracionConfusion((int) (Math.random()*4) + 1);
                 }
@@ -81,8 +81,8 @@ public class MovimientoEstado extends Movimiento{
     }
 
     public static void quitarConfusion(Pokemon pokemon){
-        if (pokemon.getEstTemporalesEnums().contains(EstTemporalesEnum.CONFUSO) && pokemon.getDuracionConfusion() == 0 ){
-            pokemon.getEstTemporalesEnums().remove(EstTemporalesEnum.CONFUSO);
+        if (pokemon.getEstTemporalesEnums().contains(EstTemporalesEnum.CONFUSION) && pokemon.getDuracionConfusion() == 0 ){
+            pokemon.getEstTemporalesEnums().remove(EstTemporalesEnum.CONFUSION);
         }
     }
 
@@ -91,7 +91,11 @@ public class MovimientoEstado extends Movimiento{
     }
 
     public static EstPersitentesEnum estadosPersitentesStringtoEnum (String estadoPersistenteString){
-        return EstPersitentesEnum.valueOf(estadoPersistenteString.toUpperCase());
+        try {
+            return EstPersitentesEnum.valueOf(estadoPersistenteString.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
     }
 
     public static String estadosTemporalesEnumToString (EstPersitentesEnum estadosTemporales){
@@ -99,7 +103,12 @@ public class MovimientoEstado extends Movimiento{
     }
 
     public static EstTemporalesEnum estadosTemporalesStringtoEnum (String estadosTemporalesString){
-        return EstTemporalesEnum.valueOf(estadosTemporalesString.toUpperCase());
+        try{
+            return EstTemporalesEnum.valueOf(estadosTemporalesString.toUpperCase());
+        }catch (IllegalArgumentException e){
+            return null;
+        }
+
     }
 
     public String getEstado() {

@@ -87,7 +87,6 @@ public class Entrenador {
 
     public void setPokemon(Pokemon pokemon, int indice){
         equipoPokemon[indice] = pokemon;
-        //System.out.println("Insertado pokemon " + indice + ": " + pokemon.toString());
     }
     public Pokemon getPokemon(int indice){
         return equipoPokemon[indice];

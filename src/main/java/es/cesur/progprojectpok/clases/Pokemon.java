@@ -124,7 +124,7 @@ public class Pokemon {
             case "AGUA" -> Tipos.AGUA;
             case "BICHO" -> Tipos.BICHO;
             case "DRAGÓN" -> Tipos.DRAGON;
-            case "ELÉCTRICO" -> Tipos.ELECTRICO;
+            case "ELECTRICO" -> Tipos.ELECTRICO;
             case "FANTAMAS" -> Tipos.FANTASMA;
             case "FUEGO" -> Tipos.FUEGO;
             case "HIELO" -> Tipos.HIELO;
@@ -148,7 +148,7 @@ public class Pokemon {
             case AGUA -> "AGUA";
             case BICHO -> "BICHO";
             case DRAGON -> "DRAGÓN";
-            case ELECTRICO -> "ELÉCTRICO";
+            case ELECTRICO -> "ELECTRICO";
             case FANTASMA -> "FANTASMA";
             case FUEGO -> "FUEGO";
             case HIELO -> "HIELO";
@@ -164,126 +164,78 @@ public class Pokemon {
         };
     }
 
-    public void subirNivel(){
-        while (experiencia == nivel*10){
-            try{Connection connection = DBConnection.getConnection();
+    public boolean subirNivel(){
+                int nuevoAT = ((int) ((Math.random()*5 + 1)));
+                int nuevoATESP = ((int) ((Math.random()*5 + 1)));
+                int nuevoDEF = ((int) ((Math.random()*5 + 1)));
+                int nuevoDEFESP = ((int) ((Math.random()*5 + 1)));
+                int nuevoVEL = ((int) ((Math.random()*5 + 1)));
+                int nuevoVITMAX = ((int) ((Math.random()*5 + 1)));
+                int nuevaExp = getExperiencia() - nivel*10;
 
-                String sqlRecuperarStats = "SELECT * FROM POKEMON WHERE ID_POKEMON = ?";
-                PreparedStatement statementRecuperarStats = connection.prepareStatement(sqlRecuperarStats);
-                statementRecuperarStats.setInt(1, getId());
-                ResultSet resultSetRecuperarStats = statementRecuperarStats.executeQuery();
-                setAtaque(resultSetRecuperarStats.getInt("ATAQUE"));
-                setAtaqueEspecial(resultSetRecuperarStats.getInt("AT_ESPECIAL"));
-                setDefensa(resultSetRecuperarStats.getInt("DEFENSA"));
-                setDefensaEspecial(resultSetRecuperarStats.getInt("DEF_ESPECIAL"));
-                setVelocidad(resultSetRecuperarStats.getInt("VELOCIDAD"));
-                setVitalidad(resultSetRecuperarStats.getInt("VITALIDAD"));
+                setAtaque(getAtaque() + nuevoAT);
+                setAtaqueEspecial(getAtaqueEspecial() + nuevoATESP);
+                setDefensa(getDefensa() + nuevoDEF);
+                setDefensaEspecial(getDefensaEspecial() + nuevoDEFESP);
+                setVelocidad(getVelocidad() + nuevoVEL);
+                setVitMax(getVitMax() + nuevoVITMAX);
+                setVitalidad(getVitalidad() + nuevoVITMAX);
+                setExperiencia(nuevaExp);
+                setNivel(getNivel()+1);
 
-                String sqlSubirNivel = "UPDATE POKEMON\n" +
-                        "SET \n" +
-                        "\tATAQUE = ?, \n" +
-                        "    AT_ESPECIAL = ?, \n" +
-                        "    DEFENSA = ?, \n" +
-                        "    DEF_ESPECIAL = ?,\n" +
-                        "    VELOCIDAD = ?\n" +
-                        "    VITALIDAD = ?,\n" +
-                        "    EXPERIENCIA = ?,\n" +
-                        "    NIVEL= ?\n" +
-                        "WHERE ID_POKEMON = ?";
+            String sqlSubirNivel = "UPDATE POKEMON\n" +
+                    "SET \n" +
+                    "    ATAQUE = ATAQUE + ?, \n" +
+                    "    AT_ESPECIAL = AT_ESPECIAL + ?, \n" +
+                    "    DEFENSA = DEFENSA + ?, \n" +
+                    "    DEF_ESPECIAL = DEF_ESPECIAL + ?, \n" +
+                    "    VELOCIDAD = VELOCIDAD + ?,\n" +
+                    "    VIT_MAX = VIT_MAX + ?, \n" +
+                    "    EXPERIENCIA = ?, \n" +
+                    "    NIVEL = NIVEL + 1 \n" +
+                    "WHERE ID_POKEMON = ?";
 
+            try{
+                Connection connection = DBConnection.getConnection();
                 PreparedStatement statementSubirNivel = connection.prepareStatement(sqlSubirNivel);
-                statementSubirNivel.setInt(1, getAtaque() + ((int) ((Math.random()*5 + 1))));
-                statementSubirNivel.setInt(2, getAtaqueEspecial() + ((int) ((Math.random()*5 + 1))));
-                statementSubirNivel.setInt(3, getDefensa() + ((int) ((Math.random()*5 + 1))));
-                statementSubirNivel.setInt(4, getDefensaEspecial() + ((int) ((Math.random()*5 + 1))));
-                statementSubirNivel.setInt(5, getVelocidad() + ((int) ((Math.random()*5 + 1))));
-                statementSubirNivel.setInt(6, getVitalidad() + ((int) ((Math.random()*5 + 1))));
-                statementSubirNivel.setInt(7, getExperiencia() - nivel*10);
-                statementSubirNivel.setInt(8, getNivel()+1);
-                statementSubirNivel.setInt(9, getId());
+                statementSubirNivel.setInt(1, nuevoAT);
+                statementSubirNivel.setInt(2, nuevoATESP);
+                statementSubirNivel.setInt(3, nuevoDEF);
+                statementSubirNivel.setInt(4, nuevoDEFESP);
+                statementSubirNivel.setInt(5, nuevoVEL);
+                statementSubirNivel.setInt(6, nuevoVITMAX);
+                statementSubirNivel.setInt(7, nuevaExp);
+                statementSubirNivel.setInt(8, getId());
                 statementSubirNivel.executeUpdate();
 
             } catch(SQLException e){
                 e.printStackTrace();
             }
-            setExperiencia(getExperiencia() - nivel*10);
-            setNivel(getNivel()+1);
-            if(nivel % 4 == 0){
-                //YA VEREMOS CÓMO HACEMOS LA MOVIDA DE APRENDER MOVIMIENTOS CUANDO SE SUBA DE NIVEL.
-                //ESTO EN VERDAD HAY QUE MOVERLO AL COMBATE Y ENTRENAMIENTO CONTROLLER.
-            }
-        }
+        System.out.println("HA SUBIDO AL NIVEL: " + getNivel());
+
+        return nivel % 4 == 0;
     }
 
     //SI NO FUNCIONA ES POR LAS PUÑETERAS TILDES.
     /*
-    Es posible que haya que divir este método en 2:
-    -Uno para saber qué movimiento se va a aprender. Este movimiento debería devoler una instancia de Movimiento
-    -Otro para aprenderlo en caos de quererlo, lo que implica que sea un onAction del botón de aceptar.
 
-    Haría falta un tercer método que iría conjuntamente al segundo para olvidar un movimiento.
+    Selecciona un movimiento aleatorio de la base de datos que el pokemon pueda aprender y no conozca ya.
+    Un movimiento es aprendible por un pokemon según el tipo del pokemon y del nivel que tenga.
+    Los movimientos de tipo NORMAL son aprendibles por todos los pokemons.
+
+    Una vez que se ha aprendido el movimiento, según si es un movimiento de Ataque, Mejora o Estado, se usará un constructor
+    diferente.
 
      */
     public Movimiento selecionarMovimientoDB(){
 
-        String sqlMovimiento = "";
         Movimiento movimiento = null;
+
         try{
             Connection connection = DBConnection.getConnection();
-
-            //SABER QUÉ MOVIMIENTO SE VA A APRENDER
             PreparedStatement statementMovimiento = null;
-            if(getTipo1() == Tipos.NORMAL && getTipo2() == Tipos.NULL){
-                sqlMovimiento = "SELECT * FROM MOVIMIENTOS \n" +
-                        "WHERE NIVEL_APRENDIZAJE <= ? \n" +
-                        "AND TIPO = 'NORMAL'\n" +
-                        "AND NOT EXISTS (\n" +
-                        "    SELECT *\n" +
-                        "    FROM MOVIMIENTOS_POKEMON MP\n" +
-                        "    WHERE MP.ID_MOVIMIENTO = MP.ID_MOVIMIENTO AND\n" +
-                        "    MP.ID_POKEMON = ?\n" +
-                        ")\n" +
-                        "ORDER BY RAND() LIMIT 1";
-                statementMovimiento = connection.prepareStatement(sqlMovimiento);
-                statementMovimiento.setInt(1, getNivel());
-                statementMovimiento.setInt(2, getId());
-            }
-            else if(getTipo1() == Tipos.NORMAL && getTipo2() != Tipos.NULL){
-                sqlMovimiento = "SELECT * FROM MOVIMIENTOS \n" +
-                        "WHERE NIVEL_APRENDIZAJE <= ? \n" +
-                        "AND TIPO = 'NORMAL'\n" +
-                        "OR TIPO = ?\n" +
-                        "AND NOT EXISTS (\n" +
-                        "    SELECT *\n" +
-                        "    FROM MOVIMIENTOS_POKEMON MP\n" +
-                        "    WHERE MP.ID_MOVIMIENTO = MP.ID_MOVIMIENTO AND\n" +
-                        "    MP.ID_POKEMON = ?\n" +
-                        ")\n" +
-                        "ORDER BY RAND() LIMIT 1";
-                statementMovimiento = connection.prepareStatement(sqlMovimiento);
-                statementMovimiento.setInt(1, getNivel());
-                statementMovimiento.setString(2, TipoEnumToString(getTipo2()));
-                statementMovimiento.setInt(3, getId());
-            }
-            else if(getTipo1() != Tipos.NORMAL && getTipo2() == Tipos.NULL){
-                sqlMovimiento = "SELECT * FROM MOVIMIENTOS \n" +
-                        "WHERE NIVEL_APRENDIZAJE <= ? \n" +
-                        "AND TIPO = 'NORMAL'\n" +
-                        "OR TIPO = ?\n" +
-                        "AND NOT EXISTS (\n" +
-                        "    SELECT *\n" +
-                        "    FROM MOVIMIENTOS_POKEMON MP\n" +
-                        "    WHERE MP.ID_MOVIMIENTO = MP.ID_MOVIMIENTO AND\n" +
-                        "    MP.ID_POKEMON = ?\n" +
-                        ")\n" +
-                        "ORDER BY RAND() LIMIT 1";
-                statementMovimiento = connection.prepareStatement(sqlMovimiento);
-                statementMovimiento.setInt(1, getNivel());
-                statementMovimiento.setString(2, TipoEnumToString(getTipo1()));
-                statementMovimiento.setInt(3, getId());
-            }
-            else if(getTipo1() != Tipos.NORMAL && getTipo2() != Tipos.NULL){
-                sqlMovimiento = "SELECT * FROM MOVIMIENTOS \n" +
+
+                String sqlMovimiento = "SELECT * FROM MOVIMIENTOS M \n" +
                         "WHERE NIVEL_APRENDIZAJE <= ? \n" +
                         "AND TIPO = 'NORMAL'\n" +
                         "OR TIPO = ?\n" +
@@ -291,7 +243,7 @@ public class Pokemon {
                         "AND NOT EXISTS (\n" +
                         "    SELECT *\n" +
                         "    FROM MOVIMIENTOS_POKEMON MP\n" +
-                        "    WHERE MP.ID_MOVIMIENTO = MP.ID_MOVIMIENTO AND\n" +
+                        "    WHERE MP.ID_MOVIMIENTO = M.ID_MOVIMIENTO AND\n" +
                         "    MP.ID_POKEMON = ?\n" +
                         ")\n" +
                         "ORDER BY RAND() LIMIT 1";
@@ -300,7 +252,6 @@ public class Pokemon {
                 statementMovimiento.setString(2, TipoEnumToString(getTipo1()));
                 statementMovimiento.setString(3, TipoEnumToString(getTipo2()));
                 statementMovimiento.setInt(4, getId());
-            }
 
             ResultSet resultSetMovimiento = statementMovimiento.executeQuery();
             while (resultSetMovimiento.next()){
@@ -308,36 +259,31 @@ public class Pokemon {
                     movimiento = new MovimientoAtaque(
                             resultSetMovimiento.getString("NOM_MOVIMIENTO"),
                             resultSetMovimiento.getInt("PP_MAX"),
-                            resultSetMovimiento.getInt("PP_REST"),
+                            resultSetMovimiento.getInt("PP_MAX"),
                             TipoStringToEnum(resultSetMovimiento.getString("TIPO")),
                             0,
                             resultSetMovimiento.getInt("POTENCIA"),
                             resultSetMovimiento.getString("TIPO_DAÑO"),
                             resultSetMovimiento.getInt("ID_MOVIMIENTO")
                     );
-                    System.out.println("SE HIZO UN MOVIMIENTO DE ATAQUE");
-                    System.out.println(movimiento.toString());
                 }
                 else if(resultSetMovimiento.getString("ESTADO") != null){
                     movimiento = new MovimientoEstado(
                             resultSetMovimiento.getString("NOM_MOVIMIENTO"),
                             resultSetMovimiento.getInt("PP_MAX"),
-                            resultSetMovimiento.getInt("PP_REST"),
+                            resultSetMovimiento.getInt("PP_MAX"),
                             TipoStringToEnum(resultSetMovimiento.getString("TIPO")),
                             0,
                             resultSetMovimiento.getString("ESTADO"),
                             resultSetMovimiento.getInt("TURNOS"),
                             resultSetMovimiento.getInt("ID_MOVIMIENTO")
-
                     );
-                    System.out.println("SE HIZO UN MOVIMIENTO DE ESTADO");
-                    System.out.println(movimiento.toString());
                 }
                 else if(resultSetMovimiento.getString("MEJORA") != null){
                     movimiento = new MovimientoMejora(
                             resultSetMovimiento.getString("NOM_MOVIMIENTO"),
                             resultSetMovimiento.getInt("PP_MAX"),
-                            resultSetMovimiento.getInt("PP_REST"),
+                            resultSetMovimiento.getInt("PP_MAX"),
                             TipoStringToEnum(resultSetMovimiento.getString("TIPO")),
                             0,
                             resultSetMovimiento.getInt("TURNOS"),
@@ -345,8 +291,6 @@ public class Pokemon {
                             resultSetMovimiento.getInt("CANT_MEJORA"),
                             resultSetMovimiento.getInt("ID_MOVIMIENTO")
                     );
-                    System.out.println("SE HIZO UN MOVIMIENTO DE MEJORA");
-                    System.out.println(movimiento.toString());
                 }
             }
             System.out.println(movimiento.toString());
@@ -362,14 +306,35 @@ public class Pokemon {
         return movimiento;
     }
 
+    /*
+    Método para que los pokemons del entrenador aprendan movimientos.
+
+    Primero asigna el movimiento al hueco vacío del array.
+    Segundo actualiza la base de datos, insertando la ID en la tabla correspondiente
+    y poniendo el valor de la columna ACTIVO en 1.
+
+     */
     public void aprenderMovimiento(Movimiento movimiento){
-        String sqlAprender = "INSERT INTO MOVIMIENTOS_POKEMON (ID_MOVIMIENTO, ID_POKEMON, ACTIVO) VALUES (?, ?, 1)";
+        String sqlAprender = ("INSERT INTO MOVIMIENTOS_POKEMON (ID_MOVIMIENTO, ID_POKEMON, ACTIVO) VALUES (?, ?, ?)");
+        int aprender = 0;
+
+        for (int i = 0; i < MOVIMIENTOS.length; i++) {
+            if (MOVIMIENTOS[i] == null) {
+                MOVIMIENTOS[i] = movimiento;
+                aprender = 1;
+                break;
+            }
+        }
+
         try{
             Connection connection = DBConnection.getConnection();
-            PreparedStatement statementAprender = connection.prepareStatement(sqlAprender);
+            PreparedStatement statementAprender = connection.prepareStatement(sqlAprender.toString());
             statementAprender.setInt(1, movimiento.getIdMovimiento());
             statementAprender.setInt(2, getId());
+            statementAprender.setInt(3, aprender);
             statementAprender.executeUpdate();
+            statementAprender.close();
+            connection.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -378,30 +343,39 @@ public class Pokemon {
     //Filtra los movimientos para llamar el método correspondiente, según el tipo de movimiento.
     public void usarMovimiento(int indice, Pokemon pokemonObjetivo, Pokemon pokemonCaster){
         System.out.println(MOVIMIENTOS[indice].getNombre() + " USADO SOBRE " + pokemonObjetivo.getMote());
-        if (MOVIMIENTOS[indice] instanceof MovimientoAtaque){
-            if((((MovimientoAtaque) MOVIMIENTOS[indice]).getTipoAtaque().equalsIgnoreCase("FISICO"))){
-                ((MovimientoAtaque) MOVIMIENTOS[indice]).aplicarDamage(pokemonObjetivo, getAtaque(), pokemonCaster);
+        try{
+            if (MOVIMIENTOS[indice] instanceof MovimientoAtaque){
+                if((((MovimientoAtaque) MOVIMIENTOS[indice]).getTipoAtaque().equalsIgnoreCase("FISICO"))){
+                    ((MovimientoAtaque) MOVIMIENTOS[indice]).aplicarDamage(pokemonObjetivo, getAtaque(), pokemonCaster);
+                }
+                else if ((((MovimientoAtaque) MOVIMIENTOS[indice]).getTipoAtaque().equalsIgnoreCase("ESPECIAL"))){
+                    ((MovimientoAtaque) MOVIMIENTOS[indice]).aplicarDamage(pokemonObjetivo, getAtaqueEspecial(), pokemonCaster);
+                }
             }
-            else if ((((MovimientoAtaque) MOVIMIENTOS[indice]).getTipoAtaque().equalsIgnoreCase("ESPECIAL"))){
-                ((MovimientoAtaque) MOVIMIENTOS[indice]).aplicarDamage(pokemonObjetivo, getAtaqueEspecial(), pokemonCaster);
+            else if (MOVIMIENTOS[indice] instanceof MovimientoMejora){
+                ((MovimientoMejora) MOVIMIENTOS[indice]).mejoraAplica(pokemonCaster);
             }
+            else if (MOVIMIENTOS[indice] instanceof MovimientoEstado){
+                ((MovimientoEstado) MOVIMIENTOS[indice]).aplicarEstado(pokemonCaster, ((MovimientoEstado) MOVIMIENTOS[indice]).getEstado());
+            }
+        }catch (ArrayIndexOutOfBoundsException e){
+            System.out.println("EL POKIMON NO PUDO PEGAR");
         }
-        else if (MOVIMIENTOS[indice] instanceof MovimientoMejora){
-            ((MovimientoMejora) MOVIMIENTOS[indice]).mejoraAplica(pokemonObjetivo);
-        }
-        else if (MOVIMIENTOS[indice] instanceof MovimientoEstado){
-            ((MovimientoEstado) MOVIMIENTOS[indice]).aplicarEstado(pokemonObjetivo, ((MovimientoEstado) MOVIMIENTOS[indice]).getEstado());
-        }
+
     }
 
-    //Asigna los movimientos que los pokemons saben.
-    //Actualmente no distingue entre los que tienen equipados y los que no.
+    /*
+
+    Asigna los movimientos que los Pokemons ya conocen a su array de movimientos.
+
+     */
     public void asignarMovimientos (int pokemonId){
-        String sqlMovimiento = "SELECT M.* \n" +
+        String sqlMovimiento = "SELECT M.*, MD.PP_REST \n" +
                 "FROM MOVIMIENTOS M\n" +
                 "INNER JOIN MOVIMIENTOS_POKEMON MD ON MD.ID_MOVIMIENTO = M.ID_MOVIMIENTO\n" +
                 "INNER JOIN POKEMON P ON P.ID_POKEMON = MD.ID_POKEMON\n" +
-                "WHERE P.ID_POKEMON = ?";
+                "WHERE P.ID_POKEMON = ?\n" +
+                "AND MD.ACTIVO = 1;";
         Movimiento movimiento = null;
         int i = 0;
         try{
@@ -421,8 +395,7 @@ public class Pokemon {
                             resultSetMovimiento.getString("TIPO_DAÑO"),
                             resultSetMovimiento.getInt("ID_MOVIMIENTO")
                     );
-                    System.out.println("SE HIZO UN MOVIMIENTO DE ATAQUE");
-                    System.out.println(movimiento.toString());
+
                 }
                 else if(resultSetMovimiento.getString("ESTADO") != null){
                     movimiento = new MovimientoEstado(
@@ -436,8 +409,7 @@ public class Pokemon {
                             resultSetMovimiento.getInt("ID_MOVIMIENTO")
 
                     );
-                    System.out.println("SE HIZO UN MOVIMIENTO DE ESTADO");
-                    System.out.println(movimiento.toString());
+
                 }
                 else if(resultSetMovimiento.getString("MEJORA") != null){
                     movimiento = new MovimientoMejora(
@@ -451,12 +423,10 @@ public class Pokemon {
                             resultSetMovimiento.getInt("CANT_MEJORA"),
                             resultSetMovimiento.getInt("ID_MOVIMIENTO")
                     );
-                    System.out.println("SE HIZO UN MOVIMIENTO DE MEJORA");
-                    System.out.println(movimiento.toString());
+
                 }
 
                 MOVIMIENTOS[i] = movimiento;
-                System.out.println(MOVIMIENTOS[i].getNombre() + "Insertado en la posición " + i);
                 i++;
             }
 
@@ -470,14 +440,39 @@ public class Pokemon {
 
     }
 
-    //HAY QUE AÑADIR LA LÓGICA DE LA BASE DE DATOS
-    public void olvidarMovimiento(int indice){
-        MOVIMIENTOS[indice] = null;
+
+
+    /*
+
+    Cambia la columna ACTIVO del movimiento a 0 en la BBDD y lo borra del array.
+
+     */
+    public void olvidarMovimiento(int indiceMovimiento){
+        String sqlOlvidarMovimiento = "UPDATE MOVIMIENTOS_POKEMON SET ACTIVO = 0 WHERE ID_POKEMON = ? AND ID_MOVIMIENTO = ?";
+        try(Connection connection = DBConnection.getConnection();
+            PreparedStatement statementOlvidarMovimiento = connection.prepareStatement(sqlOlvidarMovimiento)){
+            statementOlvidarMovimiento.setInt(1, getId());
+            statementOlvidarMovimiento.setInt(2, getMovimiento(indiceMovimiento).getIdMovimiento());
+            statementOlvidarMovimiento.executeUpdate();
+
+            statementOlvidarMovimiento.close();
+            connection.close();
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+
+        MOVIMIENTOS[indiceMovimiento] = null;
     }
 
-    //Añade un movimiento aleatorio al array de 4 movimientos del pokemon.
-    //Si el pokemon ya conoce ese movimiento, se repite el proceso.
-    //Solo para pokemons generados aleatoriamente.
+    /*
+
+     Añade un movimiento aleatorio al array de 4 movimientos del pokemon.
+     Si el pokemon ya conoce ese movimiento, se repite el proceso.
+
+     Principalmente para pokemons generados aleatoriamente.
+
+     */
     public void setMovimiento(int indice){
         Movimiento nuevoMov;
         boolean repetirProceso = true;
@@ -509,7 +504,11 @@ public class Pokemon {
         }
     }
     public Movimiento getMovimiento(int indice){
-        return MOVIMIENTOS[indice];
+        try{
+            return MOVIMIENTOS[indice];
+        }catch (ArrayIndexOutOfBoundsException e){
+            return new Movimiento("nada", 0, 0, Tipos.NULL, 0,  0 );
+        }
     }
 
     //Método para generar aleatoriamente las estadísticas si se crea un pokemon directamente con un nivel mayor a 1 y

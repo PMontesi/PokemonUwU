@@ -32,9 +32,8 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.concurrent.CountDownLatch;
 
-public class CombateController implements Initializable {
+public class EntrenamientoController implements Initializable {
 
     @FXML
     private AnchorPane anchorEquipo;
@@ -73,6 +72,12 @@ public class CombateController implements Initializable {
     private Button botonSI;
 
     @FXML
+    private Button botonSeguir;
+
+    @FXML
+    private Button botonVolver;
+
+    @FXML
     private Rectangle cuadradoEstadoJug;
 
     @FXML
@@ -94,7 +99,11 @@ public class CombateController implements Initializable {
     private Pane panePokeJugador;
 
     @FXML
+    private Pane paneSeguirSalir;
+
+    @FXML
     private ImageView pokemonJugador;
+
     @FXML
     private ImageView pokemonRival;
 
@@ -119,7 +128,7 @@ public class CombateController implements Initializable {
     private Entrenador usuario;
     private Entrenador rival;
     private int pokemonUsuarioActivo = 0;
-    private int pokemonRivalActivo = 0;
+    private int mediaNivel;
     private int numeroCombate;
     private Turno turno;
     private Map<String, PaneData> paneMap;
@@ -130,6 +139,7 @@ public class CombateController implements Initializable {
 
     public void setUsuario(Entrenador usuario){
         this.usuario = usuario;
+        cargarEquipoEntrenamiento();
         empezarCombate();
     }
 
@@ -147,26 +157,29 @@ public class CombateController implements Initializable {
     Para el rival, el tamaño del equipo será igual al del usuario. Los pokemons se generarán aleatoriamente cada
     uno con un nivel +-3 de la media del nivel del equipo del usuario.
      */
-
-    public void empezarCombate(){
-        combate = new Combate(usuario, rival);
-        turno = new Turno(1, 0, "a", "a");
-
+    public void cargarEquipoEntrenamiento(){
         int sumatorioNivel = 0;
         int longitudEquipoUser = 0;
 
         for (Pokemon pokemon : usuario.getEquipoPokemon()){
             if (pokemon != null){
-                    sumatorioNivel += pokemon.getNivel();
-                    longitudEquipoUser++;
-                }
+                sumatorioNivel += pokemon.getNivel();
+                longitudEquipoUser++;
             }
-        int mediaNivel = sumatorioNivel / longitudEquipoUser;
+        }
+        mediaNivel = sumatorioNivel / longitudEquipoUser;
 
-            setPokeUsuario(pokemonUsuarioActivo);
+        setPokeUsuario(pokemonUsuarioActivo);
+    }
 
+    public void empezarCombate(){
+        paneSeguirSalir.setVisible(false);
+        paneSeguirSalir.setDisable(true);
+        combate = new Combate(usuario, rival);
+        combate.setKoRival(5);
+        turno = new Turno(1, 0, "a", "a");
 
-            //GENERAR EL EQUIPO DEL RIVAL.
+            //GENERA AL POKEMON RIVAL.
 
             //EL RIVAL SIEMPRE TENDRÁ UN EQUIPO DEL MISMO TAMAÑO QUE EL RIVAL
             rival = new Entrenador("El Rival", usuario.getEquipoPokemon().length);
@@ -175,7 +188,7 @@ public class CombateController implements Initializable {
             //BUCLE PARA METER A LOS POKEMONS EN AL ARRAY DEL EQUIPO RIVAL
         try{
         Connection connection = DBConnection.getConnection();
-        for (int i = 0; i < longitudEquipoUser; i++) {
+
                 PreparedStatement statementSelectPokemonRival = connection.prepareStatement(sqlSelectPokemonRival);
                 ResultSet resultSetPokemonRival =  statementSelectPokemonRival.executeQuery();
 
@@ -199,16 +212,16 @@ public class CombateController implements Initializable {
                         pokemonRival.setMovimiento(j);
                     }
 
-                    rival.setPokemon(pokemonRival, i);
+                    rival.setPokemon(pokemonRival, 0);
 
                 }
                 resultSetPokemonRival.close();
                 statementSelectPokemonRival.close();
-            }
+
 
             connection.close();
 
-            setImagenPokeRival(pokemonRivalActivo);
+            setImagenPokeRival(0);
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -225,13 +238,13 @@ public class CombateController implements Initializable {
     }
 
     public void setImagenPokeRival(int pokemonRivalActivo){
-        textNomPokeRiv.setText(rival.getPokemon(pokemonRivalActivo).getMote());
-        textNivPokRiv.setText("Nv." + rival.getPokemon(pokemonRivalActivo).getNivel());
-        barVitRival.setProgress(((double) rival.getPokemon(pokemonRivalActivo).getVitalidad() /rival.getPokemon(pokemonRivalActivo).getVitMax()));
+        textNomPokeRiv.setText(rival.getPokemon(0).getMote());
+        textNivPokRiv.setText("Nv." + rival.getPokemon(0).getNivel());
+        barVitRival.setProgress(((double) rival.getPokemon(0).getVitalidad() /rival.getPokemon(0).getVitMax()));
         barVitJugador.setStyle("-fx-accent: green;");
 
         //Sustitución imagen
-        File archivo2 = new File(rival.getPokemon(pokemonRivalActivo).getImagenUrlDetras());
+        File archivo2 = new File(rival.getPokemon(0).getImagenUrlDetras());
         String rutaAbsoluta2 = archivo2.getAbsolutePath();
         if(System.getProperty("os.name").startsWith("Windows")){
             rutaAbsoluta2 = rutaAbsoluta2.replace("/", "\\");
@@ -239,7 +252,7 @@ public class CombateController implements Initializable {
 
         Image imagenPokemonGenerado2 = new Image(rutaAbsoluta2);
         pokemonRival.setImage(imagenPokemonGenerado2);
-        System.out.println(rival.getPokemon(pokemonRivalActivo));
+        System.out.println(rival.getPokemon(0));
     }
 
 
@@ -285,8 +298,8 @@ public class CombateController implements Initializable {
             paneDescCombate.setVisible(true);
 
             checkBeforeTurn(usuario.getPokemon(pokemonUsuarioActivo));
-            checkBeforeTurn(rival.getPokemon(pokemonRivalActivo));
-            combate.combatir(usuario.getPokemon(pokemonUsuarioActivo), indice, rival.getPokemon(pokemonRivalActivo), (int) (Math.random()*4));
+            checkBeforeTurn(rival.getPokemon(0));
+            combate.combatir(usuario.getPokemon(pokemonUsuarioActivo), indice, rival.getPokemon(0), (int) (Math.random()*4));
 
             progresoCombate();
 
@@ -393,30 +406,29 @@ public class CombateController implements Initializable {
                             }
                         }
 
-                        if (rival.getPokemon(pokemonRivalActivo).getVitalidad() <= 0){
-                            combate.recibirExperiencia(usuario.getPokemon(pokemonUsuarioActivo), rival.getPokemon(pokemonRivalActivo));
-                            pokemonRivalActivo++;
+                        if (rival.getPokemon(0).getVitalidad() <= 0){
+                            combate.recibirExperiencia(usuario.getPokemon(pokemonUsuarioActivo), rival.getPokemon(0));
                             combate.setKoRival(combate.getKoRival()+1);
-                            if (combate.getKoRival() !=6 ){
-                                setImagenPokeRival(pokemonRivalActivo);
-                            }
+
                         }
 
                     if (combate.determinarGanador() != null){
                         if (combate.determinarGanador() == usuario){
-                            combate.entregarPokedolares(1, rival);
+                            paneSeguirSalir.setDisable(false);
+                            paneSeguirSalir.setVisible(true);
+
                         } else if (combate.determinarGanador() == rival) {
-                            combate.entregarPokedolares(-1, rival);
+                            combate.restaurarEquipo();
+                            volverMenu();
                         }
-                        combate.restaurarEquipo();
-                        volverMenu();
+
                     }
 
                     System.out.println("Timeline 3");
 
                     System.out.println(combate.getTurnos().toString());
                     System.out.println("Vida usuario: " + usuario.getPokemon(pokemonUsuarioActivo).getVitalidad() + "/" + usuario.getPokemon(pokemonUsuarioActivo).getVitMax());
-                    System.out.println("Vida rival: " + rival.getPokemon(pokemonRivalActivo).getVitalidad() + "/" + rival.getPokemon(pokemonRivalActivo).getVitMax());
+                    System.out.println("Vida rival: " + rival.getPokemon(0).getVitalidad() + "/" + rival.getPokemon(0).getVitMax());
 
                     if(!aprendiendoMovimiento){
                         paneDescCombate.setVisible(false);
@@ -506,16 +518,16 @@ public class CombateController implements Initializable {
 
         if (pokemon.getPrioridad() == usuario.getPokemon(pokemonUsuarioActivo).getPrioridad()){
 
-            barVitRival.setProgress(((double) rival.getPokemon(pokemonRivalActivo).getVitalidad() / rival.getPokemon(pokemonRivalActivo).getVitMax()));
-            if (rival.getPokemon(pokemonRivalActivo).getVitalidad() <= 0) {
-                rival.getPokemon(pokemonRivalActivo).setVitalidad(0);
+            barVitRival.setProgress(((double) rival.getPokemon(0).getVitalidad() / rival.getPokemon(0).getVitMax()));
+            if (rival.getPokemon(0).getVitalidad() <= 0) {
+                rival.getPokemon(0).setVitalidad(0);
                 barVitRival.setProgress(0);
             }
 
-            System.out.println("Estado persistente rival: " + rival.getPokemon(pokemonRivalActivo).getEstadosPersistentes());
-            System.out.println("Estado temporal rival: " + rival.getPokemon(pokemonRivalActivo).getEstTemporalesEnums().toString());
+            System.out.println("Estado persistente rival: " + rival.getPokemon(0).getEstadosPersistentes());
+            System.out.println("Estado temporal rival: " + rival.getPokemon(0).getEstTemporalesEnums().toString());
         }
-        else if (pokemon.getPrioridad() == rival.getPokemon(pokemonRivalActivo).getPrioridad()){
+        else if (pokemon.getPrioridad() == rival.getPokemon(0).getPrioridad()){
 
             barVitJugador.setProgress(((double) usuario.getPokemon(pokemonUsuarioActivo).getVitalidad() / usuario.getPokemon(pokemonUsuarioActivo).getVitMax()));
             if (usuario.getPokemon(pokemonUsuarioActivo).getVitalidad() <= 0){
@@ -629,7 +641,7 @@ public class CombateController implements Initializable {
     }
 
     public void pulsarHuir(){
-        combate.entregarPokedolares(-1, rival);
+        combate.restaurarEquipo();
         volverMenu();
     }
     public void volverMenu() {

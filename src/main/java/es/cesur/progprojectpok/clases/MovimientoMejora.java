@@ -19,10 +19,7 @@ public class MovimientoMejora extends Movimiento{
     //Esto quizá haya que hacerlo por cada movimiento.
     public void mejoraAplica(Pokemon pokemonObjetivo){
         switch (getEstadistica()){
-            case "ATAQUE" -> {
-                pokemonObjetivo.setAtaque(pokemonObjetivo.getAtaque()*(1+getCantidadMejora()/100));
-                System.out.println("ATAQUE:" + pokemonObjetivo.getAtaque() + "\n ------------------------------");
-            }
+            case "ATAQUE" -> pokemonObjetivo.setAtaque(pokemonObjetivo.getAtaque()*(1+getCantidadMejora()/100));
             case "DEFENSA" -> pokemonObjetivo.setDefensa(pokemonObjetivo.getDefensa()*(1+getCantidadMejora()/100));
             case "AT_ESP" -> pokemonObjetivo.setAtaqueEspecial(pokemonObjetivo.getAtaqueEspecial()*(1+getCantidadMejora()/100));
             case "DEF_ESP" -> pokemonObjetivo.setDefensaEspecial(pokemonObjetivo.getDefensaEspecial()*(1+getCantidadMejora()/100));

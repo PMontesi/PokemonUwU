@@ -64,19 +64,16 @@ public class MainMenuController implements Initializable {
         Stage stage = (Stage) menuEntrenamiento.getScene().getWindow();
         stage.close();
 
-        //NO EXISTE LA VISTA. POR AHORA LLEVA AL mainMenu
-        FXMLLoader fxmlLoader = new FXMLLoader(SplashApplication.class.getResource("view/mainMenu-view.fxml"));
 
-        /*
-        Para pasarle el usuario
+        FXMLLoader fxmlLoader = new FXMLLoader(SplashApplication.class.getResource("view/entrenamiento-view.fxml"));
 
-        EntrenamientoController entrenamientoController = fxmlLoader.getController();
-        entrenamientoController.setUsuario(usuario);
 
-         */
+
         Scene scene = null;
         try {
             scene = new Scene(fxmlLoader.load(), 800, 480);
+            EntrenamientoController entrenamientoController = fxmlLoader.getController();
+            entrenamientoController.setUsuario(usuario);
             stage.setTitle("Menu");
             stage.setScene(scene);
             stage.show();

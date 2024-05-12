@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="es.cesur.progprojectpok.controllers.CombateController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="es.cesur.progprojectpok.controllers.EntrenamientoController">
    <children>
       <ImageView fitHeight="480.0" fitWidth="800.0">
          <image>
@@ -45,11 +45,6 @@
             <Button fx:id="botonMovi4" layoutX="165.0" layoutY="44.0" mnemonicParsing="false" onAction="#usarMovi4" prefHeight="37.0" prefWidth="109.0" text="OPCION 4" />
          </children>
       </Pane>
-      <ImageView fitHeight="100.0" fitWidth="300.0" layoutX="227.0" layoutY="-5.0">
-         <image>
-            <Image url="@../images/Combatetext.png" />
-         </image>
-      </ImageView>
       <Pane fx:id="panePokeEnemigo" layoutX="126.0" layoutY="95.0" prefHeight="67.0" prefWidth="295.0" style="-fx-background-color: #000000;">
          <children>
             <Text fx:id="textNomPokeRiv" fill="WHITE" layoutX="11.0" layoutY="24.0" strokeType="OUTSIDE" strokeWidth="0.0" text="NOMBRE POKEMON RIVAL" wrappingWidth="240.0">
@@ -112,5 +107,21 @@
       <AnchorPane fx:id="anchorEquipo" disable="true" layoutX="437.0" layoutY="62.0" prefHeight="390.0" prefWidth="295.0" style="-fx-background-color: white;" visible="false" />
       <Button fx:id="botonSI" disable="true" layoutX="377.0" layoutY="216.0" mnemonicParsing="false" onAction="#presionSi" text="Si" visible="false" />
       <Button fx:id="botonNo" disable="true" layoutX="413.0" layoutY="216.0" mnemonicParsing="false" onAction="#presionNo" text="No" visible="false" />
+      <Text layoutX="195.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ENTRENAMIENTO">
+         <font>
+            <Font size="49.0" />
+         </font>
+      </Text>
+      <Pane fx:id="paneSeguirSalir" disable="true" layoutX="214.0" layoutY="171.0" prefHeight="116.0" prefWidth="327.0" style="-fx-background-color: white;" visible="false">
+         <children>
+            <Button fx:id="botonSeguir" layoutX="24.0" layoutY="63.0" mnemonicParsing="false" onAction="#empezarCombate" prefHeight="33.0" prefWidth="115.0" text="Seguir Entrenando" />
+            <Button fx:id="botonVolver" layoutX="191.0" layoutY="63.0" mnemonicParsing="false" onAction="#volverMenu" prefHeight="33.0" prefWidth="109.0" text="Volver al menú" />
+            <Text layoutX="6.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="¿Quieres seguir entrenando?">
+               <font>
+                  <Font size="25.0" />
+               </font>
+            </Text>
+         </children>
+      </Pane>
    </children>
 </AnchorPane>

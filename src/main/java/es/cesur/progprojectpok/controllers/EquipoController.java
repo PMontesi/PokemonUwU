@@ -118,7 +118,6 @@ public class EquipoController implements Initializable {
     }
 
     public void cargarEquipo() {
-        System.out.println(usuario.getPokemon(0).toString());
 
         double x = 35;
         double y = 98;

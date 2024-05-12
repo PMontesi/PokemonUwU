@@ -1,5 +1,11 @@
 package es.cesur.progprojectpok.clases;
 
+import es.cesur.progprojectpok.database.DBConnection;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class Combate {
@@ -26,41 +32,31 @@ public class Combate {
         if (pokemonA.getPrioridad() > pokemonB.getPrioridad()){
             if(checkStun(pokemonA)){
                 System.out.println("NO PUEDE ATACAR");
+                movimientoA = 5;
             }
-            else if(checkSelfCast(pokemonA, movimientoA)){
-                pokemonA.usarMovimiento(movimientoA, pokemonA, pokemonA);
-            }
-            else pokemonA.usarMovimiento(movimientoA, pokemonB, pokemonA);
 
             if(checkStun(pokemonB)){
                 System.out.println("NO PUEDE ATACAR");
+                movimientoB = 5;
             }
-            else if(checkSelfCast(pokemonB, movimientoB)){
-                pokemonB.usarMovimiento(movimientoB, pokemonB, pokemonB);
-            }
-            else pokemonB.usarMovimiento(movimientoB, pokemonA, pokemonB);
 
             setPrimerPoke(pokemonA);
             setMovimientoUsadoPrimer(movimientoA);
             setSegundoPoke(pokemonB);
             setMovimientoUsadoSegund(movimientoB);
         }
+
         else if (pokemonA.getPrioridad() < pokemonB.getPrioridad()) {
             if(checkStun(pokemonA)){
                 System.out.println("NO PUEDE ATACAR");
+                movimientoA = 5;
             }
-            else if(checkSelfCast(pokemonB, movimientoB)){
-                pokemonB.usarMovimiento(movimientoB, pokemonB, pokemonB);
-            }
-            else pokemonB.usarMovimiento(movimientoB, pokemonA, pokemonB);
 
             if(checkStun(pokemonB)){
                 System.out.println("NO PUEDE ATACAR");
+                movimientoB = 5;
             }
-            else if(checkSelfCast(pokemonA, movimientoA)){
-                pokemonA.usarMovimiento(movimientoA, pokemonA, pokemonB);
-            }
-            else pokemonA.usarMovimiento(movimientoA, pokemonB, pokemonB);
+
 
             setPrimerPoke(pokemonB);
             setMovimientoUsadoPrimer(movimientoB);
@@ -102,17 +98,18 @@ public class Combate {
         }
     }
 
+    /*
     public boolean checkSelfCast(Pokemon pokemon, int movimiento){
         if (pokemon.getMovimiento(movimiento) instanceof MovimientoMejora) return true;
-        else if (pokemon.getEstTemporalesEnums().contains(EstTemporalesEnum.CONFUSO) && (((int) (Math.random() * 3 + 1) == 1))) return true;
+        else if (pokemon.getEstTemporalesEnums().contains(EstTemporalesEnum.CONFUSION) && (((int) (Math.random() * 3 + 1) == 1))) return true;
         //AMPLIAR CON MÁS POSIBLES AUTOESTADOS
         return false;
     }
 
+     */
+
     public boolean checkStun(Pokemon pokemon){
-        if (    pokemon.getEstadosPersistentes() != null
-                || pokemon.getEstTemporalesEnums() != null
-                || pokemon.getEstadosPersistentes() == EstPersitentesEnum.DORMIDO
+        if (    pokemon.getEstadosPersistentes() == EstPersitentesEnum.DORMIDO
                 || pokemon.getEstadosPersistentes() == EstPersitentesEnum.CONGELADO
                 || (pokemon.getEstadosPersistentes() == EstPersitentesEnum.PARALIZADO && (((int) (Math.random() * 4 + 1) != 1)))
                 || (pokemon.getEstadosPersistentes() == EstPersitentesEnum.SOMNOLIENTO && (((int) (Math.random() * 2 + 1) != 1)))
@@ -121,7 +118,6 @@ public class Combate {
         {
             return true;
         }
-
 
         return false;
     }
@@ -139,9 +135,109 @@ public class Combate {
 
      */
     public void retirarse(Entrenador usuario){}
-    public void determinarGanador(){}
-    public void entregarPokedolares(Entrenador entrenador){}
-    public void recibirExperiencia(Pokemon pokemon){}
+    public Entrenador determinarGanador(){
+        if(koJugador == 6) return rival;
+        else if (koRival == 6)  return usuario;
+        else return null;
+    }
+    public void entregarPokedolares(int posNeg, Entrenador rival){
+        int pokedolaresEntregar = 0;
+        if (posNeg == 1){
+            for (Pokemon pokemon : rival.getEquipoPokemon()){
+                pokedolaresEntregar += pokemon.getNivel()*100;
+            }
+        }
+        else pokedolaresEntregar = -(usuario.getPokedolares()/4);
+
+        usuario.setPokedolares(usuario.getPokedolares()+pokedolaresEntregar);
+
+
+        String sqlAddPokedollars = "UPDATE ENTRENADOR SET POKEDOLLARS = POKEDOLLARS + ? WHERE ID_USUARIO = ?";
+        try(Connection connection = DBConnection.getConnection();
+            PreparedStatement statementAddPokedollars = connection.prepareStatement(sqlAddPokedollars)){
+            statementAddPokedollars.setInt(1, pokedolaresEntregar);
+            statementAddPokedollars.setInt(2, usuario.getIdUsuario());
+            statementAddPokedollars.executeUpdate();
+
+            statementAddPokedollars.close();
+            connection.close();
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    /*
+
+    Método para restaurar el equipo pokemon sus estadísticas quitándole los aumentos por habilidades
+    Este método será necesario revisarlo cuando se incluyan el centro pokemon y los objetos.
+
+     */
+    public void restaurarEquipo() {
+        String sqlEquipoPokemon = "SELECT ATAQUE, AT_ESPECIAL, DEFENSA, DEF_ESPECIAL, VELOCIDAD FROM POKEMON_EQUIPO WHERE ID_ENTRENADOR = ? AND ID_POKEMON = ?;";
+
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement statementEquipoPokemon = connection.prepareStatement(sqlEquipoPokemon)) {
+
+            for (Pokemon pokemon: getUsuario().getEquipoPokemon()){
+                statementEquipoPokemon.setInt(1, usuario.getIdUsuario());
+                statementEquipoPokemon.setInt(2, pokemon.getId());
+                ResultSet resultSetEquipoPokemon = statementEquipoPokemon.executeQuery();
+
+                while (resultSetEquipoPokemon.next()) {
+                   pokemon.setAtaque(resultSetEquipoPokemon.getInt("ATAQUE"));
+                   pokemon.setAtaqueEspecial(resultSetEquipoPokemon.getInt("AT_ESPECIAL"));
+                   pokemon.setDefensa(resultSetEquipoPokemon.getInt("DEFENSA"));
+                   pokemon.setDefensaEspecial(resultSetEquipoPokemon.getInt("DEF_ESPECIAL"));
+                   pokemon.setVelocidad(resultSetEquipoPokemon.getInt("VELOCIDAD"));
+                   pokemon.setVitalidad(pokemon.getVitMax());
+                }
+                resultSetEquipoPokemon.close();
+            }
+                statementEquipoPokemon.close();
+                connection.close();
+
+        } catch (SQLException e) {
+
+        }
+    }
+
+
+
+    public void recibirExperiencia(Pokemon pokUsuario, Pokemon rival){
+        int exp = rival.getNivel()*5;
+        /*
+        Este bucle for es para repartir la experiencia entre todos los pokemons del equipo
+        Se revisará cuando se tenga tiempo.
+
+        for (int i = 0; i < usuario.getEquipoPokemon().length; i++) {
+            if (usuario.getPokemon(i).getId() == usuario.getPokemon(pokemonIndice).getId()){
+
+               break;
+            }
+
+            else if (usuario.getPokemon(i).getId() != usuario.getPokemon(pokemonIndice).getId() && usuario.getPokemon(i).getEstadosPersistentes() != EstPersitentesEnum.DEBILITADO) {
+                usuario.getEquipoPokemon()[i].setExperiencia(usuario.getEquipoPokemon()[i].getExperiencia() + (rival.getNivel()*5)/3);
+            }
+             */
+
+           pokUsuario.setExperiencia(pokUsuario.getExperiencia() + exp);
+
+            String sqlActualizarExp = "UPDATE POKEMON SET EXPERIENCIA = EXPERIENCIA + ? WHERE ID_POKEMON = ?";
+            try(Connection connection = DBConnection.getConnection();
+                PreparedStatement statementActualizarExp = connection.prepareStatement(sqlActualizarExp)){
+                statementActualizarExp.setInt(1, exp);
+                statementActualizarExp.setInt(2, pokUsuario.getId());
+                statementActualizarExp.executeUpdate();
+
+                statementActualizarExp.close();
+                connection.close();
+
+            }catch (SQLException e){
+                e.printStackTrace();
+            }
+    }
+
 
     public void crearLog(){
         //Lógica de crear log.
@@ -227,4 +323,5 @@ public class Combate {
     public void setMovimientoUsadoSegund(int movimientoUsadoSegund) {
         MovimientoUsadoSegund = movimientoUsadoSegund;
     }
+
 }
