@@ -25,12 +25,13 @@ public class PaneData {
 
     }
 
-    public void actualizarElementos(String nombre, Image imagen, int nivel, int vitalidad, int vitMax) {
+    public void actualizarElementos(String nombre, Image imagen, int nivel, int vitalidad, int vitMax, Pokemon pokemon) {
 
         image.setImage(imagen);
         labelNom.setText(nombre);
         labelLvl.setText("Nivel: " + nivel);
         labelVit.setText(vitalidad + "/" + vitMax);
+        progressBar.setProgress(((double) pokemon.getVitalidad() / pokemon.getVitMax()));
 
 
     }

@@ -16,6 +16,13 @@ public class MovimientoMejora extends Movimiento{
         this.cantidadMejora = cantidadMejora;
     }
 
+    //Constructor para los tests.
+    public MovimientoMejora(String nombre, int ppMax, int ppRest, Tipos tipo, String estadistica, int cantidadMejora) {
+        super(nombre, ppMax, ppRest, tipo);
+        this.estadistica = estadistica;
+        this.cantidadMejora = cantidadMejora;
+    }
+
     //Esto quizá haya que hacerlo por cada movimiento.
     public void mejoraAplica(Pokemon pokemonObjetivo){
         switch (getEstadistica()){
@@ -24,6 +31,8 @@ public class MovimientoMejora extends Movimiento{
             case "AT_ESP" -> pokemonObjetivo.setAtaqueEspecial(pokemonObjetivo.getAtaqueEspecial()*(1+getCantidadMejora()/100));
             case "DEF_ESP" -> pokemonObjetivo.setDefensaEspecial(pokemonObjetivo.getDefensaEspecial()*(1+getCantidadMejora()/100));
             case "VELOCIDAD" -> pokemonObjetivo.setVelocidad(pokemonObjetivo.getVelocidad()*(1+getCantidadMejora()/100));
+            default -> {}
+
         }
     }
 

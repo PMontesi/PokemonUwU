@@ -1,5 +1,7 @@
 package es.cesur.progprojectpok.clases;
 
+import java.util.Random;
+
 public class MovimientoEstado extends Movimiento{
     //Estudiar el cambiarlo a un Enum
     String estado;
@@ -7,6 +9,7 @@ public class MovimientoEstado extends Movimiento{
     //HACERLO QUE NO VA A FUNCIONAR
     EstPersitentesEnum estPersitentesEnum;
     EstTemporalesEnum estTemporalesEnum;
+    static Random r = new Random();
 
     public MovimientoEstado(String nombre, int idMovimiento) {
         super(nombre, idMovimiento);
@@ -29,8 +32,9 @@ public class MovimientoEstado extends Movimiento{
                 }
                 case DORMIDO -> {
                     pokemon.setEstadosPersistentes(estadosPersitentesStringtoEnum(estado));
-                    pokemon.setDuracionPersistente((int) (Math.random()*3) + 1);
+                    pokemon.setDuracionPersistente(r.nextInt(3) + 1);
                 }
+                default -> pokemon.setEstadosPersistentes(EstPersitentesEnum.SALUDABLE);
             }
         }
         else if (estadosTemporalesStringtoEnum(estado) != null && !pokemon.getEstTemporalesEnums().contains(estadosTemporalesStringtoEnum(estado))) {
@@ -39,8 +43,9 @@ public class MovimientoEstado extends Movimiento{
                         AMEDRENTADO -> pokemon.setEstTemporal(estadosTemporalesStringtoEnum(estado));
                 case CONFUSION -> {
                     pokemon.setEstTemporal(estadosTemporalesStringtoEnum(estado));
-                    pokemon.setDuracionConfusion((int) (Math.random()*4) + 1);
+                    pokemon.setDuracionConfusion(r.nextInt(4) + 1);
                 }
+                default -> pokemon.setEstTemporal(EstTemporalesEnum.NULL);
             }
         }
     }
@@ -75,7 +80,7 @@ public class MovimientoEstado extends Movimiento{
             pokemon.setEstadosPersistentes(EstPersitentesEnum.SALUDABLE);
         }
 
-        if (pokemon.getEstadosPersistentes() == EstPersitentesEnum.CONGELADO && (((int) (Math.random() * 5 + 1) == 1))) {
+        if (pokemon.getEstadosPersistentes() == EstPersitentesEnum.CONGELADO && (r.nextInt(5)+ 1) == 1) {
             pokemon.setEstadosPersistentes(EstPersitentesEnum.SALUDABLE);
         }
     }

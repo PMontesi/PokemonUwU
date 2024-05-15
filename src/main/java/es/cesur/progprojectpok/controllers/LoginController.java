@@ -39,6 +39,7 @@ public class LoginController implements Initializable {
     @FXML
     private Button loginSalir;
     private Entrenador usuario;
+    private Random r = new Random();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -68,8 +69,6 @@ public class LoginController implements Initializable {
                 usuario.setNombreUsuario(usuario.getNombreUsuario());
                 cargarEquipo();
 
-
-                System.out.println(usuario.getIdUsuario());
                 Stage stage = (Stage) loginUsuario.getScene().getWindow();
                 stage.close();
                 FXMLLoader fxmlLoader = new FXMLLoader(SplashApplication.class.getResource("view/mainMenu-view.fxml"));
@@ -100,8 +99,7 @@ public class LoginController implements Initializable {
     private void registrarUsuario() throws SQLException {
         String username = loginUsuario.getText();
         String pass = loginContra.getText();
-        Random random = new Random();
-        int pokedollares = random.nextInt(201)+800;
+        int pokedollares = r.nextInt(201)+800;
         String sql = "INSERT INTO ENTRENADOR (NOM_ENTRENADOR, PASS, POKEDOLLARS) VALUES (?, ?, ?)";
 
         try (Connection connection = DBConnection.getConnection();
@@ -111,20 +109,7 @@ public class LoginController implements Initializable {
             statement.setInt(3, pokedollares);
             statement.executeUpdate();
 
-            /*
-            if (resultSet.next()) {
-                Stage stage = new Stage();
-                FXMLLoader fxmlLoader = new FXMLLoader(SplashApplication.class.getResource("view/mainMenu-view.fxml"));
-                Scene scene = scene = new Scene(fxmlLoader.load(), 800, 480);
-                stage.setTitle("Menu");
-                stage.setScene(scene);
-                stage.show();
 
-            } else {
-                System.out.println("Sos un puto");
-            }
-
-             */
             statement.close();
             connection.close();
         } catch (SQLException e) {
@@ -147,7 +132,6 @@ public class LoginController implements Initializable {
             int indice = 0;
 
             while (resultSetEquipoPokemon.next()){
-                //int idObjeto = resultSetEquipoPokemon.getInt("ID_OBJETO");
                 Objeto objetoNulo = new Objeto();
 
 
@@ -180,7 +164,7 @@ public class LoginController implements Initializable {
             connection.close();
 
         }catch (SQLException e){
-
+            e.printStackTrace();
         }
     }
 

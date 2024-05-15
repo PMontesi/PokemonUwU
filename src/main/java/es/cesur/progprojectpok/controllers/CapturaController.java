@@ -22,6 +22,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Random;
 import java.util.ResourceBundle;
 
 public class CapturaController implements Initializable {
@@ -47,6 +48,7 @@ public class CapturaController implements Initializable {
     private TextField textoMote;
     private Pokemon pokemonSalvaje;
     private Entrenador usuario;
+    private Random r = new Random();
 
 
 
@@ -56,7 +58,6 @@ public class CapturaController implements Initializable {
         moteNo.setVisible(false);
         textoMote.setVisible(false);
         pokemonNuevo();
-        //System.out.println(usuario.getIdUsuario());
 
     }
     public void setUsuario(Entrenador usuario){
@@ -66,7 +67,7 @@ public class CapturaController implements Initializable {
 
     //Cuando se haga la mochila y la tienda, habrá que añadir la función de reducir la cantidad de pokéballs
     public void lanzarPokeball() {
-        int probCaptura = (int) (Math.random()*3 +1);
+        int probCaptura = (r.nextInt(3) +1);
         if (probCaptura >= 2 && pokemonSalvaje != null){
             logCaptura.setStyle("-fx-text-fill: green");
             logCaptura.setText(pokemonSalvaje.getNombre() + " salvaje ha sido capturado con éxito");
@@ -87,7 +88,6 @@ public class CapturaController implements Initializable {
 
 
     public void ponerMoteTrue(){
-        System.out.println("SE PULSÓ EL BOTÓN");
 
         if(textoMote.getText().isEmpty()){
             pokemonSalvaje.setMote(pokemonSalvaje.getNombre());
@@ -101,7 +101,6 @@ public class CapturaController implements Initializable {
         textoMote.setVisible(false);
     }
     public void ponerMoteFalse(){
-        System.out.println("SE PULSÓ EL BOTÓN");
 
         pokemonSalvaje.setMote(pokemonSalvaje.getNombre());
         usuario.capturarPokemon(pokemonSalvaje);
@@ -141,14 +140,7 @@ public class CapturaController implements Initializable {
             e.printStackTrace();
         }
 
-        //Cambio de imagen.
-        File archivo = new File(imagenURL);
-        String rutaAbsoluta = archivo.getAbsolutePath();
-        if(System.getProperty("os.name").startsWith("Windows")){
-            rutaAbsoluta = rutaAbsoluta.replace("/", "\\");
-        }
-        String fileURL ="file:///" + rutaAbsoluta.replace("\\", "/");
-        Image imagenPokemonGenerado = new Image(rutaAbsoluta);
+        Image imagenPokemonGenerado = new Image( Pokemon.imgRutaAbsouta(imagenURL));
         pokemonSalvajeImagen.setImage(imagenPokemonGenerado);
 
         //Log de captura.

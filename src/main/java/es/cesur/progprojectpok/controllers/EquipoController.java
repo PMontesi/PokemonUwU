@@ -98,7 +98,6 @@ public class EquipoController implements Initializable {
 
 
     private Entrenador usuario;
-    //private Pokemon pokemon;
     private Pokemon[] pokemonCaja = new Pokemon[18];
     private Map<String, PaneData> paneMap;
     private int equipoSelect = -1;
@@ -167,8 +166,6 @@ public class EquipoController implements Initializable {
                 indice++;
             }
         }
-
-        System.out.println(gridCaja.getRowCount() + "//" + gridCaja.getColumnCount());
     }
 
     /*
@@ -225,13 +222,12 @@ public class EquipoController implements Initializable {
                 usuario.setPokemon(pokemonCaja[cajaSelect], i);
                 break;
             }
-            else System.out.println("HUECO LLENO");
         }
 
         Image newImage = new Image(Pokemon.imgRutaAbsouta(pokemon.getImagenUrlDelante()));
-        System.out.println(pokemon.getImagenUrlDetras());
+
         PaneData paneData = paneMap.get("pane" + i);
-        paneData.actualizarElementos(pokemon.getMote(), newImage, pokemon.getNivel(), pokemon.getVitalidad(), pokemon.getVitMax());
+        paneData.actualizarElementos(pokemon.getMote(), newImage, pokemon.getNivel(), pokemon.getVitalidad(), pokemon.getVitMax(), pokemon);
         encenderPane(i);
 
         ImageView imageViewToRemove = obtenerImageViewDelGrid(cajaSelect);
@@ -250,27 +246,40 @@ public class EquipoController implements Initializable {
 
 
     /*
+
     Método para crear los paneles del equipo.
     Crea también los elementos del panel.
     También incluye un MouseEvent para poder seleccionar al pokemon y realizar más acciones con él.
+
      */
+    //SOLUCIONAR EL TEMA DE QUE LOS POKEMONS CAPTURADOS NO TIENEN IMAGEN.
     public Pane createPanel(int indicePokemon) {
         Pane pane = new Pane();
+        ImageView imageView = new ImageView();
+        Label labelNom = new Label();
+        Label labelNvl = new Label();
+        Label labelVit = new Label();
+        ProgressBar progressBar = new ProgressBar();
+        progressBar.setProgress(0);
 
-        ImageView imageView = new ImageView(new Image(Pokemon.imgRutaAbsouta(usuario.getPokemon(indicePokemon).getImagenUrlDelante())));
+        if (usuario.getPokemon(indicePokemon) != null){
+            imageView.setImage(new Image(Pokemon.imgRutaAbsouta(usuario.getPokemon(indicePokemon).getImagenUrlDelante())));
+            labelNom.setText(usuario.getPokemon(indicePokemon).getMote());
+            labelNvl.setText("Nv." + usuario.getPokemon(indicePokemon).getNivel());
+            labelVit.setText(usuario.getPokemon(indicePokemon).getVitalidad() + "/" + usuario.getPokemon(indicePokemon).getVitMax());
+            progressBar.setProgress(((double) usuario.getPokemon(indicePokemon).getVitalidad() / usuario.getPokemon(indicePokemon).getVitMax()));
+        }
+
         imageView.setId("image");
-        System.out.println("Id imagen panel:" + imageView.getId());
 
-        Label labelNom = new Label(usuario.getPokemon(indicePokemon).getMote());
         labelNom.setId("labelNom");
-        Label labelNvl = new Label("Nv." + usuario.getPokemon(indicePokemon).getNivel());
+
         labelNvl.setId("labelLvl");
-        Label labelVit = new Label(usuario.getPokemon(indicePokemon).getVitalidad() + "/" + usuario.getPokemon(indicePokemon).getVitMax());
+
         labelVit.setId("labelVit");
 
-        ProgressBar progressBar = new ProgressBar();
         progressBar.setId("progressBar");
-        progressBar.setProgress(((double) usuario.getPokemon(indicePokemon).getVitalidad() / usuario.getPokemon(indicePokemon).getVitMax()));
+
         progressBar.setStyle("-fx-accent: green;");
 
         imageView.setLayoutX(-6);
@@ -291,10 +300,9 @@ public class EquipoController implements Initializable {
 
         pane.setId(String.valueOf(indicePokemon));
 
-        System.out.println(pane.getId());
         pane.setOnMouseClicked((MouseEvent event) -> {
             Pane clickedPane = (Pane) event.getSource();
-            System.out.println(clickedPane.getId());
+
             cambiarInfo(usuario.getPokemon(Integer.parseInt(clickedPane.getId())));
             botonEnviarCaja.setVisible(true);
             botonEnviarCaja.setDisable(false);
@@ -322,14 +330,14 @@ public class EquipoController implements Initializable {
 
 
         imageView.setOnMouseClicked((MouseEvent event) -> {
-            System.out.println(imageView.getId());
+
             cambiarInfo(pokemon);
             botonEnviarCaja.setVisible(false);
             botonEnviarCaja.setDisable(true);
             botonEnviarEquipo.setVisible(true);
             botonEnviarEquipo.setDisable(false);
             cajaSelect = Integer.parseInt(imageView.getId());
-            System.out.println("Id pokemon en caja: " + cajaSelect);
+
         });
     }
 
@@ -411,20 +419,16 @@ public class EquipoController implements Initializable {
     public void rellenarGridSinImagen(Image image, Pokemon pokemon) {
 
         for (Node node : gridCaja.getChildren()){
-            System.out.println(((ImageView) node).getId());
+
             if (((ImageView) node).getImage() == null){
                 int rowIndex = GridPane.getRowIndex(node) == null ? 0 : GridPane.getRowIndex(node);
-                System.out.println("Este nodo está en la fila n° " + rowIndex);
 
                 int columnIndex = GridPane.getColumnIndex(node) == null ? 0 : GridPane.getColumnIndex(node);
-                System.out.println(" y en la columna n° " + columnIndex);
 
                 ((ImageView) node).setImage(image);
                 createImageViewCaja(((ImageView) node), pokemon);
 
-                System.out.println(((ImageView) node).getId());
 
-                //gridCaja.add(((ImageView) node), columnIndex, rowIndex);
                 ((ImageView) node).setUserData(columnIndex + "" + rowIndex);
                 break;
             }
@@ -438,7 +442,7 @@ public class EquipoController implements Initializable {
         paneData.getLabelLvl().setVisible(false);
         paneData.getLabelNom().setVisible(false);
         paneData.getLabelVit().setVisible(false);
-        paneData.getProgressBar().setVisible(false);
+
 
     }
 
@@ -449,7 +453,7 @@ public class EquipoController implements Initializable {
         paneData.getLabelLvl().setVisible(true);
         paneData.getLabelNom().setVisible(true);
         paneData.getLabelVit().setVisible(true);
-        paneData.getProgressBar().setVisible(true);
+
 
     }
 
@@ -467,6 +471,7 @@ public class EquipoController implements Initializable {
         switch (caja0Equipo){
             case 0 -> sqlCaja0Equipo = "UPDATE POKEMON SET CAJA = 0 ";
             case 1 -> sqlCaja0Equipo = "UPDATE POKEMON SET CAJA = 1 ";
+            default -> sqlCaja0Equipo = "";
         }
 
         sqlCaja0Equipo += "WHERE ID_POKEMON = ?";

@@ -27,7 +27,6 @@ public class Entrenador {
         this.nombre = nombre;
         if(longitudEquipo > 6) {
             longitudEquipo = 6;
-            System.out.println("El equipo no puede ser mayor de 6");
         }
         this.equipoPokemon = new Pokemon[longitudEquipo];
     }
@@ -35,8 +34,6 @@ public class Entrenador {
 
     //MÉTODOS
     public void capturarPokemon(Pokemon pokemon){
-        int equipoOrCaja = 0;
-        System.out.println("Método invocado con éxito");
 
         String sqlInsertPokemonCap = "INSERT INTO POKEMON " +
                 "(NUM_POKEDEX, ID_ENTRENADOR, MOTE, CAJA, ATAQUE, AT_ESPECIAL, DEFENSA, DEF_ESPECIAL, VELOCIDAD, NIVEL, " +
@@ -96,7 +93,6 @@ public class Entrenador {
         if (indice >= 0 && indice < equipoPokemon.length) {
             return equipoPokemon[indice];
         } else {
-            System.out.println("Índice de Pokémon inválido.");
             return null;
         }
     }

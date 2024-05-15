@@ -1,8 +1,11 @@
 package es.cesur.progprojectpok.clases;
 
+import java.util.Random;
+
 public class MovimientoAtaque extends Movimiento{
     int potencia;
     String tipoAtaque;
+    Random r = new Random();
 
     public MovimientoAtaque(String nombre, int idMovimiento) {
         super(nombre, idMovimiento);
@@ -14,8 +17,14 @@ public class MovimientoAtaque extends Movimiento{
         this.tipoAtaque = tipoAtaque;
     }
 
+    public MovimientoAtaque(String nombre, int ppMax, int ppRest, Tipos tipo, int potencia, String tipoAtaque) {
+        super(nombre, ppMax, ppRest, tipo);
+        this.potencia = potencia;
+        this.tipoAtaque = tipoAtaque;
+    }
+
     //Pedir AT/AT_ESP como argumentos
-    public void aplicarDamage(Pokemon pokemonObjetivo, int estadistica, Pokemon pokemonCaster){
+    public void aplicarDamage(Pokemon pokemonObjetivo, Pokemon pokemonCaster){
         int ataque = pokemonCaster.getAtaque();
         if (pokemonCaster.getEstadosPersistentes() == EstPersitentesEnum.QUEMADO)  ataque *= 0.5;
         if (ataque <= 0) ataque = 1;
@@ -27,47 +36,38 @@ public class MovimientoAtaque extends Movimiento{
         float multEstado = 1f;
         if (pokemonObjetivo.getEstadosPersistentes() == EstPersitentesEnum.SOMNOLIENTO) multEstado += 0.5f;
 
-        if (pokemonCaster.getEstTemporalesEnums().contains(EstTemporalesEnum.CONFUSION) && (((int) (Math.random() * 3 + 1) == 1))){
+        if (pokemonCaster.getEstTemporalesEnums().contains(EstTemporalesEnum.CONFUSION) && (r.nextInt(3)+ 1) == 1){
             pokemonCaster.setVitalidad((int) ((pokemonCaster.getVitalidad()) - (damageConfusion(pokemonCaster, ataque, pokemonCaster.getDefensa())) * multEstado));
         }
 
-        if(getTipoAtaque().toUpperCase().equals("FISICO")){
+        if(getTipoAtaque().equalsIgnoreCase("FISICO")){
 
             if((damageCalc(pokemonCaster, ataque, pokemonObjetivo.getDefensa(), pokemonObjetivo.getTipo1(), pokemonObjetivo.getTipo2()) <= 0)){
                 pokemonObjetivo.setVitalidad((pokemonObjetivo.getVitalidad()) -1);
             }
             else pokemonObjetivo.setVitalidad((int) ((pokemonObjetivo.getVitalidad()) - (damageCalc(pokemonCaster, ataque, pokemonObjetivo.getDefensa(), pokemonObjetivo.getTipo1(), pokemonObjetivo.getTipo2())) * multEstado));
-
-            System.out.println("Daño: " + ((int) (damageCalc(pokemonCaster, ataque, pokemonObjetivo.getDefensa(), pokemonObjetivo.getTipo1(), pokemonObjetivo.getTipo2())) * multEstado) + "\n ------------------------------");
         }
-        else if (getTipoAtaque().toUpperCase().equals("ESPECIAL")) {
+        else if (getTipoAtaque().equalsIgnoreCase("ESPECIAL")) {
             if ((damageCalc(pokemonCaster, ataqueEsp, pokemonObjetivo.getDefensaEspecial(), pokemonObjetivo.getTipo1(), pokemonObjetivo.getTipo2()) <= 0)){
                 pokemonObjetivo.setVitalidad((pokemonObjetivo.getVitalidad()) -1);
             }
             else pokemonObjetivo.setVitalidad((pokemonObjetivo.getVitalidad()) - damageCalc(pokemonCaster, ataqueEsp, pokemonObjetivo.getDefensa(), pokemonObjetivo.getTipo1(), pokemonObjetivo.getTipo2()));
-
-            System.out.println("Daño: " + ((int) (damageCalc(pokemonCaster, ataque, pokemonObjetivo.getDefensa(), pokemonObjetivo.getTipo1(), pokemonObjetivo.getTipo2())) * multEstado) + "\n ------------------------------");
         }
     }
 
-    public int damageCalc(Pokemon pokemon, int ataque, int defensa, Tipos tipo1Objetivo, Tipos tipo2Objetivo){
-        float damageNivel = (float) (2*pokemon.getNivel()/5 + 2);
-        float potencia = (float) getPotencia();
-        float ataDef = (float) ataque/defensa;
+    public int damageCalc(Pokemon pokemon, int ataque, int defensaObjetivo, Tipos tipo1Objetivo, Tipos tipo2Objetivo){
+        float damageNivel = ((float) (2 * pokemon.getNivel()) /5 + 2);
+        float potencia = getPotencia();
+        float ataDef = (float) ataque/defensaObjetivo;
         float stab = (pokemon.getTipo1() == getTipo() || pokemon.getTipo2() == getTipo()) ? 1.5f : 1;
         float rdm = (float) (1 - ((Math.random()*16)/100));
-
-
-
-
-
 
         return (int) (((damageNivel * potencia * ataDef)/50+2) * stab * compararTipos(tipo1Objetivo) * compararTipos(tipo2Objetivo) * rdm);
     }
 
     public int damageConfusion (Pokemon pokemon, int ataque, int defensa){
 
-        float damageNivel = (float) (2*pokemon.getNivel()/5 + 2);
+        float damageNivel = ((float) (2 * pokemon.getNivel()) /5 + 2);
         float potencia = (float) 40 / 100;
         float ataDef = (float) ataque/defensa;
         float rdm = (float) (1 - ((Math.random()*16)/100));
@@ -75,100 +75,100 @@ public class MovimientoAtaque extends Movimiento{
         return (int) (((damageNivel * potencia * ataDef)/50+2) * rdm);
     }
 
-    public float compararTipos(Tipos tipo) {
+    public float compararTipos(Tipos tipoObjetivo) {
         switch (getTipo()) {
             case AGUA:
-                if (tipo == Tipos.AGUA || tipo == Tipos.DRAGON || tipo == Tipos.PLANTA)
+                if (tipoObjetivo == Tipos.AGUA || tipoObjetivo == Tipos.DRAGON || tipoObjetivo == Tipos.PLANTA)
                     return 0.5f;
-                else if (tipo == Tipos.FUEGO || tipo == Tipos.ROCA || tipo == Tipos.TIERRA)
+                if (tipoObjetivo == Tipos.FUEGO || tipoObjetivo == Tipos.ROCA || tipoObjetivo == Tipos.TIERRA)
                     return 2.0f;
                 break;
             case BICHO:
-                if (tipo == Tipos.FUEGO || tipo == Tipos.FANTASMA || tipo == Tipos.LUCHA || tipo == Tipos.VOLADOR)
+                if (tipoObjetivo == Tipos.FUEGO || tipoObjetivo == Tipos.FANTASMA || tipoObjetivo == Tipos.LUCHA || tipoObjetivo == Tipos.VOLADOR)
                     return 0.5f;
-                else if (tipo == Tipos.PLANTA || tipo == Tipos.PSIQUICO || tipo == Tipos.VENENO)
+                if (tipoObjetivo == Tipos.PLANTA || tipoObjetivo == Tipos.PSIQUICO || tipoObjetivo == Tipos.VENENO)
                     return 2.0f;
                 break;
             case DRAGON:
-                if (tipo == Tipos.DRAGON)
+                if (tipoObjetivo == Tipos.DRAGON)
                     return 2.0f;
                 break;
             case ELECTRICO:
-                if (tipo == Tipos.TIERRA)
+                if (tipoObjetivo == Tipos.TIERRA)
                     return 0.0f;
-                else if (tipo == Tipos.ELECTRICO || tipo == Tipos.DRAGON || tipo == Tipos.PLANTA)
+                if (tipoObjetivo == Tipos.ELECTRICO || tipoObjetivo == Tipos.DRAGON || tipoObjetivo == Tipos.PLANTA)
                     return 0.5f;
-                else if (tipo == Tipos.AGUA || tipo == Tipos.VOLADOR)
+                if (tipoObjetivo == Tipos.AGUA || tipoObjetivo == Tipos.VOLADOR)
                     return 2.0f;
                 break;
-            case  FANTASMA:
-                if (tipo == Tipos.NORMAL || tipo == Tipos.PSIQUICO)
+            case FANTASMA:
+                if (tipoObjetivo == Tipos.NORMAL || tipoObjetivo == Tipos.PSIQUICO)
                     return 0.0f;
-                else if (tipo == Tipos.FANTASMA)
+                if (tipoObjetivo == Tipos.FANTASMA)
                     return 2.0f;
                 break;
             case FUEGO:
-                if (tipo == Tipos.FUEGO || tipo == Tipos.ROCA || tipo == Tipos.AGUA || tipo == Tipos.DRAGON)
+                if (tipoObjetivo == Tipos.FUEGO || tipoObjetivo == Tipos.ROCA || tipoObjetivo == Tipos.AGUA || tipoObjetivo == Tipos.DRAGON)
                     return 0.5f;
-                else if (tipo == Tipos.PLANTA || tipo == Tipos.HIELO || tipo == Tipos.BICHO)
+                if (tipoObjetivo == Tipos.PLANTA || tipoObjetivo == Tipos.HIELO || tipoObjetivo == Tipos.BICHO)
                     return 2.0f;
                 break;
             case HIELO:
-                if (tipo == Tipos.HIELO || tipo == Tipos.AGUA)
+                if (tipoObjetivo == Tipos.HIELO || tipoObjetivo == Tipos.AGUA)
                     return 0.5f;
-                else if (tipo == Tipos.DRAGON || tipo == Tipos.PLANTA || tipo == Tipos.ROCA|| tipo == Tipos.VOLADOR)
+                if (tipoObjetivo == Tipos.DRAGON || tipoObjetivo == Tipos.PLANTA || tipoObjetivo == Tipos.ROCA|| tipoObjetivo == Tipos.VOLADOR)
                     return 2.0f;
                 break;
             case PLANTA:
-                if (tipo == Tipos.BICHO || tipo == Tipos.DRAGON || tipo == Tipos.FUEGO || tipo == Tipos.PLANTA || tipo == Tipos.VENENO || tipo == Tipos.VOLADOR)
+                if (tipoObjetivo == Tipos.BICHO || tipoObjetivo == Tipos.DRAGON || tipoObjetivo == Tipos.FUEGO || tipoObjetivo == Tipos.PLANTA || tipoObjetivo == Tipos.VENENO || tipoObjetivo == Tipos.VOLADOR)
                     return 0.5f;
-                else if (tipo == Tipos.AGUA || tipo == Tipos.ROCA|| tipo == Tipos.TIERRA)
+                if (tipoObjetivo == Tipos.AGUA || tipoObjetivo == Tipos.ROCA|| tipoObjetivo == Tipos.TIERRA)
                     return 2.0f;
                 break;
             case LUCHA:
-                if (tipo == Tipos.FANTASMA)
+                if (tipoObjetivo == Tipos.FANTASMA)
                     return 0.0f;
-                else if (tipo == Tipos.BICHO || tipo == Tipos.PSIQUICO || tipo == Tipos.VENENO || tipo == Tipos.VOLADOR)
+                if (tipoObjetivo == Tipos.BICHO || tipoObjetivo == Tipos.PSIQUICO || tipoObjetivo == Tipos.VENENO || tipoObjetivo == Tipos.VOLADOR)
                     return 0.5f;
-                else if (tipo == Tipos.HIELO || tipo == Tipos.NORMAL || tipo == Tipos.ROCA)
+                if (tipoObjetivo == Tipos.HIELO || tipoObjetivo == Tipos.NORMAL || tipoObjetivo == Tipos.ROCA)
                     return 2.0f;
                 break;
             case NORMAL:
-                if (tipo == Tipos.FANTASMA)
+                if (tipoObjetivo == Tipos.FANTASMA)
                     return 0.0f;
-                else if (tipo == Tipos.ROCA)
+                else if (tipoObjetivo == Tipos.ROCA)
                     return 0.5f;
                 break;
             case PSIQUICO:
-                if (tipo == Tipos.PSIQUICO)
+                if (tipoObjetivo == Tipos.PSIQUICO)
                     return 0.5f;
-                else if (tipo == Tipos.LUCHA || tipo == Tipos.VENENO)
+                if (tipoObjetivo == Tipos.LUCHA || tipoObjetivo == Tipos.VENENO)
                     return 2.0f;
                 break;
             case ROCA:
-                if (tipo == Tipos.LUCHA || tipo == Tipos.TIERRA)
+                if (tipoObjetivo == Tipos.LUCHA || tipoObjetivo == Tipos.TIERRA)
                     return 0.5f;
-                else if (tipo == Tipos.HIELO || tipo == Tipos.BICHO || tipo == Tipos.FUEGO || tipo == Tipos.VOLADOR)
+                else if (tipoObjetivo == Tipos.HIELO || tipoObjetivo == Tipos.BICHO || tipoObjetivo == Tipos.FUEGO || tipoObjetivo == Tipos.VOLADOR)
                     return 2.0f;
                 break;
             case TIERRA:
-                if (tipo == Tipos.VOLADOR)
+                if (tipoObjetivo == Tipos.VOLADOR)
                     return 0.0f;
-                else if (tipo == Tipos.DRAGON || tipo == Tipos.PLANTA)
+                if (tipoObjetivo == Tipos.DRAGON || tipoObjetivo == Tipos.PLANTA)
                     return 0.5f;
-                else if (tipo == Tipos.ELECTRICO || tipo == Tipos.FUEGO || tipo == Tipos.ROCA || tipo == Tipos.VENENO)
+                if (tipoObjetivo == Tipos.ELECTRICO || tipoObjetivo == Tipos.FUEGO || tipoObjetivo == Tipos.ROCA || tipoObjetivo == Tipos.VENENO)
                     return 2.0f;
                 break;
             case VENENO:
-                if (tipo == Tipos.FANTASMA || tipo == Tipos.ROCA || tipo == Tipos.TIERRA || tipo == Tipos.VENENO)
+                if (tipoObjetivo == Tipos.FANTASMA || tipoObjetivo == Tipos.ROCA || tipoObjetivo == Tipos.TIERRA || tipoObjetivo == Tipos.VENENO)
                     return 0.5f;
-                else if (tipo == Tipos.BICHO|| tipo == Tipos.PLANTA)
+                if (tipoObjetivo == Tipos.BICHO|| tipoObjetivo == Tipos.PLANTA)
                     return 2.0f;
                 break;
             case VOLADOR:
-                if (tipo == Tipos.ELECTRICO || tipo == Tipos.ROCA)
+                if (tipoObjetivo == Tipos.ELECTRICO || tipoObjetivo == Tipos.ROCA)
                     return 0.5f;
-                else if (tipo == Tipos.PLANTA || tipo == Tipos.LUCHA || tipo == Tipos.BICHO)
+                if (tipoObjetivo == Tipos.PLANTA || tipoObjetivo == Tipos.LUCHA || tipoObjetivo == Tipos.BICHO)
                     return 2.0f;
                 break;
             default:

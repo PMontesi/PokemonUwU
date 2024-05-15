@@ -25,6 +25,13 @@ public class Movimiento {
         this.idMovimiento = idMovimiento;
     }
 
+    //Constructor para test
+    public Movimiento(String nombre, int ppMax, int ppRest, Tipos tipo) {
+        this.nombre = nombre;
+        this.ppMax = ppMax;
+        this.ppRest = ppRest;
+        this.tipo = tipo;
+    }
 
     public String getNombre() {
         return nombre;

@@ -38,7 +38,7 @@ public class Pokemon {
     private int duracionConfusion;
     private int duracionCantoMortal = 3;
     private Objeto objetoEquipado;
-    private Random random = new Random();
+    private Random r = new Random();
 
     public Pokemon() {
     }
@@ -46,12 +46,12 @@ public class Pokemon {
     //Constructor de pokemons para capturarlos.
     public Pokemon(String nombre, int numPokedex) {
         this.nombre = nombre;
-        this.vitalidad =    5 + random.nextInt(5) + 1;
-        this.ataque =           random.nextInt(5) + 1;
-        this.defensa =          random.nextInt(5) + 1;
-        this.ataqueEspecial =   random.nextInt(5) + 1;
-        this.defensaEspecial =  random.nextInt(5) + 1;
-        this.velocidad =        random.nextInt(5) + 1;
+        this.vitalidad =    5 + r.nextInt(5) + 1;
+        this.ataque =           r.nextInt(5) + 1;
+        this.defensa =          r.nextInt(5) + 1;
+        this.ataqueEspecial =   r.nextInt(5) + 1;
+        this.defensaEspecial =  r.nextInt(5) + 1;
+        this.velocidad =        r.nextInt(5) + 1;
         this.nivel = 1;
         this.experiencia = 0;
         this.sexo = randomSex();
@@ -91,12 +91,12 @@ public class Pokemon {
         this.mote = nombre;
         this.nivel = mediaNivel + nivelAleatorio();
             if (this.nivel < 1) this.nivel = 1;
-        this.ataque =           random.nextInt(10) + 1 + subidaEstadisticasInstananea(this.nivel);
-        this.defensa =          random.nextInt(10) + 1 + subidaEstadisticasInstananea(this.nivel);
-        this.ataqueEspecial =   random.nextInt(10) + 1 + subidaEstadisticasInstananea(this.nivel);
-        this.defensaEspecial =  random.nextInt(10) + 1 + subidaEstadisticasInstananea(this.nivel);
-        this.velocidad =        random.nextInt(10) + 1 + subidaEstadisticasInstananea(this.nivel);
-        this.vitalidad =    5 + random.nextInt(10) + 1 + subidaEstadisticasInstananea(this.nivel);
+        this.ataque =           r.nextInt(10) + 1 + subidaEstadisticasInstananea(this.nivel);
+        this.defensa =          r.nextInt(10) + 1 + subidaEstadisticasInstananea(this.nivel);
+        this.ataqueEspecial =   r.nextInt(10) + 1 + subidaEstadisticasInstananea(this.nivel);
+        this.defensaEspecial =  r.nextInt(10) + 1 + subidaEstadisticasInstananea(this.nivel);
+        this.velocidad =        r.nextInt(10) + 1 + subidaEstadisticasInstananea(this.nivel);
+        this.vitalidad =    5 + r.nextInt(10) + 1 + subidaEstadisticasInstananea(this.nivel);
         this.vitMax = this.vitalidad;
         this.sexo = randomSex();
         this.numPokedex = numPokedex;
@@ -108,12 +108,27 @@ public class Pokemon {
         this.objetoEquipado = objetoEquipado;
     }
 
+    //Constructor para los tests de los movimientos. Solo tiene todos los atributos que intervienen en un movimiento
+    public Pokemon(String nombre, int vitalidad, int vitMax, int ataque, int defensa, int ataqueEspecial, int defensaEspecial, int velocidad, int nivel, Tipos tipo1, Tipos tipo2) {
+        this.nombre = nombre;
+        this.vitalidad = vitalidad;
+        this.vitMax = vitMax;
+        this.ataque = ataque;
+        this.defensa = defensa;
+        this.ataqueEspecial = ataqueEspecial;
+        this.defensaEspecial = defensaEspecial;
+        this.velocidad = velocidad;
+        this.nivel = nivel;
+        this.tipo1 = tipo1;
+        this.tipo2 = tipo2;
+    }
+
     public char randomSex(){
-        char sexo;
-        int sexoBinario = random.nextInt(2);
-        if (sexoBinario == 0) sexo = 'H';
-        else sexo = 'M';
-        return sexo;
+        char sex;
+        int sexoBinario = r.nextInt(2);
+        if (sexoBinario == 0) sex = 'H';
+        else sex = 'M';
+        return sex;
     }
 
     public static Tipos TipoStringToEnum(String tipoString){
@@ -165,12 +180,12 @@ public class Pokemon {
     }
 
     public boolean subirNivel(){
-                int nuevoAT = ((int) ((Math.random()*5 + 1)));
-                int nuevoATESP = ((int) ((Math.random()*5 + 1)));
-                int nuevoDEF = ((int) ((Math.random()*5 + 1)));
-                int nuevoDEFESP = ((int) ((Math.random()*5 + 1)));
-                int nuevoVEL = ((int) ((Math.random()*5 + 1)));
-                int nuevoVITMAX = ((int) ((Math.random()*5 + 1)));
+                int nuevoAT = (r.nextInt(5) + 1);
+                int nuevoATESP = (r.nextInt(5)+ 1);
+                int nuevoDEF = (r.nextInt(5) + 1);
+                int nuevoDEFESP =  (r.nextInt(5) + 1);
+                int nuevoVEL = (r.nextInt(5) + 1);
+                int nuevoVITMAX =  (r.nextInt(5) + 1);
                 int nuevaExp = getExperiencia() - nivel*10;
 
                 setAtaque(getAtaque() + nuevoAT);
@@ -195,9 +210,11 @@ public class Pokemon {
                     "    NIVEL = NIVEL + 1 \n" +
                     "WHERE ID_POKEMON = ?";
 
+            Connection connection = null;
+            PreparedStatement statementSubirNivel = null;
             try{
-                Connection connection = DBConnection.getConnection();
-                PreparedStatement statementSubirNivel = connection.prepareStatement(sqlSubirNivel);
+                connection = DBConnection.getConnection();
+                statementSubirNivel = connection.prepareStatement(sqlSubirNivel);
                 statementSubirNivel.setInt(1, nuevoAT);
                 statementSubirNivel.setInt(2, nuevoATESP);
                 statementSubirNivel.setInt(3, nuevoDEF);
@@ -210,8 +227,19 @@ public class Pokemon {
 
             } catch(SQLException e){
                 e.printStackTrace();
+            } finally {
+                try {
+                    if (statementSubirNivel != null) {
+                        statementSubirNivel.close();
+                    }
+                    if (connection != null) {
+                        connection.close();
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
-        System.out.println("HA SUBIDO AL NIVEL: " + getNivel());
+
 
         return nivel % 4 == 0;
     }
@@ -228,32 +256,35 @@ public class Pokemon {
 
      */
     public Movimiento selecionarMovimientoDB(){
-
         Movimiento movimiento = null;
+        Connection connection = null;
+        PreparedStatement statementMovimiento = null;
+        ResultSet resultSetMovimiento = null;
+
+        String sqlMovimiento = "SELECT * FROM MOVIMIENTOS M \n" +
+                "WHERE NIVEL_APRENDIZAJE <= ? \n" +
+                "AND TIPO = 'NORMAL'\n" +
+                "OR TIPO = ?\n" +
+                "OR TIPO = ?\n" +
+                "AND NOT EXISTS (\n" +
+                "    SELECT *\n" +
+                "    FROM MOVIMIENTOS_POKEMON MP\n" +
+                "    WHERE MP.ID_MOVIMIENTO = M.ID_MOVIMIENTO AND\n" +
+                "    MP.ID_POKEMON = ?\n" +
+                ")\n" +
+                "ORDER BY RAND() LIMIT 1";
 
         try{
-            Connection connection = DBConnection.getConnection();
-            PreparedStatement statementMovimiento = null;
+            connection = DBConnection.getConnection();
+            statementMovimiento = connection.prepareStatement(sqlMovimiento);
 
-                String sqlMovimiento = "SELECT * FROM MOVIMIENTOS M \n" +
-                        "WHERE NIVEL_APRENDIZAJE <= ? \n" +
-                        "AND TIPO = 'NORMAL'\n" +
-                        "OR TIPO = ?\n" +
-                        "OR TIPO = ?\n" +
-                        "AND NOT EXISTS (\n" +
-                        "    SELECT *\n" +
-                        "    FROM MOVIMIENTOS_POKEMON MP\n" +
-                        "    WHERE MP.ID_MOVIMIENTO = M.ID_MOVIMIENTO AND\n" +
-                        "    MP.ID_POKEMON = ?\n" +
-                        ")\n" +
-                        "ORDER BY RAND() LIMIT 1";
-                statementMovimiento = connection.prepareStatement(sqlMovimiento);
+
                 statementMovimiento.setInt(1, getNivel());
                 statementMovimiento.setString(2, TipoEnumToString(getTipo1()));
                 statementMovimiento.setString(3, TipoEnumToString(getTipo2()));
                 statementMovimiento.setInt(4, getId());
 
-            ResultSet resultSetMovimiento = statementMovimiento.executeQuery();
+            resultSetMovimiento = statementMovimiento.executeQuery();
             while (resultSetMovimiento.next()){
                 if(resultSetMovimiento.getString("TIPO_DAÑO") != null){
                     movimiento = new MovimientoAtaque(
@@ -293,15 +324,25 @@ public class Pokemon {
                     );
                 }
             }
-            System.out.println(movimiento.toString());
-
-            resultSetMovimiento.close();
-            statementMovimiento.close();
-            connection.close();
 
         }catch (SQLException e){
             e.printStackTrace();
+        } finally {
+            try {
+                if (resultSetMovimiento != null) {
+                    resultSetMovimiento.close();
+                }
+                if (statementMovimiento != null) {
+                    statementMovimiento.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
+
 
         return movimiento;
     }
@@ -328,7 +369,7 @@ public class Pokemon {
 
         try{
             Connection connection = DBConnection.getConnection();
-            PreparedStatement statementAprender = connection.prepareStatement(sqlAprender.toString());
+            PreparedStatement statementAprender = connection.prepareStatement(sqlAprender);
             statementAprender.setInt(1, movimiento.getIdMovimiento());
             statementAprender.setInt(2, getId());
             statementAprender.setInt(3, aprender);
@@ -342,24 +383,18 @@ public class Pokemon {
 
     //Filtra los movimientos para llamar el método correspondiente, según el tipo de movimiento.
     public void usarMovimiento(int indice, Pokemon pokemonObjetivo, Pokemon pokemonCaster){
-        System.out.println(MOVIMIENTOS[indice].getNombre() + " USADO SOBRE " + pokemonObjetivo.getMote());
         try{
-            if (MOVIMIENTOS[indice] instanceof MovimientoAtaque){
-                if((((MovimientoAtaque) MOVIMIENTOS[indice]).getTipoAtaque().equalsIgnoreCase("FISICO"))){
-                    ((MovimientoAtaque) MOVIMIENTOS[indice]).aplicarDamage(pokemonObjetivo, getAtaque(), pokemonCaster);
-                }
-                else if ((((MovimientoAtaque) MOVIMIENTOS[indice]).getTipoAtaque().equalsIgnoreCase("ESPECIAL"))){
-                    ((MovimientoAtaque) MOVIMIENTOS[indice]).aplicarDamage(pokemonObjetivo, getAtaqueEspecial(), pokemonCaster);
-                }
+            if (MOVIMIENTOS[indice] instanceof MovimientoAtaque ataqueMov){
+                ataqueMov.aplicarDamage(pokemonObjetivo, pokemonCaster);
             }
-            else if (MOVIMIENTOS[indice] instanceof MovimientoMejora){
-                ((MovimientoMejora) MOVIMIENTOS[indice]).mejoraAplica(pokemonCaster);
+            else if (MOVIMIENTOS[indice] instanceof MovimientoMejora mejoraMov){
+                mejoraMov.mejoraAplica(pokemonCaster);
             }
-            else if (MOVIMIENTOS[indice] instanceof MovimientoEstado){
-                ((MovimientoEstado) MOVIMIENTOS[indice]).aplicarEstado(pokemonCaster, ((MovimientoEstado) MOVIMIENTOS[indice]).getEstado());
+            else if (MOVIMIENTOS[indice] instanceof MovimientoEstado estadoMov){
+                estadoMov.aplicarEstado(pokemonCaster, ((MovimientoEstado) MOVIMIENTOS[indice]).getEstado());
             }
         }catch (ArrayIndexOutOfBoundsException e){
-            System.out.println("EL POKIMON NO PUDO PEGAR");
+            e.printStackTrace();
         }
 
     }
@@ -370,6 +405,10 @@ public class Pokemon {
 
      */
     public void asignarMovimientos (int pokemonId){
+        Connection connection = null;
+        PreparedStatement statementMovimiento = null;
+        ResultSet resultSetMovimiento = null;
+
         String sqlMovimiento = "SELECT M.*, MD.PP_REST \n" +
                 "FROM MOVIMIENTOS M\n" +
                 "INNER JOIN MOVIMIENTOS_POKEMON MD ON MD.ID_MOVIMIENTO = M.ID_MOVIMIENTO\n" +
@@ -379,10 +418,10 @@ public class Pokemon {
         Movimiento movimiento = null;
         int i = 0;
         try{
-            Connection connection = DBConnection.getConnection();
-            PreparedStatement statementMovimiento = connection.prepareStatement(sqlMovimiento);
+            connection = DBConnection.getConnection();
+            statementMovimiento = connection.prepareStatement(sqlMovimiento);
             statementMovimiento.setInt(1, pokemonId);
-            ResultSet resultSetMovimiento = statementMovimiento.executeQuery();
+            resultSetMovimiento = statementMovimiento.executeQuery();
             while (resultSetMovimiento.next()){
                 if(resultSetMovimiento.getString("TIPO_DAÑO") != null){
                     movimiento = new MovimientoAtaque(
@@ -430,12 +469,22 @@ public class Pokemon {
                 i++;
             }
 
-            resultSetMovimiento.close();
-            statementMovimiento.close();
-            connection.close();
-
         }catch (SQLException e){
             e.printStackTrace();
+        }finally {
+            try {
+                if (resultSetMovimiento != null) {
+                    resultSetMovimiento.close();
+                }
+                if (statementMovimiento != null) {
+                    statementMovimiento.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
 
     }
@@ -474,35 +523,23 @@ public class Pokemon {
 
      */
     public void setMovimiento(int indice){
-        Movimiento nuevoMov;
-        boolean repetirProceso = true;
-        while (repetirProceso){
-            nuevoMov = selecionarMovimientoDB();
-            if (indice == 0) {
-                MOVIMIENTOS[indice] = nuevoMov;
-                repetirProceso = false;
-            }
-            else if (indice == 1
-                    && nuevoMov.getIdMovimiento() != MOVIMIENTOS[indice-1].getIdMovimiento()){
-                MOVIMIENTOS[indice] = nuevoMov;
-                repetirProceso = false;
-            }
-            else if (indice == 2
-                    && nuevoMov.getIdMovimiento() != MOVIMIENTOS[indice-1].getIdMovimiento()
-                    && nuevoMov.getIdMovimiento() != MOVIMIENTOS[indice-2].getIdMovimiento()){
-                MOVIMIENTOS[indice] = nuevoMov;
-                repetirProceso = false;
-            }
-            else if (indice == 3
-                    && nuevoMov.getIdMovimiento() != MOVIMIENTOS[indice-1].getIdMovimiento()
-                    && nuevoMov.getIdMovimiento() != MOVIMIENTOS[indice-2].getIdMovimiento()
-                    && nuevoMov.getIdMovimiento() != MOVIMIENTOS[indice-3].getIdMovimiento()){
-                MOVIMIENTOS[indice] = nuevoMov;
-                repetirProceso = false;
+        Movimiento nuevoMov = selecionarMovimientoDB();
+
+        boolean movimientoRepetido = false;
+
+        for (int i = 0; i < indice; i++) {
+                if (nuevoMov.getIdMovimiento() == MOVIMIENTOS[i].getIdMovimiento()) {
+                    movimientoRepetido = true;
+                    break;
+                }
             }
 
+        if (!movimientoRepetido){
+            MOVIMIENTOS[indice] = nuevoMov;
         }
+        else setMovimiento(indice);
     }
+
     public Movimiento getMovimiento(int indice){
         try{
             return MOVIMIENTOS[indice];
@@ -516,27 +553,28 @@ public class Pokemon {
     public int subidaEstadisticasInstananea(int nivel){
         int estadistica = 0;
         for (int i = 1; i < nivel; i++) {
-           estadistica += random.nextInt(5) + 1;
+           estadistica += r.nextInt(5) + 1;
         }
         return estadistica;
     }
 
     //Mëtodo para aumentar el nivel aleatoriamente de los pokemons que se generan en combate
     public int nivelAleatorio(){
-        int probabilidad = random.nextInt(100) + 1;
+        int probabilidad = r.nextInt(100) + 1;
         if (probabilidad < 51) return 0;
         else {
-            int sumaroRestar = random.nextInt(2);
-            if (sumaroRestar == 0){
-                if (probabilidad >= 51 && probabilidad <= 80) return 1;
-                else if (probabilidad >= 81 && probabilidad <= 95) return 2;
-                else return 3;
+            int sumaroRestar = r.nextInt(2);
+            int nivelAdicional = 0;
+
+            if (probabilidad <= 80) {
+                nivelAdicional = 1;
+            } else if (probabilidad <= 95) {
+                nivelAdicional = 2;
+            } else {
+                nivelAdicional = 3;
             }
-            else {
-                if (probabilidad >= 51 && probabilidad <= 80) return -1;
-                else if (probabilidad >= 81 && probabilidad <= 95) return -2;
-                else return -3;
-            }
+
+            return (sumaroRestar == 0) ? nivelAdicional : -nivelAdicional;
         }
     }
 
@@ -794,7 +832,7 @@ public class Pokemon {
                 ", duracionConfusion=" + duracionConfusion +
                 ", duracionCantoMortal=" + duracionCantoMortal +
                 ", objetoEquipado=" + objetoEquipado +
-                ", random=" + random +
+                ", random=" + r +
                 '}';
     }
 }

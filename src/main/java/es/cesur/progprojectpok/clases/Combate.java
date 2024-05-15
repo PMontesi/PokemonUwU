@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Combate {
     private ArrayList<Turno> turnos;
@@ -19,6 +20,7 @@ public class Combate {
     private Pokemon segundoPoke;
     private int movimientoUsadoPrimer;
     private int MovimientoUsadoSegund;
+    private Random r = new Random();
 
     public Combate(Entrenador usuario, Entrenador rival) {
         this.turnos = new ArrayList<>();
@@ -31,12 +33,10 @@ public class Combate {
 
         if (pokemonA.getPrioridad() > pokemonB.getPrioridad()){
             if(checkStun(pokemonA)){
-                System.out.println("NO PUEDE ATACAR");
                 movimientoA = 5;
             }
 
             if(checkStun(pokemonB)){
-                System.out.println("NO PUEDE ATACAR");
                 movimientoB = 5;
             }
 
@@ -48,12 +48,10 @@ public class Combate {
 
         else if (pokemonA.getPrioridad() < pokemonB.getPrioridad()) {
             if(checkStun(pokemonA)){
-                System.out.println("NO PUEDE ATACAR");
                 movimientoA = 5;
             }
 
             if(checkStun(pokemonB)){
-                System.out.println("NO PUEDE ATACAR");
                 movimientoB = 5;
             }
 
@@ -72,14 +70,12 @@ public class Combate {
             || pokemonA.getEstadosPersistentes() == EstPersitentesEnum.DORMIDO){
             velPokeA *= 0.5;
         }
-        if (velPokeA <= 1) velPokeA = 1;
 
         int velPokeB = pokemonB.getVelocidad();
         if (pokemonB.getEstadosPersistentes() == EstPersitentesEnum.PARALIZADO
             || pokemonB.getEstadosPersistentes() == EstPersitentesEnum.DORMIDO) {
             velPokeB *= 0.5;
         }
-        if (velPokeB <= 1) velPokeB = 1;
 
         if (pokemonA.getVelocidad() > pokemonB.getVelocidad()){
             pokemonA.setPrioridad(pokemonA.getPrioridad()+1);
@@ -88,58 +84,34 @@ public class Combate {
             pokemonB.setPrioridad(pokemonA.getPrioridad()+1);
         }
         else if (pokemonA.getVelocidad() == pokemonB.getVelocidad()){
-            int random = (int) (Math.random()*2);
+            int random = r.nextInt(2);
             if (random == 0){
                 pokemonA.setPrioridad(pokemonA.getPrioridad()+1);
             }
-            else if (random == 1) {
+            else {
                 pokemonB.setPrioridad(pokemonA.getPrioridad()+1);
             }
         }
     }
 
-    /*
-    public boolean checkSelfCast(Pokemon pokemon, int movimiento){
-        if (pokemon.getMovimiento(movimiento) instanceof MovimientoMejora) return true;
-        else if (pokemon.getEstTemporalesEnums().contains(EstTemporalesEnum.CONFUSION) && (((int) (Math.random() * 3 + 1) == 1))) return true;
-        //AMPLIAR CON MÁS POSIBLES AUTOESTADOS
-        return false;
-    }
-
-     */
 
     public boolean checkStun(Pokemon pokemon){
-        if (    pokemon.getEstadosPersistentes() == EstPersitentesEnum.DORMIDO
+        return pokemon.getEstadosPersistentes() == EstPersitentesEnum.DORMIDO
                 || pokemon.getEstadosPersistentes() == EstPersitentesEnum.CONGELADO
-                || (pokemon.getEstadosPersistentes() == EstPersitentesEnum.PARALIZADO && (((int) (Math.random() * 4 + 1) != 1)))
-                || (pokemon.getEstadosPersistentes() == EstPersitentesEnum.SOMNOLIENTO && (((int) (Math.random() * 2 + 1) != 1)))
-                || (pokemon.getEstTemporalesEnums().contains(EstTemporalesEnum.ENAMORADO) && (((int) (Math.random() * 2 + 1) != 1)))
-                || pokemon.getEstTemporalesEnums().contains(EstTemporalesEnum.AMEDRENTADO))
-        {
-            return true;
-        }
-
-        return false;
+                || (pokemon.getEstadosPersistentes() == EstPersitentesEnum.PARALIZADO && (r.nextInt(4) + 1) != 1)
+                || (pokemon.getEstadosPersistentes() == EstPersitentesEnum.SOMNOLIENTO && (r.nextInt(2) + 1) != 1)
+                || (pokemon.getEstTemporalesEnums().contains(EstTemporalesEnum.ENAMORADO) && (r.nextInt(2) + 1) != 1)
+                || pokemon.getEstTemporalesEnums().contains(EstTemporalesEnum.AMEDRENTADO);
     }
 
-    //PROBABLMENTE HAYA QUE HACER UN CHECK PARA QUITAR OBJETIVOS O TURNOS O IO K SE
-
-    /*
-    public void comprobarEstado(Pokemon pokemon){
-        if (pokemon.getEstadosPersistentes() == EstadosPersitentes.ENVENENADO){
-            EstadoPersistente estadoPersistente = new EstadoPersistente(3);
-            estadoPersistente.envenenar(pokemon);
-        }
-
-    }
-
-     */
-    public void retirarse(Entrenador usuario){}
     public Entrenador determinarGanador(){
         if(koJugador == 6) return rival;
         else if (koRival == 6)  return usuario;
         else return null;
     }
+
+
+    //VER POR QUÉ NO VA ESTO EN EL ENTRENAMIENTO. POR CURIOSIDAD PORQUE NETRENAMIENTO NO TIENE QUE TENER ESTE MÉTODO
     public void entregarPokedolares(int posNeg, Entrenador rival){
         int pokedolaresEntregar = 0;
         if (posNeg == 1){
@@ -152,7 +124,7 @@ public class Combate {
         usuario.setPokedolares(usuario.getPokedolares()+pokedolaresEntregar);
 
 
-        String sqlAddPokedollars = "UPDATE ENTRENADOR SET POKEDOLLARS = POKEDOLLARS + ? WHERE ID_USUARIO = ?";
+        String sqlAddPokedollars = "UPDATE ENTRENADOR SET POKEDOLLARS = POKEDOLLARS + ? WHERE ID_ENTRENADOR = ?";
         try(Connection connection = DBConnection.getConnection();
             PreparedStatement statementAddPokedollars = connection.prepareStatement(sqlAddPokedollars)){
             statementAddPokedollars.setInt(1, pokedolaresEntregar);
@@ -180,25 +152,28 @@ public class Combate {
              PreparedStatement statementEquipoPokemon = connection.prepareStatement(sqlEquipoPokemon)) {
 
             for (Pokemon pokemon: getUsuario().getEquipoPokemon()){
-                statementEquipoPokemon.setInt(1, usuario.getIdUsuario());
-                statementEquipoPokemon.setInt(2, pokemon.getId());
-                ResultSet resultSetEquipoPokemon = statementEquipoPokemon.executeQuery();
+                if (pokemon != null){statementEquipoPokemon.setInt(1, usuario.getIdUsuario());
+                    statementEquipoPokemon.setInt(2, pokemon.getId());
+                    ResultSet resultSetEquipoPokemon = statementEquipoPokemon.executeQuery();
 
-                while (resultSetEquipoPokemon.next()) {
-                   pokemon.setAtaque(resultSetEquipoPokemon.getInt("ATAQUE"));
-                   pokemon.setAtaqueEspecial(resultSetEquipoPokemon.getInt("AT_ESPECIAL"));
-                   pokemon.setDefensa(resultSetEquipoPokemon.getInt("DEFENSA"));
-                   pokemon.setDefensaEspecial(resultSetEquipoPokemon.getInt("DEF_ESPECIAL"));
-                   pokemon.setVelocidad(resultSetEquipoPokemon.getInt("VELOCIDAD"));
-                   pokemon.setVitalidad(pokemon.getVitMax());
+                    while (resultSetEquipoPokemon.next()) {
+                        pokemon.setAtaque(resultSetEquipoPokemon.getInt("ATAQUE"));
+                        pokemon.setAtaqueEspecial(resultSetEquipoPokemon.getInt("AT_ESPECIAL"));
+                        pokemon.setDefensa(resultSetEquipoPokemon.getInt("DEFENSA"));
+                        pokemon.setDefensaEspecial(resultSetEquipoPokemon.getInt("DEF_ESPECIAL"));
+                        pokemon.setVelocidad(resultSetEquipoPokemon.getInt("VELOCIDAD"));
+                        pokemon.setVitalidad(pokemon.getVitMax());
+                    }
+                    resultSetEquipoPokemon.close();
                 }
-                resultSetEquipoPokemon.close();
             }
+
+
                 statementEquipoPokemon.close();
                 connection.close();
 
         } catch (SQLException e) {
-
+            e.printStackTrace();
         }
     }
 

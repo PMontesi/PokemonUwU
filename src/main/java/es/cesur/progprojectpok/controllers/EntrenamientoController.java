@@ -22,7 +22,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import java.io.File;
+
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
@@ -31,6 +31,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 import java.util.ResourceBundle;
 
 public class EntrenamientoController implements Initializable {
@@ -122,20 +123,19 @@ public class EntrenamientoController implements Initializable {
     @FXML
     private Text textNomPokeRiv;
 
-
-    //Esta variable se tiene que inicializar según el valor de la sentencia sql???
     private Combate combate;
     private Entrenador usuario;
     private Entrenador rival;
     private int pokemonUsuarioActivo = 0;
     private int mediaNivel;
-    private int numeroCombate;
     private Turno turno;
     private Map<String, PaneData> paneMap;
     private boolean decisionUsuario;
     private boolean aprendiendoMovimiento = false;
     boolean noPuedeAprender = false;
     private Movimiento movimientoAprender;
+    private Random r = new Random();
+    private final String BAR_VERDE = "-fx-accent: green;";
 
     public void setUsuario(Entrenador usuario){
         this.usuario = usuario;
@@ -197,7 +197,7 @@ public class EntrenamientoController implements Initializable {
                     //HAY QUE RETOCAR ESTA PARTE UNA VEZ ESTÉN HECHOS LOS OBJETOS
                     Objeto objetoNulo = new Objeto();
 
-                    Pokemon pokemonRival = new Pokemon(
+                    Pokemon pokemonSalvaje = new Pokemon(
                             resultSetPokemonRival.getString("NOM_POKEMON"),
                             mediaNivel,
                             resultSetPokemonRival.getInt("NUM_POKEDEX"),
@@ -208,11 +208,11 @@ public class EntrenamientoController implements Initializable {
                     );
 
                     //BUCLE PARA ASIGNARLE LOS MOVIMIENTOS AL POKEMON GENERADO.
-                    for (int j = 0; j < pokemonRival.getMovimientos().length; j++) {
-                        pokemonRival.setMovimiento(j);
+                    for (int j = 0; j < pokemonSalvaje.getMovimientos().length; j++) {
+                        pokemonSalvaje.setMovimiento(j);
                     }
 
-                    rival.setPokemon(pokemonRival, 0);
+                    rival.setPokemon(pokemonSalvaje, 0);
 
                 }
                 resultSetPokemonRival.close();
@@ -221,38 +221,25 @@ public class EntrenamientoController implements Initializable {
 
             connection.close();
 
-            setImagenPokeRival(0);
+            setImagenPokeRival();
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 
-
-
-
-        String sqlCombate = "guardar combate en la base de datos";
-        //Aquí la ejecución de la sentencia sql
-
-
         paneDescCombate.setVisible(false);
     }
 
-    public void setImagenPokeRival(int pokemonRivalActivo){
+    public void setImagenPokeRival(){
         textNomPokeRiv.setText(rival.getPokemon(0).getMote());
         textNivPokRiv.setText("Nv." + rival.getPokemon(0).getNivel());
         barVitRival.setProgress(((double) rival.getPokemon(0).getVitalidad() /rival.getPokemon(0).getVitMax()));
-        barVitJugador.setStyle("-fx-accent: green;");
+        barVitJugador.setStyle(BAR_VERDE);
 
-        //Sustitución imagen
-        File archivo2 = new File(rival.getPokemon(0).getImagenUrlDetras());
-        String rutaAbsoluta2 = archivo2.getAbsolutePath();
-        if(System.getProperty("os.name").startsWith("Windows")){
-            rutaAbsoluta2 = rutaAbsoluta2.replace("/", "\\");
-        }
+        String imgPokemonRival = Pokemon.imgRutaAbsouta(rival.getPokemon(0).getImagenUrlDetras());
 
-        Image imagenPokemonGenerado2 = new Image(rutaAbsoluta2);
+        Image imagenPokemonGenerado2 = new Image(imgPokemonRival);
         pokemonRival.setImage(imagenPokemonGenerado2);
-        System.out.println(rival.getPokemon(0));
     }
 
 
@@ -265,31 +252,23 @@ public class EntrenamientoController implements Initializable {
 
 
     public void usarMovi1(){
-        System.out.println("Movi1 pulsado");
         int indice = 0;
         botonMoviPulsado(indice);
-        System.out.println("Fin de Movi3");
     }
 
     public void usarMovi2(){
-        System.out.println("Movi2 pulsado");
         int indice = 1;
         botonMoviPulsado(indice);
-        System.out.println("Fin de Movi2");
     }
 
     public void usarMovi3(){
-        System.out.println("Movi3 pulsado");
         int indice = 2;
         botonMoviPulsado(indice);
-        System.out.println("Fin de Movi3");
     }
 
     public void usarMovi4(){
-        System.out.println("Movi4 pulsado");
         int indice = 3;
         botonMoviPulsado(indice);
-        System.out.println("Fin de Movi4");
     }
 
     public void botonMoviPulsado(int indice){
@@ -299,7 +278,7 @@ public class EntrenamientoController implements Initializable {
 
             checkBeforeTurn(usuario.getPokemon(pokemonUsuarioActivo));
             checkBeforeTurn(rival.getPokemon(0));
-            combate.combatir(usuario.getPokemon(pokemonUsuarioActivo), indice, rival.getPokemon(0), (int) (Math.random()*4));
+            combate.combatir(usuario.getPokemon(pokemonUsuarioActivo), indice, rival.getPokemon(0), r.nextInt(4));
 
             progresoCombate();
 
@@ -341,11 +320,6 @@ public class EntrenamientoController implements Initializable {
     public void progresoCombate() {
         textDescripCombate.setText("El combate está teniendo lugar" + "Turno: " + turno.getNumeroTurno());
 
-        System.out.println("______________________");
-        System.out.println(combate.getPrimerPoke().getMote() + " || " + combate.getPrimerPoke().getMovimiento(combate.getMovimientoUsadoPrimer()).getNombre());
-        System.out.println(combate.getSegundoPoke().getMote() + " || " + combate.getSegundoPoke().getMovimiento(combate.getMovimientoUsadoSegund()).getNombre());
-
-
         String primeraAccion = combate.getPrimerPoke().getMote() + " usó " + combate.getPrimerPoke().getMovimiento(combate.getMovimientoUsadoPrimer()).getNombre();
         String segundaAccion = combate.getSegundoPoke().getMote() + " usó " + combate.getSegundoPoke().getMovimiento(combate.getMovimientoUsadoSegund()).getNombre();
 
@@ -354,7 +328,7 @@ public class EntrenamientoController implements Initializable {
                     combate.getPrimerPoke().usarMovimiento(combate.getMovimientoUsadoPrimer(), combate.getSegundoPoke(), combate.getPrimerPoke());
                     checkAfterTurn(combate.getPrimerPoke());
                     textDescripCombate.setText(primeraAccion);
-                    System.out.println("Timeline 1");
+
                 }),
                 new KeyFrame(Duration.seconds(5), event -> {
                     if (combate.getSegundoPoke().getVitalidad() <= 0){
@@ -365,7 +339,7 @@ public class EntrenamientoController implements Initializable {
                     combate.getSegundoPoke().usarMovimiento(combate.getMovimientoUsadoSegund(), combate.getPrimerPoke(), combate.getSegundoPoke());
                     checkAfterTurn(combate.getSegundoPoke());
                     textDescripCombate.setText(segundaAccion);
-                    System.out.println("Timeline 2");
+
                 }),
                 new KeyFrame(Duration.seconds(7), event -> {
                     turno.setNumeroTurno(turno.getNumeroTurno() + 1);
@@ -378,68 +352,76 @@ public class EntrenamientoController implements Initializable {
                             )
                     );
 
-                    //ES POSIBLE QUE SI, POR LO QUE SEA, EL POKEMON SUBE 2 NIVELES DE GOLPE, NO FUNCIONE
-                    for (Pokemon pokemon : usuario.getEquipoPokemon()){
-                        while (pokemon.getExperiencia() >= pokemon.getNivel()*10){
-                            textDescripCombate.setText(pokemon.getMote() + " ha subido al nivel " + (pokemon.getNivel()+1));
-                            textNivPokJug.setText("Nv." + usuario.getPokemon(pokemonUsuarioActivo).getNivel());
-                            barVitJugador.setProgress((double) usuario.getPokemon(pokemonUsuarioActivo).getVitalidad() /usuario.getPokemon(pokemonUsuarioActivo).getVitMax());
+                    checkKo();
 
-
-                            if (pokemon.subirNivel()){
-                                movimientoAprender = pokemon.selecionarMovimientoDB();
-                                aprendiendoMovimiento = true;
-                                textDescripCombate.setText(pokemon.getMote() + " puede aprender " + movimientoAprender.getNombre() + " ¿deseas que lo aprenda?");
-                                botonSI.setDisable(false);
-                                botonSI.setVisible(true);
-                                botonNo.setDisable(false);
-                                botonNo.setVisible(true);
-                            }
-                        }
-                    }
-
-                        if (usuario.getPokemon(pokemonUsuarioActivo).getVitalidad() <= 0){
-                            usuario.getPokemon(pokemonUsuarioActivo).setEstadosPersistentes(EstPersitentesEnum.DEBILITADO);
-                            combate.setKoJugador(combate.getKoJugador()+1);
-                            if (combate.getKoJugador() == 6){
-                                mostrarEquipo();
-                            }
-                        }
-
-                        if (rival.getPokemon(0).getVitalidad() <= 0){
-                            combate.recibirExperiencia(usuario.getPokemon(pokemonUsuarioActivo), rival.getPokemon(0));
-                            combate.setKoRival(combate.getKoRival()+1);
-
-                        }
-
-                    if (combate.determinarGanador() != null){
-                        if (combate.determinarGanador() == usuario){
-                            paneSeguirSalir.setDisable(false);
-                            paneSeguirSalir.setVisible(true);
-
-                        } else if (combate.determinarGanador() == rival) {
-                            combate.restaurarEquipo();
-                            volverMenu();
-                        }
-
-                    }
-
-                    System.out.println("Timeline 3");
-
-                    System.out.println(combate.getTurnos().toString());
-                    System.out.println("Vida usuario: " + usuario.getPokemon(pokemonUsuarioActivo).getVitalidad() + "/" + usuario.getPokemon(pokemonUsuarioActivo).getVitMax());
-                    System.out.println("Vida rival: " + rival.getPokemon(0).getVitalidad() + "/" + rival.getPokemon(0).getVitMax());
-
-                    if(!aprendiendoMovimiento){
-                        paneDescCombate.setVisible(false);
-                        paneMenuCombate.setVisible(true);
-                        paneMenuCombate.setDisable(false);
-                    }
                 })
         );
 
         timeline.play();
     }
+
+    private void checkKo(){
+
+        if (usuario.getPokemon(pokemonUsuarioActivo).getVitalidad() <= 0){
+            usuario.getPokemon(pokemonUsuarioActivo).setEstadosPersistentes(EstPersitentesEnum.DEBILITADO);
+            combate.setKoJugador(combate.getKoJugador()+1);
+            if (combate.getKoJugador() == 6){
+                mostrarEquipo();
+            }
+        }
+
+        if (rival.getPokemon(0).getVitalidad() <= 0){
+            combate.recibirExperiencia(usuario.getPokemon(pokemonUsuarioActivo), rival.getPokemon(0));
+            combate.setKoRival(combate.getKoRival()+1);
+            if (combate.getKoRival() != 6 ){
+                setImagenPokeRival();
+            }
+        }
+
+        darExperiencia();
+
+        if (combate.determinarGanador() != null){
+            if (combate.determinarGanador() == usuario){
+                combate.entregarPokedolares(1, rival);
+            } else if (combate.determinarGanador() == rival) {
+                combate.entregarPokedolares(-1, rival);
+            }
+            combate.restaurarEquipo();
+            volverMenu();
+        }
+
+        if(!aprendiendoMovimiento){
+            paneDescCombate.setVisible(false);
+            paneMenuCombate.setVisible(true);
+            paneMenuCombate.setDisable(false);
+        }
+    }
+
+    private void darExperiencia(){
+        //ES POSIBLE QUE SI, POR LO QUE SEA, EL POKEMON SUBE 2 NIVELES DE GOLPE, NO FUNCIONE.
+        for (Pokemon pokemon : usuario.getEquipoPokemon()){
+            if(pokemon != null){
+                while (pokemon.getExperiencia() >= pokemon.getNivel()*10){
+                    textDescripCombate.setText(pokemon.getMote() + " ha subido al nivel " + (pokemon.getNivel()+1));
+                    textNivPokJug.setText("Nv." + usuario.getPokemon(pokemonUsuarioActivo).getNivel());
+                    barVitJugador.setProgress((double) usuario.getPokemon(pokemonUsuarioActivo).getVitalidad() /usuario.getPokemon(pokemonUsuarioActivo).getVitMax());
+
+
+                    if (pokemon.subirNivel()){
+                        movimientoAprender = pokemon.selecionarMovimientoDB();
+                        aprendiendoMovimiento = true;
+                        textDescripCombate.setText(pokemon.getMote() + " puede aprender " + movimientoAprender.getNombre() + " ¿deseas que lo aprenda?");
+                        botonSI.setDisable(false);
+                        botonSI.setVisible(true);
+                        botonNo.setDisable(false);
+                        botonNo.setVisible(true);
+                    }
+                }
+            }
+        }
+    }
+
+
 
     private void aprenderMovimiento(Pokemon pokemon, Movimiento movimiento){
         noPuedeAprender = true;
@@ -476,6 +458,7 @@ public class EntrenamientoController implements Initializable {
 
         if (!noPuedeAprender){
             aprenderMovimiento(usuario.getPokemon(pokemonUsuarioActivo), movimientoAprender);
+
         } else if (noPuedeAprender) {
             aprendiendoMovimiento = true;
             paneDescCombate.setVisible(false);
@@ -524,8 +507,6 @@ public class EntrenamientoController implements Initializable {
                 barVitRival.setProgress(0);
             }
 
-            System.out.println("Estado persistente rival: " + rival.getPokemon(0).getEstadosPersistentes());
-            System.out.println("Estado temporal rival: " + rival.getPokemon(0).getEstTemporalesEnums().toString());
         }
         else if (pokemon.getPrioridad() == rival.getPokemon(0).getPrioridad()){
 
@@ -535,8 +516,6 @@ public class EntrenamientoController implements Initializable {
                 usuario.getPokemon(pokemonUsuarioActivo).setVitalidad(0);
             }
 
-            System.out.println("Estado persistente usuario: " + usuario.getPokemon(pokemonUsuarioActivo).getEstadosPersistentes());
-            System.out.println("Estado temporal usuario: " + usuario.getPokemon(pokemonUsuarioActivo).getEstTemporalesEnums().toString());
         }
     }
 
@@ -545,20 +524,16 @@ public class EntrenamientoController implements Initializable {
         textNomPokeJug.setText(usuario.getPokemon(pokemonUsuarioActivo).getMote());
         textNivPokJug.setText("Nv." + usuario.getPokemon(pokemonUsuarioActivo).getNivel());
         barVitJugador.setProgress((double) usuario.getPokemon(pokemonUsuarioActivo).getVitalidad() /usuario.getPokemon(pokemonUsuarioActivo).getVitMax());
-        barVitJugador.setStyle("-fx-accent: green;");
+        barVitJugador.setStyle(BAR_VERDE);
         botonMovi1.setText(usuario.getPokemon(pokemonUsuarioActivo).getMovimiento(0).getNombre());
         botonMovi2.setText(usuario.getPokemon(pokemonUsuarioActivo).getMovimiento(1).getNombre());
         botonMovi3.setText(usuario.getPokemon(pokemonUsuarioActivo).getMovimiento(2).getNombre());
         botonMovi4.setText(usuario.getPokemon(pokemonUsuarioActivo).getMovimiento(3).getNombre());
 
+        String imgPokUsuario = Pokemon.imgRutaAbsouta(usuario.getPokemon(pokemonUsuarioActivo).getImagenUrlDetras());
 
-        File archivo = new File(usuario.getPokemon(pokemonUsuarioActivo).getImagenUrlDetras());
-        String rutaAbsoluta = archivo.getAbsolutePath();
-        if(System.getProperty("os.name").startsWith("Windows")){
-            rutaAbsoluta = rutaAbsoluta.replace("/", "\\");
-        }
 
-        Image imagenPokemonGenerado = new Image(rutaAbsoluta);
+        Image imagenPokemonGenerado = new Image(imgPokUsuario);
         pokemonJugador.setImage(imagenPokemonGenerado);
 
     }
@@ -592,7 +567,7 @@ public class EntrenamientoController implements Initializable {
 
         ImageView imageView = new ImageView(new Image(Pokemon.imgRutaAbsouta(usuario.getPokemon(indicePokemon).getImagenUrlDelante())));
         imageView.setId("image");
-        System.out.println("Id imagen panel:" + imageView.getId());
+
 
         Label labelNom = new Label(usuario.getPokemon(indicePokemon).getMote());
         labelNom.setId("labelNom");
@@ -604,7 +579,7 @@ public class EntrenamientoController implements Initializable {
         ProgressBar progressBar = new ProgressBar();
         progressBar.setId("progressBar");
         progressBar.setProgress(((double) usuario.getPokemon(indicePokemon).getVitalidad() / usuario.getPokemon(indicePokemon).getVitMax()));
-        progressBar.setStyle("-fx-accent: green;");
+        progressBar.setStyle(BAR_VERDE);
 
         imageView.setLayoutX(-6);
         imageView.setLayoutY(-6);
@@ -624,10 +599,9 @@ public class EntrenamientoController implements Initializable {
 
         pane.setId(String.valueOf(indicePokemon));
 
-        System.out.println(pane.getId());
         pane.setOnMouseClicked((MouseEvent event) -> {
             Pane clickedPane = (Pane) event.getSource();
-            System.out.println(clickedPane.getId());
+
             pokemonUsuarioActivo = Integer.parseInt(clickedPane.getId());
             setPokeUsuario(pokemonUsuarioActivo);
             anchorEquipo.setVisible(false);
