@@ -33,7 +33,7 @@ public class Entrenador {
 
 
     //MÉTODOS
-    public void capturarPokemon(Pokemon pokemon){
+    public void capturarPokemon(Pokemon pokemon, String imagenTrasera, String imagenDelantera){
 
         String sqlInsertPokemonCap = "INSERT INTO POKEMON " +
                 "(NUM_POKEDEX, ID_ENTRENADOR, MOTE, CAJA, ATAQUE, AT_ESPECIAL, DEFENSA, DEF_ESPECIAL, VELOCIDAD, NIVEL, " +
@@ -65,6 +65,10 @@ public class Entrenador {
         } catch(SQLException e){
             e.printStackTrace();
         }
+        pokemon.setMovimiento(0);
+        pokemon.setImagenUrlDetras(imagenTrasera);
+        pokemon.setImagenUrlDelante(imagenDelantera);
+
     }
 
     /*

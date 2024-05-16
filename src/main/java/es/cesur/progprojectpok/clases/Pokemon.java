@@ -40,6 +40,15 @@ public class Pokemon {
     private Objeto objetoEquipado;
     private Random r = new Random();
 
+    private final String colNamePP_MAX = "PP_MAX";
+    private final String colNameTipo_Dam = "TIPO_DAÑO";
+    private final String colNameNOM_MOV = "NOM_MOVIMIENTO";
+    private final String colNameID_MOV = "ID_MOVIMIENTO";
+    private final String colNameESTADOS = "ESTADO";
+    private final String colNameTURNOS = "TURNOS";
+    private final String colNameMEJORA = "MEJORA";
+    private final String colNamePP_REST = "PP_REST";
+
     public Pokemon() {
     }
 
@@ -286,41 +295,41 @@ public class Pokemon {
 
             resultSetMovimiento = statementMovimiento.executeQuery();
             while (resultSetMovimiento.next()){
-                if(resultSetMovimiento.getString("TIPO_DAÑO") != null){
+                if(resultSetMovimiento.getString(colNameTipo_Dam) != null){
                     movimiento = new MovimientoAtaque(
-                            resultSetMovimiento.getString("NOM_MOVIMIENTO"),
-                            resultSetMovimiento.getInt("PP_MAX"),
-                            resultSetMovimiento.getInt("PP_MAX"),
+                            resultSetMovimiento.getString(colNameNOM_MOV),
+                            resultSetMovimiento.getInt(colNamePP_MAX),
+                            resultSetMovimiento.getInt(colNamePP_MAX),
                             TipoStringToEnum(resultSetMovimiento.getString("TIPO")),
                             0,
                             resultSetMovimiento.getInt("POTENCIA"),
-                            resultSetMovimiento.getString("TIPO_DAÑO"),
-                            resultSetMovimiento.getInt("ID_MOVIMIENTO")
+                            resultSetMovimiento.getString(colNameTipo_Dam),
+                            resultSetMovimiento.getInt(colNameID_MOV)
                     );
                 }
-                else if(resultSetMovimiento.getString("ESTADO") != null){
+                else if(resultSetMovimiento.getString(colNameESTADOS) != null){
                     movimiento = new MovimientoEstado(
-                            resultSetMovimiento.getString("NOM_MOVIMIENTO"),
-                            resultSetMovimiento.getInt("PP_MAX"),
-                            resultSetMovimiento.getInt("PP_MAX"),
+                            resultSetMovimiento.getString(colNameNOM_MOV),
+                            resultSetMovimiento.getInt(colNamePP_MAX),
+                            resultSetMovimiento.getInt(colNamePP_MAX),
                             TipoStringToEnum(resultSetMovimiento.getString("TIPO")),
                             0,
-                            resultSetMovimiento.getString("ESTADO"),
-                            resultSetMovimiento.getInt("TURNOS"),
-                            resultSetMovimiento.getInt("ID_MOVIMIENTO")
+                            resultSetMovimiento.getString(colNameESTADOS),
+                            resultSetMovimiento.getInt(colNameTURNOS),
+                            resultSetMovimiento.getInt(colNameID_MOV)
                     );
                 }
-                else if(resultSetMovimiento.getString("MEJORA") != null){
+                else if(resultSetMovimiento.getString(colNameMEJORA) != null){
                     movimiento = new MovimientoMejora(
-                            resultSetMovimiento.getString("NOM_MOVIMIENTO"),
-                            resultSetMovimiento.getInt("PP_MAX"),
-                            resultSetMovimiento.getInt("PP_MAX"),
+                            resultSetMovimiento.getString(colNameNOM_MOV),
+                            resultSetMovimiento.getInt(colNamePP_MAX),
+                            resultSetMovimiento.getInt(colNamePP_MAX),
                             TipoStringToEnum(resultSetMovimiento.getString("TIPO")),
                             0,
-                            resultSetMovimiento.getInt("TURNOS"),
-                            resultSetMovimiento.getString("MEJORA"),
+                            resultSetMovimiento.getInt(colNameTURNOS),
+                            resultSetMovimiento.getString(colNameMEJORA),
                             resultSetMovimiento.getInt("CANT_MEJORA"),
-                            resultSetMovimiento.getInt("ID_MOVIMIENTO")
+                            resultSetMovimiento.getInt(colNameID_MOV)
                     );
                 }
             }
@@ -332,9 +341,14 @@ public class Pokemon {
                 if (resultSetMovimiento != null) {
                     resultSetMovimiento.close();
                 }
-                if (statementMovimiento != null) {
-                    statementMovimiento.close();
+                try {
+                    if (statementMovimiento != null) {
+                        statementMovimiento.close();
+                    }
+                }catch (SQLException e){
+                    e.printStackTrace();
                 }
+
                 if (connection != null) {
                     connection.close();
                 }
@@ -423,44 +437,44 @@ public class Pokemon {
             statementMovimiento.setInt(1, pokemonId);
             resultSetMovimiento = statementMovimiento.executeQuery();
             while (resultSetMovimiento.next()){
-                if(resultSetMovimiento.getString("TIPO_DAÑO") != null){
+                if(resultSetMovimiento.getString(colNameTipo_Dam) != null){
                     movimiento = new MovimientoAtaque(
-                            resultSetMovimiento.getString("NOM_MOVIMIENTO"),
-                            resultSetMovimiento.getInt("PP_MAX"),
-                            resultSetMovimiento.getInt("PP_REST"),
+                            resultSetMovimiento.getString(colNameNOM_MOV),
+                            resultSetMovimiento.getInt(colNamePP_MAX),
+                            resultSetMovimiento.getInt(colNamePP_REST),
                             TipoStringToEnum(resultSetMovimiento.getString("TIPO")),
                             0,
                             resultSetMovimiento.getInt("POTENCIA"),
-                            resultSetMovimiento.getString("TIPO_DAÑO"),
-                            resultSetMovimiento.getInt("ID_MOVIMIENTO")
+                            resultSetMovimiento.getString(colNameTipo_Dam),
+                            resultSetMovimiento.getInt(colNameID_MOV)
                     );
 
                 }
-                else if(resultSetMovimiento.getString("ESTADO") != null){
+                else if(resultSetMovimiento.getString(colNameESTADOS) != null){
                     movimiento = new MovimientoEstado(
-                            resultSetMovimiento.getString("NOM_MOVIMIENTO"),
-                            resultSetMovimiento.getInt("PP_MAX"),
-                            resultSetMovimiento.getInt("PP_REST"),
+                            resultSetMovimiento.getString(colNameNOM_MOV),
+                            resultSetMovimiento.getInt(colNamePP_MAX),
+                            resultSetMovimiento.getInt(colNamePP_REST),
                             TipoStringToEnum(resultSetMovimiento.getString("TIPO")),
                             0,
-                            resultSetMovimiento.getString("ESTADO"),
-                            resultSetMovimiento.getInt("TURNOS"),
-                            resultSetMovimiento.getInt("ID_MOVIMIENTO")
+                            resultSetMovimiento.getString(colNameESTADOS),
+                            resultSetMovimiento.getInt(colNameTURNOS),
+                            resultSetMovimiento.getInt(colNameID_MOV)
 
                     );
 
                 }
-                else if(resultSetMovimiento.getString("MEJORA") != null){
+                else if(resultSetMovimiento.getString(colNameMEJORA) != null){
                     movimiento = new MovimientoMejora(
-                            resultSetMovimiento.getString("NOM_MOVIMIENTO"),
-                            resultSetMovimiento.getInt("PP_MAX"),
-                            resultSetMovimiento.getInt("PP_REST"),
+                            resultSetMovimiento.getString(colNameNOM_MOV),
+                            resultSetMovimiento.getInt(colNamePP_MAX),
+                            resultSetMovimiento.getInt(colNamePP_REST),
                             TipoStringToEnum(resultSetMovimiento.getString("TIPO")),
                             0,
-                            resultSetMovimiento.getInt("TURNOS"),
-                            resultSetMovimiento.getString("MEJORA"),
+                            resultSetMovimiento.getInt(colNameTURNOS),
+                            resultSetMovimiento.getString(colNameMEJORA),
                             resultSetMovimiento.getInt("CANT_MEJORA"),
-                            resultSetMovimiento.getInt("ID_MOVIMIENTO")
+                            resultSetMovimiento.getInt(colNameID_MOV)
                     );
 
                 }
@@ -530,6 +544,7 @@ public class Pokemon {
         for (int i = 0; i < indice; i++) {
                 if (nuevoMov.getIdMovimiento() == MOVIMIENTOS[i].getIdMovimiento()) {
                     movimientoRepetido = true;
+                    aprenderMovimiento(nuevoMov);
                     break;
                 }
             }

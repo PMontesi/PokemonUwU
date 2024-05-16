@@ -163,6 +163,7 @@ public class CombateController implements Initializable {
             }
 
         int mediaNivel = sumatorioNivel / longitudEquipoUser;
+
         combate.setKoJugador(6-longitudEquipoUser);
         combate.setKoRival(6-longitudEquipoUser);
 
@@ -279,10 +280,7 @@ public class CombateController implements Initializable {
             usuario.getPokemon(pokemonUsuarioActivo).olvidarMovimiento(indice);
             usuario.getPokemon(pokemonUsuarioActivo).aprenderMovimiento(movimientoAprender);
 
-            botonMovi1.setText(usuario.getPokemon(pokemonUsuarioActivo).getMovimiento(0).getNombre());
-            botonMovi2.setText(usuario.getPokemon(pokemonUsuarioActivo).getMovimiento(1).getNombre());
-            botonMovi3.setText(usuario.getPokemon(pokemonUsuarioActivo).getMovimiento(2).getNombre());
-            botonMovi4.setText(usuario.getPokemon(pokemonUsuarioActivo).getMovimiento(3).getNombre());
+            actualizarBotonesMov();
 
             paneMovimientos.setVisible(false);
             paneMovimientos.setDisable(true);
@@ -511,10 +509,8 @@ public class CombateController implements Initializable {
         textNivPokJug.setText("Nv." + usuario.getPokemon(pokemonUsuarioActivo).getNivel());
         barVitJugador.setProgress((double) usuario.getPokemon(pokemonUsuarioActivo).getVitalidad() /usuario.getPokemon(pokemonUsuarioActivo).getVitMax());
         barVitJugador.setStyle(BAR_VERDE);
-        botonMovi1.setText(usuario.getPokemon(pokemonUsuarioActivo).getMovimiento(0).getNombre());
-        botonMovi2.setText(usuario.getPokemon(pokemonUsuarioActivo).getMovimiento(1).getNombre());
-        botonMovi3.setText(usuario.getPokemon(pokemonUsuarioActivo).getMovimiento(2).getNombre());
-        botonMovi4.setText(usuario.getPokemon(pokemonUsuarioActivo).getMovimiento(3).getNombre());
+
+        actualizarBotonesMov();
 
         String imgPokUsuario = Pokemon.imgRutaAbsouta(usuario.getPokemon(pokemonUsuarioActivo).getImagenUrlDetras());
 
@@ -522,6 +518,45 @@ public class CombateController implements Initializable {
         Image imagenPokemonGenerado = new Image(imgPokUsuario);
         pokemonJugador.setImage(imagenPokemonGenerado);
 
+    }
+
+    public void actualizarBotonesMov(){
+        if (usuario.getPokemon(pokemonUsuarioActivo).getMovimiento(0) != null){
+            botonMovi1.setText(usuario.getPokemon(pokemonUsuarioActivo).getMovimiento(0).getNombre());
+            botonMovi1.setVisible(true);
+            botonMovi1.setDisable(false);
+        }
+        else {
+            botonMovi1.setVisible(false);
+            botonMovi1.setDisable(true);
+        }
+        if (usuario.getPokemon(pokemonUsuarioActivo).getMovimiento(1) != null){
+            botonMovi2.setText(usuario.getPokemon(pokemonUsuarioActivo).getMovimiento(1).getNombre());
+            botonMovi2.setVisible(true);
+            botonMovi2.setDisable(false);
+        }
+        else {
+            botonMovi2.setVisible(false);
+            botonMovi2.setDisable(true);
+        }
+        if (usuario.getPokemon(pokemonUsuarioActivo).getMovimiento(2) != null){
+            botonMovi3.setText(usuario.getPokemon(pokemonUsuarioActivo).getMovimiento(2).getNombre());
+            botonMovi3.setVisible(true);
+            botonMovi3.setDisable(false);
+        }
+        else {
+            botonMovi3.setVisible(false);
+            botonMovi3.setDisable(true);
+        }
+        if (usuario.getPokemon(pokemonUsuarioActivo).getMovimiento(3) != null){
+            botonMovi4.setText(usuario.getPokemon(pokemonUsuarioActivo).getMovimiento(3).getNombre());
+            botonMovi4.setVisible(true);
+            botonMovi4.setDisable(false);
+        }
+        else {
+            botonMovi4.setVisible(false);
+            botonMovi4.setDisable(true);
+        }
     }
 
     public void mostrarEquipo() {

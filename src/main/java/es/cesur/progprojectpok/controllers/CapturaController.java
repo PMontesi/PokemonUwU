@@ -15,7 +15,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
@@ -49,6 +48,8 @@ public class CapturaController implements Initializable {
     private Pokemon pokemonSalvaje;
     private Entrenador usuario;
     private Random r = new Random();
+    private String imagenDetrasPokSalvaje;
+    private String imagenDelantePokSalvaje;
 
 
 
@@ -93,7 +94,7 @@ public class CapturaController implements Initializable {
             pokemonSalvaje.setMote(pokemonSalvaje.getNombre());
         }else pokemonSalvaje.setMote(textoMote.getText());
 
-        usuario.capturarPokemon(pokemonSalvaje);
+        usuario.capturarPokemon(pokemonSalvaje, imagenDetrasPokSalvaje, imagenDelantePokSalvaje);
         pokemonSalvajeImagen.setVisible(false);
         pokemonSalvaje = null;
         moteSi.setVisible(false);
@@ -103,7 +104,7 @@ public class CapturaController implements Initializable {
     public void ponerMoteFalse(){
 
         pokemonSalvaje.setMote(pokemonSalvaje.getNombre());
-        usuario.capturarPokemon(pokemonSalvaje);
+        usuario.capturarPokemon(pokemonSalvaje, imagenDetrasPokSalvaje, imagenDelantePokSalvaje);
         pokemonSalvajeImagen.setVisible(false);
         pokemonSalvaje = null;
         moteSi.setVisible(false);
@@ -113,7 +114,6 @@ public class CapturaController implements Initializable {
 
     public void pokemonNuevo(){
 
-        String imagenURL = "";
         pokemonSalvajeImagen.setVisible(true);
         pokemonSalvaje = new Pokemon();
 
@@ -127,11 +127,16 @@ public class CapturaController implements Initializable {
             //Construcción del Pokemon en base a las columnas del segundo SELECT y obtención de la URL de la imagen.
             while (resultSetPokemon.next()) {
                 String nombre = resultSetPokemon.getString("NOM_POKEMON");
+
                 int numPokedex = resultSetPokemon.getInt(("NUM_POKEDEX"));
                 pokemonSalvaje = new Pokemon(nombre, numPokedex);
                 if(pokemonSalvaje.getSexo() == 'H' && resultSetPokemon.getString("IMAGEN_DELANTE_F") != null){
-                    imagenURL = resultSetPokemon.getString("IMAGEN_DELANTE_F");
-                }else imagenURL = resultSetPokemon.getString("IMAGEN_DELANTE");
+                    imagenDelantePokSalvaje = resultSetPokemon.getString("IMAGEN_DELANTE_F");
+                    imagenDetrasPokSalvaje = resultSetPokemon.getString("IMAGEN_DETRAS_F");
+                }else {
+                    imagenDelantePokSalvaje = resultSetPokemon.getString("IMAGEN_DELANTE");
+                    imagenDetrasPokSalvaje = resultSetPokemon.getString("IMAGEN_DETRAS");
+                }
             }
             resultSetPokemon.close();
             statementSelectPokemon.close();
@@ -140,7 +145,7 @@ public class CapturaController implements Initializable {
             e.printStackTrace();
         }
 
-        Image imagenPokemonGenerado = new Image( Pokemon.imgRutaAbsouta(imagenURL));
+        Image imagenPokemonGenerado = new Image(Pokemon.imgRutaAbsouta(imagenDelantePokSalvaje));
         pokemonSalvajeImagen.setImage(imagenPokemonGenerado);
 
         //Log de captura.
