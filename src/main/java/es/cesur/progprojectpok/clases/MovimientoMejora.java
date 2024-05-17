@@ -23,7 +23,11 @@ public class MovimientoMejora extends Movimiento{
         this.cantidadMejora = cantidadMejora;
     }
 
-    //Esto quizá haya que hacerlo por cada movimiento.
+    /**
+     * Aumenta la estadística asociada al string del pokemon que usa el movimiento
+     *
+     * @param pokemonObjetivo el pokemon que usa el movimiento.
+     */
     public void mejoraAplica(Pokemon pokemonObjetivo){
         switch (getEstadistica()){
             case "ATAQUE" -> pokemonObjetivo.setAtaque(pokemonObjetivo.getAtaque()*(1+getCantidadMejora()/100));

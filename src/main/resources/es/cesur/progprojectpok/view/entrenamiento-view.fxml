@@ -112,7 +112,7 @@
             <Font size="49.0" />
          </font>
       </Text>
-      <Pane fx:id="paneSeguirSalir" disable="true" layoutX="214.0" layoutY="171.0" prefHeight="116.0" prefWidth="327.0" style="-fx-background-color: white;" visible="false">
+      <Pane fx:id="paneSeguirSalir" layoutX="214.0" layoutY="171.0" prefHeight="116.0" prefWidth="327.0" style="-fx-background-color: white;" visible="false">
          <children>
             <Button fx:id="botonSeguir" layoutX="24.0" layoutY="63.0" mnemonicParsing="false" onAction="#empezarCombate" prefHeight="33.0" prefWidth="115.0" text="Seguir Entrenando" />
             <Button fx:id="botonVolver" layoutX="191.0" layoutY="63.0" mnemonicParsing="false" onAction="#volverMenu" prefHeight="33.0" prefWidth="109.0" text="Volver al menú" />

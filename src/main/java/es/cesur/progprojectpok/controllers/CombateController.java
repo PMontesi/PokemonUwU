@@ -350,7 +350,7 @@ public class CombateController implements Initializable {
         if (usuario.getPokemon(pokemonUsuarioActivo).getVitalidad() <= 0){
             usuario.getPokemon(pokemonUsuarioActivo).setEstadosPersistentes(EstPersitentesEnum.DEBILITADO);
             combate.setKoJugador(combate.getKoJugador()+1);
-            if (combate.getKoJugador() == 6){
+            if (combate.getKoJugador() != 6){
                 mostrarEquipo();
             }
         }
@@ -622,9 +622,11 @@ public class CombateController implements Initializable {
         pane.setOnMouseClicked((MouseEvent event) -> {
             Pane clickedPane = (Pane) event.getSource();
             pokemonUsuarioActivo = Integer.parseInt(clickedPane.getId());
-            setPokeUsuario(pokemonUsuarioActivo);
-            anchorEquipo.setVisible(false);
-            anchorEquipo.setDisable(true);
+            if (usuario.getPokemon(pokemonUsuarioActivo).getVitalidad() > 0){
+                setPokeUsuario(pokemonUsuarioActivo);
+                anchorEquipo.setVisible(false);
+                anchorEquipo.setDisable(true);
+            }
         });
 
 

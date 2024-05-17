@@ -32,13 +32,20 @@ public class Entrenador {
     }
 
 
-    //MÉTODOS
+    /**
+     * Inserta un pokemon capturado en la base de datos, le da su id de la base de datos y sus imágenes relacionadas.
+     *
+     * @param pokemon el pokemon capturado.
+     * @param imagenTrasera la url que está en la base de datos de la imagen trasera.
+     * @param imagenDelantera la url que está en la base de datos de la imagen delantera.
+     */
     public void capturarPokemon(Pokemon pokemon, String imagenTrasera, String imagenDelantera){
 
         String sqlInsertPokemonCap = "INSERT INTO POKEMON " +
                 "(NUM_POKEDEX, ID_ENTRENADOR, MOTE, CAJA, ATAQUE, AT_ESPECIAL, DEFENSA, DEF_ESPECIAL, VELOCIDAD, NIVEL, " +
                 "FERTILIDAD, SEXO, ESTADO, EXPERIENCIA, VITALIDAD, VIT_MAX) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
         try(Connection connection = DBConnection.getConnection();
             PreparedStatement statementPokemonCapturado = connection.prepareStatement(sqlInsertPokemonCap)){
             statementPokemonCapturado.setInt(1, pokemon.getNumPokedex());
@@ -65,16 +72,44 @@ public class Entrenador {
         } catch(SQLException e){
             e.printStackTrace();
         }
+
+        setPokemonIdBBDD(pokemon);
         pokemon.setMovimiento(0);
         pokemon.setImagenUrlDetras(imagenTrasera);
         pokemon.setImagenUrlDelante(imagenDelantera);
 
     }
 
-    /*
-    Método para enviar el pokemon al equipo o a la caja.
-    Si el equipo tiene espacio, el pokemon se inserta en el array y devuelve 0 para insertarlo en la BBDD.
-    Si el equipo no tiene espacio, el pokemon no se inserta en el array y devuelve 1 para insertarlo en la BBDD.
+    /**
+     * Obtiene la ID del último pokemon añadido a la base de datos.
+     * Se usa exclusivamente cuando un pokemon es capturado.
+     * @param pokemon el pokemon capturado.
+     */
+    public void setPokemonIdBBDD(Pokemon pokemon){
+        String obtenerIDpoke = "SELECT MAX(ID_POKEMON) FROM POKEMON";
+        try(Connection connection = DBConnection.getConnection();
+            PreparedStatement statementObtenerIDPoke = connection.prepareStatement(obtenerIDpoke);){
+            ResultSet resultSetObtenerIDPoke = statementObtenerIDPoke.executeQuery();
+            while (resultSetObtenerIDPoke.next()){
+                pokemon.setId(resultSetObtenerIDPoke.getInt("MAX(ID_POKEMON)"));
+            }
+            resultSetObtenerIDPoke.close();
+            statementObtenerIDPoke.close();
+            connection.close();
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+
+
+    /**
+     * Para enviar el pokemon al equipo o a la caja.
+     * Si el equipo tiene espacio, el pokemon se inserta en el array y devuelve 0 para insertarlo en la BBDD.
+     * Si el equipo no tiene espacio, el pokemon no se inserta en el array y devuelve 1 para insertarlo en la BBDD.
+     * @param pokemon pokemon capturado
+     * @return devuelve el valor a actualizar en la columna caja de la base de datos
      */
     public int equipOrCaja(Pokemon pokemon){
         for (int i = 0; i < equipoPokemon.length; i++) {
@@ -93,19 +128,7 @@ public class Entrenador {
         return equipoPokemon[indice];
     }
 
-    public Pokemon usarPokemon(int indice){
-        if (indice >= 0 && indice < equipoPokemon.length) {
-            return equipoPokemon[indice];
-        } else {
-            return null;
-        }
-    }
-
-
-
     //GETTERS Y SETTERS
-
-
     public String getNombre() {
         return nombre;
     }

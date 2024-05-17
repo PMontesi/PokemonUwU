@@ -28,6 +28,14 @@ public class Combate {
         this.rival = rival;
     }
 
+    /**
+     * Asigna quien ataca primero en base a quién tiene mayor prioridad.
+     *
+     * @param pokemonA uno de los pokemons del combate, generalmente el del usuario.
+     * @param movimientoA el movimiento que usa el pokemonA
+     * @param pokemonB uno de los pokemons del combate, generalmente el pokemon del rival.
+     * @param movimientoB el movimiento que usa el pokemonB
+     */
     public void combatir (Pokemon pokemonA, int movimientoA, Pokemon pokemonB, int movimientoB){
         setPrioridad(pokemonA, pokemonB);
 
@@ -55,7 +63,6 @@ public class Combate {
                 movimientoB = 5;
             }
 
-
             setPrimerPoke(pokemonB);
             setMovimientoUsadoPrimer(movimientoB);
             setSegundoPoke(pokemonA);
@@ -63,7 +70,13 @@ public class Combate {
         }
     }
 
-
+    /**
+     * Asigna la prioridad a cada pokemon en base a su velocidad.
+     * Tiene en cuenta los esados alterados que puedan alterar la velocidad
+     *
+     * @param pokemonA pokemonA uno de los pokemons del combate, generalmente el del usuario.
+     * @param pokemonB pokemonB uno de los pokemons del combate, generalmente el pokemon del rival.
+     */
     public void setPrioridad (Pokemon pokemonA, Pokemon pokemonB){
         int velPokeA = pokemonA.getVelocidad();
         if (pokemonA.getEstadosPersistentes() == EstPersitentesEnum.PARALIZADO
@@ -95,6 +108,12 @@ public class Combate {
     }
 
 
+    /**
+     * Comprueba que el pokemon pueda o no atacar en base al estado que tenga.
+     *
+     * @param pokemon pokemon que sufre el estado alterado
+     * @return verdadero si tiene uno de los estados (o supera el random que hace que resista el estado).
+     */
     public boolean checkStun(Pokemon pokemon){
         return pokemon.getEstadosPersistentes() == EstPersitentesEnum.DORMIDO
                 || pokemon.getEstadosPersistentes() == EstPersitentesEnum.CONGELADO
@@ -104,6 +123,11 @@ public class Combate {
                 || pokemon.getEstTemporalesEnums().contains(EstTemporalesEnum.AMEDRENTADO);
     }
 
+    /**
+     * Determina el ganador del combate en base al número de ko's.
+     *
+     * @return devuelve el entrenador que ha ganado.
+     */
     public Entrenador determinarGanador(){
         if(koJugador == 6) return rival;
         else if (koRival == 6)  return usuario;
@@ -111,7 +135,16 @@ public class Combate {
     }
 
 
-    //VER POR QUÉ NO VA ESTO EN EL ENTRENAMIENTO. POR CURIOSIDAD PORQUE NETRENAMIENTO NO TIENE QUE TENER ESTE MÉTODO
+    //VER POR QUÉ NO VA ESTO EN EL ENTRENAMIENTO. POR CURIOSIDAD PORQUE ETRENAMIENTO NO TIENE QUE TENER ESTE MÉTODO
+
+    /**
+     * Entrega pokedólares al usuario según el nivel de los pokemons derrotados del rival.
+     * Si el usuario ha perdido, se le resta 1/4 de los pokedolares del usuario.
+     * En ambos casos, actualiza la base de datos.
+     *
+     * @param posNeg valor que indica si el usuario ha perdido o no
+     * @param rival el rival del que sacar los pokemons.
+     */
     public void entregarPokedolares(int posNeg, Entrenador rival){
         int pokedolaresEntregar = 0;
         if (posNeg == 1){
@@ -122,7 +155,6 @@ public class Combate {
         else pokedolaresEntregar = -(usuario.getPokedolares()/4);
 
         usuario.setPokedolares(usuario.getPokedolares()+pokedolaresEntregar);
-
 
         String sqlAddPokedollars = "UPDATE ENTRENADOR SET POKEDOLLARS = POKEDOLLARS + ? WHERE ID_ENTRENADOR = ?";
         try(Connection connection = DBConnection.getConnection();
@@ -139,11 +171,9 @@ public class Combate {
         }
     }
 
-    /*
-
-    Método para restaurar el equipo pokemon sus estadísticas quitándole los aumentos por habilidades
-    Este método será necesario revisarlo cuando se incluyan el centro pokemon y los objetos.
-
+    /**
+     *  Restaura el equipo pokemon sus estadísticas quitándole los aumentos por habilidades
+     *  Este método será necesario revisarlo cuando se incluyan el centro pokemon y los objetos.
      */
     public void restaurarEquipo() {
         String sqlEquipoPokemon = "SELECT ATAQUE, AT_ESPECIAL, DEFENSA, DEF_ESPECIAL, VELOCIDAD FROM POKEMON_EQUIPO WHERE ID_ENTRENADOR = ? AND ID_POKEMON = ?;";
@@ -178,23 +208,15 @@ public class Combate {
     }
 
 
-
+    /**
+     * Entrega experiencia al pokemon del jugador que ha derrotado al pokemon rival.
+     * Después, actualiza la base de datos.
+     *
+     * @param pokUsuario el pokemon que está usando el usuario en ese momento.
+     * @param rival el pokemon dle rival derrotado en ese momento.
+     */
     public void recibirExperiencia(Pokemon pokUsuario, Pokemon rival){
         int exp = rival.getNivel()*5;
-        /*
-        Este bucle for es para repartir la experiencia entre todos los pokemons del equipo
-        Se revisará cuando se tenga tiempo.
-
-        for (int i = 0; i < usuario.getEquipoPokemon().length; i++) {
-            if (usuario.getPokemon(i).getId() == usuario.getPokemon(pokemonIndice).getId()){
-
-               break;
-            }
-
-            else if (usuario.getPokemon(i).getId() != usuario.getPokemon(pokemonIndice).getId() && usuario.getPokemon(i).getEstadosPersistentes() != EstPersitentesEnum.DEBILITADO) {
-                usuario.getEquipoPokemon()[i].setExperiencia(usuario.getEquipoPokemon()[i].getExperiencia() + (rival.getNivel()*5)/3);
-            }
-             */
 
            pokUsuario.setExperiencia(pokUsuario.getExperiencia() + exp);
 

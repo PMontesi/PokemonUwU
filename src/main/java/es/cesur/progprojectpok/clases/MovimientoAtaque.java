@@ -24,6 +24,14 @@ public class MovimientoAtaque extends Movimiento{
     }
 
     //Pedir AT/AT_ESP como argumentos
+
+    /**
+     * Resta vitalidad del pokemon objetivo según el resultado de la fórmula de daño.
+     * Cambia las estadísticas si el pokemon sufre alguno de los estados alterados correspondientes.
+     *
+     * @param pokemonObjetivo el pokemon que sufre el ataque
+     * @param pokemonCaster el pokemon que realiza el atauqe
+     */
     public void aplicarDamage(Pokemon pokemonObjetivo, Pokemon pokemonCaster){
         int ataque = pokemonCaster.getAtaque();
         if (pokemonCaster.getEstadosPersistentes() == EstPersitentesEnum.QUEMADO)  ataque *= 0.5;
@@ -55,6 +63,24 @@ public class MovimientoAtaque extends Movimiento{
         }
     }
 
+    /**
+     * Formula para calcular el daño que realiza un movimiento.
+     * damageNivel: calcula el daño que tiene que realizar según el niveld el atacante.
+     * potencia: consigue la potencia del movimiento usado.
+     * ataDef: la división de la estadística de ataque del atacante entre la estadística de defensa del objetivo.
+     * Estas tres variables anteriores se multiplican entre sí. El resultado de la multiplicación se divide entre 50 y
+     * se le suma 2. El resto de variables multiplican este resulado.
+     * -
+     * stab: comprueba si el movimiento usado coincide con alguno de los tipos del pokemon. En caso verdero, devuelve 1,5.
+     * La fórmula continúa con las ventajas y las desventajas.
+     *
+     * @param pokemon pokemon que realiza el ataque
+     * @param ataque el valor de la estadística de ataque correspondiente del pokemon objetivo
+     * @param defensaObjetivo el valor de la estadística de defensa correspondiente del pokemon objetivo
+     * @param tipo1Objetivo el enumerado del tipo del pokemon objetivo.
+     * @param tipo2Objetivo el enumerado dle tipo del pokemon objetivo. Puede ser nulo.
+     * @return el reusltado de la fórmula.
+     */
     public int damageCalc(Pokemon pokemon, int ataque, int defensaObjetivo, Tipos tipo1Objetivo, Tipos tipo2Objetivo){
         float damageNivel = ((float) (2 * pokemon.getNivel()) /5 + 2);
         float potencia = getPotencia();
@@ -65,6 +91,14 @@ public class MovimientoAtaque extends Movimiento{
         return (int) (((damageNivel * potencia * ataDef)/50+2) * stab * compararTipos(tipo1Objetivo) * compararTipos(tipo2Objetivo) * rdm);
     }
 
+    /**
+     * Fórmula para calcular el daño cuando un pokemon está confuso y se hace daño así mismo.
+     *
+     * @param pokemon pokemon que tiene la confusión y ataca,
+     * @param ataque el valor de la estadística ataque del pokemon,
+     * @param defensa el valor de la estadistica defensa del pokemon,
+     * @return el resultado de la fórmula,
+     */
     public int damageConfusion (Pokemon pokemon, int ataque, int defensa){
 
         float damageNivel = ((float) (2 * pokemon.getNivel()) /5 + 2);
@@ -75,6 +109,11 @@ public class MovimientoAtaque extends Movimiento{
         return (int) (((damageNivel * potencia * ataDef)/50+2) * rdm);
     }
 
+    /**
+     * Tabla de ventajas y desventajas.
+     * @param tipoObjetivo el enumerado del tipo del pokemon.
+     * @return el multiplicador a usar en la fórmula de ataque.
+     */
     public float compararTipos(Tipos tipoObjetivo) {
         switch (getTipo()) {
             case AGUA:

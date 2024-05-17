@@ -1,11 +1,10 @@
 package es.cesur.progprojectpok.controllers;
 
 import es.cesur.progprojectpok.SplashApplication;
-import es.cesur.progprojectpok.clases.Entrenador;
-import es.cesur.progprojectpok.clases.PaneData;
-import es.cesur.progprojectpok.clases.Pokemon;
-import es.cesur.progprojectpok.clases.Tipos;
+import es.cesur.progprojectpok.clases.*;
 import es.cesur.progprojectpok.database.DBConnection;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 
@@ -29,7 +28,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class EquipoController implements Initializable {
 
@@ -65,6 +66,9 @@ public class EquipoController implements Initializable {
 
     @FXML
     private Label deffNumPokSelecc;
+
+    @FXML
+    private Text textoError;
 
     @FXML
     private GridPane gridCaja;
@@ -103,6 +107,7 @@ public class EquipoController implements Initializable {
     private int equipoSelect = -1;
     private int cajaSelect = -1;
     private int caja0Equipo = 2;
+    private boolean equipoLleno = false;
 
     public void setUsuario(Entrenador usuario) {
         this.usuario = usuario;
@@ -134,6 +139,8 @@ public class EquipoController implements Initializable {
             paneMap.put("pane" + i, new PaneData(pane));
 
             y += 60;
+
+            if (i == 5) equipoLleno = true;
 
         }
     }
@@ -198,8 +205,6 @@ public class EquipoController implements Initializable {
         usuario.setPokemon(null, equipoSelect);
         equipoSelect = -1;
 
-
-
     }
 
     /*
@@ -215,35 +220,47 @@ public class EquipoController implements Initializable {
      */
 
     public void enviarEquipo() {
-        Pokemon pokemon = pokemonCaja[cajaSelect];
-        int i;
-        for (i = 0; i < usuario.getEquipoPokemon().length; i++) {
-            if (usuario.getPokemon(i) == null){
-                usuario.setPokemon(pokemonCaja[cajaSelect], i);
-                break;
+        if (!equipoLleno){
+            Pokemon pokemon = pokemonCaja[cajaSelect];
+            int i;
+            for (i = 0; i < usuario.getEquipoPokemon().length; i++) {
+                if (usuario.getPokemon(i) == null){
+                    usuario.setPokemon(pokemonCaja[cajaSelect], i);
+                    break;
+                }
             }
+
+            Image newImage = new Image(Pokemon.imgRutaAbsouta(pokemon.getImagenUrlDelante()));
+
+            PaneData paneData = paneMap.get("pane" + i);
+            paneData.actualizarElementos(pokemon.getMote(), newImage, pokemon.getNivel(), pokemon.getVitalidad(), pokemon.getVitMax(), pokemon);
+            encenderPane(i);
+
+            ImageView imageViewToRemove = obtenerImageViewDelGrid(cajaSelect);
+            if (imageViewToRemove != null) {
+                imageViewToRemove.setImage(null);
+            }
+
+            caja0Equipo = 0;
+            actualizarDB(pokemon, caja0Equipo);
+            caja0Equipo = 2;
+
+            pokemonCaja[cajaSelect] = null;
+
+            cajaSelect = -1;
+        }
+        else {
+            Timeline timeline = new Timeline(
+                    new KeyFrame(Duration.seconds(3), event -> {
+                        textoError.setVisible(false);
+                    })
+            );
+            textoError.setText("Equipo Pokemon lleno");
+            textoError.setVisible(true);
+            timeline.play();
         }
 
-        Image newImage = new Image(Pokemon.imgRutaAbsouta(pokemon.getImagenUrlDelante()));
-
-        PaneData paneData = paneMap.get("pane" + i);
-        paneData.actualizarElementos(pokemon.getMote(), newImage, pokemon.getNivel(), pokemon.getVitalidad(), pokemon.getVitMax(), pokemon);
-        encenderPane(i);
-
-        ImageView imageViewToRemove = obtenerImageViewDelGrid(cajaSelect);
-        if (imageViewToRemove != null) {
-            imageViewToRemove.setImage(null);
-        }
-
-        caja0Equipo = 0;
-        actualizarDB(pokemon, caja0Equipo);
-        caja0Equipo = 2;
-
-        pokemonCaja[cajaSelect] = null;
-
-        cajaSelect = -1;
     }
-
 
     /*
 
@@ -491,20 +508,42 @@ public class EquipoController implements Initializable {
     }
 
     public void vovlerMenu(){
-        Stage stage = (Stage) botonVolverMenu.getScene().getWindow();
-        stage.close();
-
-        FXMLLoader fxmlLoader = new FXMLLoader(SplashApplication.class.getResource("view/mainMenu-view.fxml"));
-        Scene scene = null;
-        try {
-            scene = new Scene(fxmlLoader.load(), 800, 480);
-            stage.setTitle("Menu");
-            stage.setScene(scene);
-            stage.show();
-            MainMenuController mainMenuController = fxmlLoader.getController();
-            mainMenuController.setUsuario(usuario);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        boolean equipoVacio = false;
+        for (int i = 0; i < usuario.getEquipoPokemon().length; i++) {
+            if (usuario.getPokemon(i) != null){
+                equipoVacio = false;
+                break;
+            }
+            else equipoVacio = true;
         }
+
+        if (equipoVacio){
+            Timeline timeline = new Timeline(
+                    new KeyFrame(Duration.seconds(3), event -> {
+                        textoError.setVisible(false);
+                    })
+            );
+            textoError.setText("Necesitas al menos 1 Pokemon en tu equipo");
+            textoError.setVisible(true);
+            timeline.play();
+        }
+        else {
+            Stage stage = (Stage) botonVolverMenu.getScene().getWindow();
+            stage.close();
+
+            FXMLLoader fxmlLoader = new FXMLLoader(SplashApplication.class.getResource("view/mainMenu-view.fxml"));
+            Scene scene = null;
+            try {
+                scene = new Scene(fxmlLoader.load(), 800, 480);
+                stage.setTitle("Menu");
+                stage.setScene(scene);
+                stage.show();
+                MainMenuController mainMenuController = fxmlLoader.getController();
+                mainMenuController.setUsuario(usuario);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
     }
 }

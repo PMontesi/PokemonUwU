@@ -370,22 +370,14 @@ public class EntrenamientoController implements Initializable {
         if (rival.getPokemon(0).getVitalidad() <= 0){
             combate.recibirExperiencia(usuario.getPokemon(pokemonUsuarioActivo), rival.getPokemon(0));
             combate.setKoRival(combate.getKoRival()+1);
-            if (combate.getKoRival() != 6 ){
-                setImagenPokeRival();
+            if (combate.getKoRival() == 6){
+                paneSeguirSalir.setVisible(true);
+                paneSeguirSalir.setDisable(false);
             }
         }
 
         darExperiencia();
 
-        if (combate.determinarGanador() != null){
-            if (combate.determinarGanador() == usuario){
-                combate.entregarPokedolares(1, rival);
-            } else if (combate.determinarGanador() == rival) {
-                combate.entregarPokedolares(-1, rival);
-            }
-            combate.restaurarEquipo();
-            volverMenu();
-        }
 
         if(!aprendiendoMovimiento){
             paneDescCombate.setVisible(false);
@@ -417,7 +409,6 @@ public class EntrenamientoController implements Initializable {
             }
         }
     }
-
 
 
     private void aprenderMovimiento(Pokemon pokemon, Movimiento movimiento){

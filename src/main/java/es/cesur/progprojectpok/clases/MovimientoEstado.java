@@ -21,6 +21,14 @@ public class MovimientoEstado extends Movimiento{
         this.duracionTurnos = duracionTurnos;
     }
 
+    /**
+     * Aplica el estado correspondiente al pokemon objetivo. Cambia el atributo del pokemon objetivo.
+     * Para los estados persitentes, tiene efecto si no tiene uno ya.
+     * Para los estados temporales, lo añade al array si no está ya.
+     *
+     * @param pokemon
+     * @param estado
+     */
     public void aplicarEstado(Pokemon pokemon, String estado){
         if (estadosPersitentesStringtoEnum(estado) != null && pokemon.getEstadosPersistentes() == EstPersitentesEnum.SALUDABLE){
             switch (estadosPersitentesStringtoEnum(estado)){
@@ -50,6 +58,12 @@ public class MovimientoEstado extends Movimiento{
         }
     }
 
+    /**
+     * Calcula el daño en el tiempo que hacen alguno de los estados alterados.
+     * También disminuye la duración en turnos del estado y lo quita si llega a 0
+     *
+     * @param pokemon pokemon que tiene el estado.
+     */
     public static void damageOverTime(Pokemon pokemon){
 
         if(pokemon.getEstadosPersistentes() == EstPersitentesEnum.GRAV_ENVENENADO
@@ -75,6 +89,11 @@ public class MovimientoEstado extends Movimiento{
 
     }
 
+    /**
+     * Quita el estado alterado si este llega a 0.
+     *
+     * @param pokemon el pokemon que tiene el estado
+     */
     public static void quitarEstado(Pokemon pokemon){
         if (pokemon.getDuracionPersistente() == 0){
             pokemon.setEstadosPersistentes(EstPersitentesEnum.SALUDABLE);
@@ -85,6 +104,11 @@ public class MovimientoEstado extends Movimiento{
         }
     }
 
+    /**
+     * Quita el estado confusión cuando este llega a 0.
+     *
+     * @param pokemon el pokemon que tiene confusión.
+     */
     public static void quitarConfusion(Pokemon pokemon){
         if (pokemon.getEstTemporalesEnums().contains(EstTemporalesEnum.CONFUSION) && pokemon.getDuracionConfusion() == 0 ){
             pokemon.getEstTemporalesEnums().remove(EstTemporalesEnum.CONFUSION);

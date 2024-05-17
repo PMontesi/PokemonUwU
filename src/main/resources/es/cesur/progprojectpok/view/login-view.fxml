@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -26,11 +27,6 @@
                </font>
             </Text>
             <TextField fx:id="loginUsuario" layoutX="128.0" layoutY="103.0" prefHeight="16.0" prefWidth="160.0">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </TextField>
-            <TextField fx:id="loginContra" layoutX="128.0" layoutY="157.0" prefHeight="16.0" prefWidth="160.0">
                <font>
                   <Font size="16.0" />
                </font>
@@ -60,6 +56,11 @@
                   <Font size="20.0" />
                </font>
             </Text>
+            <PasswordField fx:id="loginContra" layoutX="129.0" layoutY="158.0" prefHeight="25.0" prefWidth="159.0">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </PasswordField>
          </children>
          <opaqueInsets>
             <Insets />

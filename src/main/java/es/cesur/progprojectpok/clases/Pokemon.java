@@ -140,6 +140,12 @@ public class Pokemon {
         return sex;
     }
 
+    /**
+     * Convierte el string en el enumerado correspondiente.
+     * Principalmente para cuando se construye un pokemon.
+     * @param tipoString el string obtenido de la base de datos
+     * @return el enumerado correspondiente
+     */
     public static Tipos TipoStringToEnum(String tipoString){
         if (tipoString == null){
             tipoString = "null";
@@ -164,6 +170,13 @@ public class Pokemon {
             default -> null;
         };
     }
+
+    /**
+     * Convierte el enumerado en un string.
+     * Principalmente para actualizar el pokemon en la base de datos.
+     * @param tipoEnum el enumerado que tenga el pokemon
+     * @return el enumerado en string
+     */
     public static String TipoEnumToString(Tipos tipoEnum) {
         if (tipoEnum == null) {
             return "null";
@@ -188,6 +201,12 @@ public class Pokemon {
         };
     }
 
+    /**
+     * Otorga al pokemon estádisticas aleatorias entre 1 y 5 y resta experiencia el equivalente a el nivel del pokemon
+     * por 10.
+     * Después actualiza este pokemon enla base de datos.
+     * @return verdadero si el nivel dle pokemon es múltiplo de 4, ya que a ese nivel tiene que aprender un movimiento
+     */
     public boolean subirNivel(){
                 int nuevoAT = (r.nextInt(5) + 1);
                 int nuevoATESP = (r.nextInt(5)+ 1);
@@ -253,16 +272,13 @@ public class Pokemon {
         return nivel % 4 == 0;
     }
 
-    //SI NO FUNCIONA ES POR LAS PUÑETERAS TILDES.
-    /*
 
-    Selecciona un movimiento aleatorio de la base de datos que el pokemon pueda aprender y no conozca ya.
-    Un movimiento es aprendible por un pokemon según el tipo del pokemon y del nivel que tenga.
-    Los movimientos de tipo NORMAL son aprendibles por todos los pokemons.
-
-    Una vez que se ha aprendido el movimiento, según si es un movimiento de Ataque, Mejora o Estado, se usará un constructor
-    diferente.
-
+    /**
+     * Selecciona un movimiento aleatorio de la base de datos que el pokemon pueda aprender y no conozca ya.
+     * Un movimiento es aprendible por un pokemon según el tipo del pokemon y del nivel que tenga.
+     * Los movimientos de tipo NORMAL son aprendibles por todos los pokemons.
+     * Una vez que se ha aprendido el movimiento, según si es un movimiento de Ataque, Mejora o Estado, se usará un constructor
+     * diferente.
      */
     public Movimiento selecionarMovimientoDB(){
         Movimiento movimiento = null;
@@ -361,13 +377,13 @@ public class Pokemon {
         return movimiento;
     }
 
-    /*
-    Método para que los pokemons del entrenador aprendan movimientos.
-
-    Primero asigna el movimiento al hueco vacío del array.
-    Segundo actualiza la base de datos, insertando la ID en la tabla correspondiente
-    y poniendo el valor de la columna ACTIVO en 1.
-
+    /**
+     * Método para que los pokemons del entrenador aprendan movimientos.
+     * Primero asigna el movimiento al hueco vacío del array.
+     * Segundo actualiza la base de datos, insertando la ID en la tabla correspondiente
+     * y poniendo el valor de la columna ACTIVO en 1.
+     *
+     * @param movimiento el movimiento el cual se tiene que aprender.
      */
     public void aprenderMovimiento(Movimiento movimiento){
         String sqlAprender = ("INSERT INTO MOVIMIENTOS_POKEMON (ID_MOVIMIENTO, ID_POKEMON, ACTIVO) VALUES (?, ?, ?)");
@@ -413,10 +429,12 @@ public class Pokemon {
 
     }
 
-    /*
-
-    Asigna los movimientos que los Pokemons ya conocen a su array de movimientos.
-
+    /**
+     * Recupera y asigna los movimientos disponibles para un Pokémon dado su ID.
+     * Selecciona los movimientos activos asociados al Pokémon desde la base de datos,
+     * y los instancia en objetos Movimiento correspondientes para su posterior uso.
+     *
+     * @param pokemonId El identificador del Pokémon para el cual se asignarán los movimientos.
      */
     public void asignarMovimientos (int pokemonId){
         Connection connection = null;
@@ -504,11 +522,10 @@ public class Pokemon {
     }
 
 
-
-    /*
-
-    Cambia la columna ACTIVO del movimiento a 0 en la BBDD y lo borra del array.
-
+    /**
+     * Cambia el activo del movimiento en la base de datos a 0 y después lo quita del array
+     *
+     * @param indiceMovimiento la posición del movimiento en el array del pokemon.
      */
     public void olvidarMovimiento(int indiceMovimiento){
         String sqlOlvidarMovimiento = "UPDATE MOVIMIENTOS_POKEMON SET ACTIVO = 0 WHERE ID_POKEMON = ? AND ID_MOVIMIENTO = ?";
@@ -528,13 +545,15 @@ public class Pokemon {
         MOVIMIENTOS[indiceMovimiento] = null;
     }
 
-    /*
 
-     Añade un movimiento aleatorio al array de 4 movimientos del pokemon.
-     Si el pokemon ya conoce ese movimiento, se repite el proceso.
-
-     Principalmente para pokemons generados aleatoriamente.
-
+    /**
+     * Añade un movimiento aleatorio al array de 4 movimientos del pokemon.
+     * Si el pokemon ya conoce ese movimiento, se repite el proceso.
+     * Si no lo conoce, se inserta en su array.
+     * Si el pokemon es un pokemon del usuario, este método se usa cuando el pokemon quiere aprender un movimiento.
+     * Si el pokemon es uno generado para pelear, solo sirve para añadir movimientos a su array.
+     *
+     * @param indice posición del movimiento que se quiere aprender del array de movimientos del pokemon.
      */
     public void setMovimiento(int indice){
         Movimiento nuevoMov = selecionarMovimientoDB();
@@ -544,13 +563,15 @@ public class Pokemon {
         for (int i = 0; i < indice; i++) {
                 if (nuevoMov.getIdMovimiento() == MOVIMIENTOS[i].getIdMovimiento()) {
                     movimientoRepetido = true;
-                    aprenderMovimiento(nuevoMov);
                     break;
                 }
             }
 
         if (!movimientoRepetido){
             MOVIMIENTOS[indice] = nuevoMov;
+            if ( getId()!= 0){
+                aprenderMovimiento(nuevoMov);
+            }
         }
         else setMovimiento(indice);
     }
@@ -563,8 +584,15 @@ public class Pokemon {
         }
     }
 
-    //Método para generar aleatoriamente las estadísticas si se crea un pokemon directamente con un nivel mayor a 1 y
-    //para usar en combate. Si el pokemon tiene nivel 1, el método no hace nada.
+
+
+    /**
+     * Generar aleatoriamente las estadísticas si se crea un pokemon directamente con un nivel mayor a 1 y
+     * para usar en combate. Si el pokemon tiene nivel 1, el método no hace nada.
+     *
+     * @param nivel nivel del pokemon
+     * @return devuelve la cantidad de estadística a aumentar.
+     */
     public int subidaEstadisticasInstananea(int nivel){
         int estadistica = 0;
         for (int i = 1; i < nivel; i++) {
@@ -574,6 +602,13 @@ public class Pokemon {
     }
 
     //Mëtodo para aumentar el nivel aleatoriamente de los pokemons que se generan en combate
+
+    /**
+     * Aumenta o disminuye el nivel de los pokemons antes de empezar un combate.
+     * Se usa exclusivamente para pokemons rivales generados aleatoriamente para el combate
+     *
+     * @return la cantidad de nivel que tiene que aumentarse o disminuirse
+     */
     public int nivelAleatorio(){
         int probabilidad = r.nextInt(100) + 1;
         if (probabilidad < 51) return 0;
@@ -593,6 +628,12 @@ public class Pokemon {
         }
     }
 
+    /**
+     * Devuelve un string que es la ruta absoluta de la imagen del pokemon
+     *
+     * @param url la url de la imagen en el proyecto
+     * @return la url teniendo en cuenta donde está el proyecto en el dispositivo.
+     */
     public static String imgRutaAbsouta(String url){
         File archivo = new File(url);
         String rutaAbsoluta = archivo.getAbsolutePath();

@@ -42,6 +42,20 @@ public class MainMenuController implements Initializable {
 
     public void setUsuario(Entrenador usuario){
         this.usuario = usuario;
+        for (int i = 0; i < usuario.getEquipoPokemon().length; i++) {
+            if (usuario.getPokemon(i) != null){
+                break;
+            }
+            else desabilitarBotones();
+        }
+    }
+
+    public void desabilitarBotones(){
+        menuCombate.setDisable(true);
+        menuCrianza.setDisable(true);
+        menuCentroPoke.setDisable(true);
+        menuEntrenamiento.setDisable(true);
+        menuEquipo.setDisable(true);
     }
 
     public void cerrarSesion(){

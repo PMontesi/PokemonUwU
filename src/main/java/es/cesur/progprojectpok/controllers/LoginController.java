@@ -10,7 +10,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -29,7 +31,7 @@ public class LoginController implements Initializable {
     @FXML
     private TextField loginUsuario;
     @FXML
-    private TextField loginContra;
+    private PasswordField loginContra;
     @FXML
     private Text textoError;
     @FXML
@@ -79,42 +81,53 @@ public class LoginController implements Initializable {
                     mainMenuController.setUsuario(usuario);
                     stage.show();
 
-                //Pasar el usuario al main menu
-
-                //Estas dos líneas de arriba
             } else {
-                textoError.setText("Sos un putiaso");
+                textoError.setFill(Color.RED);
+                textoError.setText("Alguna de las credenciales es incorrecta");
             }
             resultSet.close();
             statement.close();
             connection.close();
         } catch (SQLException | IOException e) {
-            textoError.setText("La base de datos es una putisasa");
+            textoError.setFill(Color.RED);
+            textoError.setText("Error al conectarse a la base de datos");
+
             e.printStackTrace();
         }
 
     }
 
     @FXML
-    private void registrarUsuario() throws SQLException {
+    private void registrarUsuario() {
         String username = loginUsuario.getText();
         String pass = loginContra.getText();
         int pokedollares = r.nextInt(201)+800;
         String sql = "INSERT INTO ENTRENADOR (NOM_ENTRENADOR, PASS, POKEDOLLARS) VALUES (?, ?, ?)";
 
-        try (Connection connection = DBConnection.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, username);
-            statement.setString(2, pass);
-            statement.setInt(3, pokedollares);
-            statement.executeUpdate();
-
-
-            statement.close();
-            connection.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        if (username.isEmpty() || pass.isEmpty()){
+            textoError.setFill(Color.RED);
+            textoError.setText("Hace falta usuario y contraseña para registrarse");
         }
+        else{
+            try (Connection connection = DBConnection.getConnection();
+                 PreparedStatement statement = connection.prepareStatement(sql)) {
+                statement.setString(1, username);
+                statement.setString(2, pass);
+                statement.setInt(3, pokedollares);
+                statement.executeUpdate();
+
+                textoError.setFill(Color.GREEN);
+                textoError.setText("Usuario registrado satisfactoriamente");
+
+
+
+                statement.close();
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 
     public void salirPrograma (){
