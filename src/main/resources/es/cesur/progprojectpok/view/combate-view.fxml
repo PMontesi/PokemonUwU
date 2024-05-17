@@ -6,6 +6,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
@@ -21,57 +22,27 @@
             <Image url="@../images/battle-plataform-enemy.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="120.0" fitWidth="360.0" layoutY="364.0">
+      <ImageView fitHeight="131.0" fitWidth="435.0" layoutX="-6.0" layoutY="349.0">
          <image>
             <Image url="@../images/battle-plataform-jug.png" />
          </image>
       </ImageView>
-      <Pane fx:id="panePokeJugador" layoutX="421.0" layoutY="286.0" prefHeight="67.0" prefWidth="295.0" style="-fx-background-color: #;">
-         <children>
-            <Text fill="WHITE" layoutX="20.0" layoutY="24.0" strokeType="OUTSIDE" strokeWidth="0.0" text="NOMBRE POKEMON JUGADOR" wrappingWidth="240.0">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Text>
-            <Text fill="WHITE" layoutX="28.0" layoutY="46.0" strokeType="OUTSIDE" strokeWidth="0.0" text="VITALIDAD" wrappingWidth="240.0">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Text>
-            <ProgressBar fx:id="progressBarJugador" layoutX="100.0" layoutY="37.0" prefHeight="12.0" prefWidth="187.0" progress="0.0" />
-         </children>
-      </Pane>
-      <ImageView fx:id="pokemonJugador" fitHeight="339.0" fitWidth="339.0" layoutY="169.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="pokemonJugador" fitHeight="298.0" fitWidth="288.0" layoutX="14.0" layoutY="212.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/pokemons/charizard-back.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="170.0" fitWidth="173.0" layoutX="499.0" layoutY="133.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="pokemonRival" fitHeight="170.0" fitWidth="173.0" layoutX="499.0" layoutY="133.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/pokemons/blastoise-front.png" />
          </image>
       </ImageView>
-      <Pane fx:id="paneMovimientos" layoutX="437.0" layoutY="366.0" opacity="0.46" prefHeight="87.0" prefWidth="295.0" style="-fx-background-color: #000000;">
+      <Pane fx:id="paneMovimientos" disable="true" layoutX="437.0" layoutY="366.0" prefHeight="87.0" prefWidth="295.0" style="-fx-background-color: #000000;" visible="false">
          <children>
-            <Button fx:id="botonMovi1" layoutX="24.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="115.0" text="OPCION 1" />
-            <Button fx:id="botonMovi2" layoutX="24.0" layoutY="44.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="115.0" text="OPCION 3" />
-            <Button fx:id="botonMovi3" layoutX="165.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="109.0" text="OPCION 2" />
-            <Button fx:id="botonMovi4" layoutX="165.0" layoutY="44.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="109.0" text="OPCION 4" />
-         </children>
-      </Pane>
-      <Pane fx:id="panePokeEnemigo" layoutX="126.0" layoutY="115.0" prefHeight="67.0" prefWidth="295.0" style="-fx-background-color: #000000;">
-         <children>
-            <Text fill="WHITE" layoutX="20.0" layoutY="24.0" strokeType="OUTSIDE" strokeWidth="0.0" text="NOMBRE POKEMON ENEMIGO" wrappingWidth="240.0">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Text>
-            <Text fill="WHITE" layoutX="28.0" layoutY="46.0" strokeType="OUTSIDE" strokeWidth="0.0" text="VITALIDAD" wrappingWidth="240.0">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Text>
-            <ProgressBar fx:id="progressBarEnemigo" layoutX="100.0" layoutY="37.0" prefHeight="12.0" prefWidth="187.0" progress="0.0" />
+            <Button fx:id="botonMovi1" layoutX="24.0" mnemonicParsing="false" onAction="#usarMovi1" prefHeight="37.0" prefWidth="115.0" text="OPCION 1" />
+            <Button fx:id="botonMovi3" layoutX="24.0" layoutY="44.0" mnemonicParsing="false" onAction="#usarMovi3" prefHeight="37.0" prefWidth="115.0" text="OPCION 3" />
+            <Button fx:id="botonMovi2" layoutX="165.0" mnemonicParsing="false" onAction="#usarMovi2" prefHeight="37.0" prefWidth="109.0" text="OPCION 2" />
+            <Button fx:id="botonMovi4" layoutX="165.0" layoutY="44.0" mnemonicParsing="false" onAction="#usarMovi4" prefHeight="37.0" prefWidth="109.0" text="OPCION 4" />
          </children>
       </Pane>
       <ImageView fitHeight="100.0" fitWidth="300.0" layoutX="227.0" layoutY="-5.0">
@@ -79,15 +50,67 @@
             <Image url="@../images/Combatetext.png" />
          </image>
       </ImageView>
-      <Pane fx:id="paneDescCombate" layoutX="166.0" layoutY="356.0" opacity="0.9" prefHeight="107.0" prefWidth="467.0" style="-fx-background-color: #f5dc9d;">
+      <Pane fx:id="panePokeEnemigo" layoutX="126.0" layoutY="95.0" prefHeight="67.0" prefWidth="295.0" style="-fx-background-color: #000000;">
          <children>
+            <Text fx:id="textNomPokeRiv" fill="WHITE" layoutX="11.0" layoutY="24.0" strokeType="OUTSIDE" strokeWidth="0.0" text="NOMBRE POKEMON RIVAL" wrappingWidth="240.0">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Text>
+            <Text fill="WHITE" layoutX="57.0" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" text="VITALIDAD" wrappingWidth="74.0">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Text>
+            <ProgressBar fx:id="barVitRival" layoutX="131.0" layoutY="37.0" prefHeight="12.0" prefWidth="156.0" progress="0.0" />
+            <Text fx:id="textNivPokRiv" fill="WHITE" layoutX="237.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nv.100" wrappingWidth="47.0">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Text>
+            <Rectangle fx:id="cuadradoEstadoRiv" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="12.0" layoutX="14.0" layoutY="37.0" stroke="BLACK" strokeType="INSIDE" width="40.0" />
+         </children>
+      </Pane>
+      <Pane fx:id="paneMenuCombate" layoutX="437.0" layoutY="366.0" prefHeight="87.0" prefWidth="295.0" style="-fx-background-color: #000000;">
+         <children>
+            <Button fx:id="botonAtacar" layoutX="24.0" mnemonicParsing="false" onAction="#desplegarMov" prefHeight="37.0" prefWidth="115.0" text="ATACAR" />
+            <Button fx:id="botonHuir" layoutX="90.0" layoutY="44.0" mnemonicParsing="false" onAction="#pulsarHuir" prefHeight="37.0" prefWidth="115.0" text="HUIR" />
+            <Button fx:id="botonCambiarPokemon" alignment="CENTER" layoutX="165.0" mnemonicParsing="false" onAction="#mostrarEquipo" prefHeight="37.0" prefWidth="109.0" text="EQUIPO" textOverrun="CLIP" />
+         </children>
+      </Pane>
+      <Pane fx:id="panePokeJugador" layoutX="437.0" layoutY="297.0" prefHeight="67.0" prefWidth="295.0" style="-fx-background-color: #000000;">
+         <children>
+            <Text fx:id="textNomPokeJug" fill="WHITE" layoutX="11.0" layoutY="24.0" strokeType="OUTSIDE" strokeWidth="0.0" text="NOMBRE POKEMON JUGADOR" wrappingWidth="240.0">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Text>
+            <Text fill="WHITE" layoutX="57.0" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" text="VITALIDAD" wrappingWidth="74.0">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Text>
+            <ProgressBar fx:id="barVitJugador" layoutX="131.0" layoutY="37.0" prefHeight="12.0" prefWidth="156.0" progress="0.0" />
+            <Text fx:id="textNivPokJug" fill="WHITE" layoutX="237.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nv.100" wrappingWidth="47.0">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Text>
+            <Rectangle fx:id="cuadradoEstadoJug" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="12.0" layoutX="14.0" layoutY="37.0" stroke="BLACK" strokeType="INSIDE" width="40.0" />
+         </children>
+      </Pane>
+      <Pane fx:id="paneDescCombate" layoutX="313.0" layoutY="356.0" opacity="0.9" prefHeight="107.0" prefWidth="467.0" style="-fx-background-color: #f5dc9d;" visible="false">
+         <children>
+            <Text fx:id="textDescripCombate" layoutX="13.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="TEXTO DE COMBATE" wrappingWidth="453.0566101074219" />
             <ImageView fitHeight="116.0" fitWidth="520.0" layoutX="-25.0" layoutY="-3.0" opacity="0.9">
                <image>
                   <Image url="@../images/textbox.png" />
                </image>
             </ImageView>
-            <Text fx:id="textDescripCombate" layoutX="13.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="TEXTO DE COMBATE" wrappingWidth="453.0566101074219" />
          </children>
       </Pane>
+      <AnchorPane fx:id="anchorEquipo" disable="true" layoutX="437.0" layoutY="62.0" prefHeight="390.0" prefWidth="295.0" style="-fx-background-color: white;" visible="false" />
+      <Button fx:id="botonSI" disable="true" layoutX="377.0" layoutY="216.0" mnemonicParsing="false" onAction="#presionSi" text="Si" visible="false" />
+      <Button fx:id="botonNo" disable="true" layoutX="413.0" layoutY="216.0" mnemonicParsing="false" onAction="#presionNo" text="No" visible="false" />
    </children>
 </AnchorPane>

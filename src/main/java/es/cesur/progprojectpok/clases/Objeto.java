@@ -1,11 +1,5 @@
 package es.cesur.progprojectpok.clases;
 
-import es.cesur.progprojectpok.database.DBConnection;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 public class Objeto {
     private String nombre;
@@ -14,16 +8,10 @@ public class Objeto {
     private int reduccion;
 
 
+    /*
+    Esta clase ese usará cuando se cree la tienda.
+     */
     public Objeto() {
     }
 
-    public void aumentarEstadistica(String estadistica) throws SQLException {
-        String sqlEstadistica = "SELECT " + estadistica + " FROM OBJETO";
-        Connection connection = DBConnection.getConnection();
-        PreparedStatement statementEstadistica = connection.prepareStatement(sqlEstadistica);
-        ResultSet resultSetEstadistica = statementEstadistica.executeQuery();
-        while (resultSetEstadistica.next()){
-            aumento = resultSetEstadistica.getInt(estadistica);
-        }
-    }
 }

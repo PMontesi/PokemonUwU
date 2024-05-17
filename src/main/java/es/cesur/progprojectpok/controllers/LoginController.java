@@ -2,13 +2,17 @@ package es.cesur.progprojectpok.controllers;
 
 import es.cesur.progprojectpok.SplashApplication;
 import es.cesur.progprojectpok.clases.Entrenador;
+import es.cesur.progprojectpok.clases.Objeto;
+import es.cesur.progprojectpok.clases.Pokemon;
 import es.cesur.progprojectpok.database.DBConnection;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -27,7 +31,7 @@ public class LoginController implements Initializable {
     @FXML
     private TextField loginUsuario;
     @FXML
-    private TextField loginContra;
+    private PasswordField loginContra;
     @FXML
     private Text textoError;
     @FXML
@@ -36,6 +40,8 @@ public class LoginController implements Initializable {
     private Button loginEntrar;
     @FXML
     private Button loginSalir;
+    private Entrenador usuario;
+    private Random r = new Random();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -54,7 +60,7 @@ public class LoginController implements Initializable {
             statement.setString(2, pass);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                Entrenador usuario = new Entrenador(
+                usuario = new Entrenador(
                         resultSet.getString("NOM_ENTRENADOR"),
                         resultSet.getInt("POKEDOLLARS"),
                         resultSet.getInt("ID_ENTRENADOR")
@@ -63,9 +69,8 @@ public class LoginController implements Initializable {
                 usuario.setPokedolares(usuario.getPokedolares());
                 usuario.setIdUsuario(usuario.getIdUsuario());
                 usuario.setNombreUsuario(usuario.getNombreUsuario());
+                cargarEquipo();
 
-
-                System.out.println(usuario.getIdUsuario());
                 Stage stage = (Stage) loginUsuario.getScene().getWindow();
                 stage.close();
                 FXMLLoader fxmlLoader = new FXMLLoader(SplashApplication.class.getResource("view/mainMenu-view.fxml"));
@@ -76,55 +81,104 @@ public class LoginController implements Initializable {
                     mainMenuController.setUsuario(usuario);
                     stage.show();
 
-                //Pasar el usuario al main menu
-
-                //Estas dos líneas de arriba
             } else {
-                textoError.setText("Sos un putiaso");
+                textoError.setFill(Color.RED);
+                textoError.setText("Alguna de las credenciales es incorrecta");
             }
+            resultSet.close();
+            statement.close();
+            connection.close();
         } catch (SQLException | IOException e) {
-            textoError.setText("La base de datos es una putisasa");
+            textoError.setFill(Color.RED);
+            textoError.setText("Error al conectarse a la base de datos");
+
             e.printStackTrace();
         }
+
     }
 
     @FXML
-    private void registrarUsuario() throws SQLException {
+    private void registrarUsuario() {
         String username = loginUsuario.getText();
         String pass = loginContra.getText();
-        Random random = new Random();
-        int pokedollares = random.nextInt(201)+800;
+        int pokedollares = r.nextInt(201)+800;
         String sql = "INSERT INTO ENTRENADOR (NOM_ENTRENADOR, PASS, POKEDOLLARS) VALUES (?, ?, ?)";
 
-        try (Connection connection = DBConnection.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, username);
-            statement.setString(2, pass);
-            statement.setInt(3, pokedollares);
-            statement.executeUpdate();
-
-            /*
-            if (resultSet.next()) {
-                Stage stage = new Stage();
-                FXMLLoader fxmlLoader = new FXMLLoader(SplashApplication.class.getResource("view/mainMenu-view.fxml"));
-                Scene scene = scene = new Scene(fxmlLoader.load(), 800, 480);
-                stage.setTitle("Menu");
-                stage.setScene(scene);
-                stage.show();
-
-            } else {
-                System.out.println("Sos un puto");
-            }
-
-             */
-        } catch (SQLException e) {
-            e.printStackTrace();
+        if (username.isEmpty() || pass.isEmpty()){
+            textoError.setFill(Color.RED);
+            textoError.setText("Hace falta usuario y contraseña para registrarse");
         }
+        else{
+            try (Connection connection = DBConnection.getConnection();
+                 PreparedStatement statement = connection.prepareStatement(sql)) {
+                statement.setString(1, username);
+                statement.setString(2, pass);
+                statement.setInt(3, pokedollares);
+                statement.executeUpdate();
+
+                textoError.setFill(Color.GREEN);
+                textoError.setText("Usuario registrado satisfactoriamente");
+
+
+
+                statement.close();
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 
     public void salirPrograma (){
         Stage stage = (Stage) loginSalir.getScene().getWindow();
         stage.close();
+    }
+
+
+    public void cargarEquipo(){
+        String sqlEquipoPokemon = "SELECT * FROM POKEMON_EQUIPO WHERE ID_ENTRENADOR = ?";
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement statementEquipoPokemon = connection.prepareStatement(sqlEquipoPokemon)){
+            statementEquipoPokemon.setInt(1, usuario.getIdUsuario());
+            ResultSet resultSetEquipoPokemon = statementEquipoPokemon.executeQuery();
+            int indice = 0;
+
+            while (resultSetEquipoPokemon.next()){
+                Objeto objetoNulo = new Objeto();
+
+
+                Pokemon pokemonUsuario = new Pokemon(
+                        resultSetEquipoPokemon.getString("MOTE"),
+                        resultSetEquipoPokemon.getInt("VITALIDAD"),
+                        resultSetEquipoPokemon.getInt("VIT_MAX"),
+                        resultSetEquipoPokemon.getInt("ATAQUE"),
+                        resultSetEquipoPokemon.getInt("DEFENSA"),
+                        resultSetEquipoPokemon.getInt("AT_ESPECIAL"),
+                        resultSetEquipoPokemon.getInt("DEF_ESPECIAL"),
+                        resultSetEquipoPokemon.getInt("VELOCIDAD"),
+                        resultSetEquipoPokemon.getInt("NIVEL"),
+                        resultSetEquipoPokemon.getInt("EXPERIENCIA"),
+                        resultSetEquipoPokemon.getInt("NUM_POKEDEX"),
+                        resultSetEquipoPokemon.getInt("ID_POKEMON"),
+                        resultSetEquipoPokemon.getString("IMAGEN_DETRAS"),
+                        resultSetEquipoPokemon.getString("IMAGEN_DELANTE"),
+                        resultSetEquipoPokemon.getString("TIPO1"),
+                        resultSetEquipoPokemon.getString("TIPO2"),
+                        resultSetEquipoPokemon.getString("ESTADO"),
+                        objetoNulo
+                );
+                pokemonUsuario.asignarMovimientos(pokemonUsuario.getId());
+                usuario.setPokemon(pokemonUsuario, indice);
+                indice++;
+            }
+            resultSetEquipoPokemon.close();
+            statementEquipoPokemon.close();
+            connection.close();
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
     }
 
 

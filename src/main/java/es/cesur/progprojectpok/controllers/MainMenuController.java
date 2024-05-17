@@ -30,7 +30,7 @@ public class MainMenuController implements Initializable {
     @FXML
     private Button menuEntrenamiento;
     @FXML
-    private Button menuColeccion;
+    private Button menuEquipo;
     @FXML
     private Button menuCaptura;
     private Entrenador usuario;
@@ -42,6 +42,20 @@ public class MainMenuController implements Initializable {
 
     public void setUsuario(Entrenador usuario){
         this.usuario = usuario;
+        for (int i = 0; i < usuario.getEquipoPokemon().length; i++) {
+            if (usuario.getPokemon(i) != null){
+                break;
+            }
+            else desabilitarBotones();
+        }
+    }
+
+    public void desabilitarBotones(){
+        menuCombate.setDisable(true);
+        menuCrianza.setDisable(true);
+        menuCentroPoke.setDisable(true);
+        menuEntrenamiento.setDisable(true);
+        menuEquipo.setDisable(true);
     }
 
     public void cerrarSesion(){
@@ -64,19 +78,16 @@ public class MainMenuController implements Initializable {
         Stage stage = (Stage) menuEntrenamiento.getScene().getWindow();
         stage.close();
 
-        //NO EXISTE LA VISTA. POR AHORA LLEVA AL mainMenu
-        FXMLLoader fxmlLoader = new FXMLLoader(SplashApplication.class.getResource("view/mainMenu-view.fxml"));
 
-        /*
-        Para pasarle el usuario
+        FXMLLoader fxmlLoader = new FXMLLoader(SplashApplication.class.getResource("view/entrenamiento-view.fxml"));
 
-        EntrenamientoController entrenamientoController = fxmlLoader.getController();
-        entrenamientoController.setUsuario(usuario);
 
-         */
+
         Scene scene = null;
         try {
             scene = new Scene(fxmlLoader.load(), 800, 480);
+            EntrenamientoController entrenamientoController = fxmlLoader.getController();
+            entrenamientoController.setUsuario(usuario);
             stage.setTitle("Menu");
             stage.setScene(scene);
             stage.show();
@@ -135,22 +146,7 @@ public class MainMenuController implements Initializable {
         }
     }
 
-    public void abrirMenuColeccion(){
-        Stage stage = (Stage) menuColeccion.getScene().getWindow();
-        stage.close();
 
-        //NO EXISTE LA VISTA. POR AHORA LLEVA AL mainMenu.
-        FXMLLoader fxmlLoader = new FXMLLoader(SplashApplication.class.getResource("view/mainMenu-view.fxml"));
-        Scene scene = null;
-        try {
-            scene = new Scene(fxmlLoader.load(), 800, 480);
-            stage.setTitle("Menu");
-            stage.setScene(scene);
-            stage.show();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     public void abrirMenuCaptura(){
         Stage stage = (Stage) menuCaptura.getScene().getWindow();
@@ -171,6 +167,28 @@ public class MainMenuController implements Initializable {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void abrirMenuEquipo(){
+
+        Stage stage = (Stage) menuEquipo.getScene().getWindow();
+        stage.close();
+
+        FXMLLoader fxmlLoader = new FXMLLoader(SplashApplication.class.getResource("view/equipo-view.fxml"));
+
+        Scene scene = null;
+        try {
+            scene = new Scene(fxmlLoader.load(), 800, 480);
+            stage.setTitle("Menu");
+            stage.setScene(scene);
+            EquipoController equipoController = fxmlLoader.getController();
+            equipoController.setUsuario(usuario);
+            stage.show();
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     public void salirPrograma (){
