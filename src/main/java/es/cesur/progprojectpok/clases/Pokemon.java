@@ -53,9 +53,10 @@ public class Pokemon {
     }
 
     //Constructor de pokemons para capturarlos.
-    public Pokemon(String nombre, int numPokedex) {
+    public Pokemon(String nombre, int numPokedex, Tipos tipo1, Tipos tipo2) {
         this.nombre = nombre;
         this.vitalidad =    5 + r.nextInt(5) + 1;
+        this.vitMax = this.vitalidad;
         this.ataque =           r.nextInt(5) + 1;
         this.defensa =          r.nextInt(5) + 1;
         this.ataqueEspecial =   r.nextInt(5) + 1;
@@ -66,6 +67,8 @@ public class Pokemon {
         this.sexo = randomSex();
         this.numPokedex = numPokedex;
         this.fertilidad = VALOR_INICIAL_FERT;
+        this.tipo1 = tipo1;
+        this.tipo2 = tipo2;
     }
 
     //Constructor para el combate pokemon. Principalmente para los pokemons del usuario.
@@ -413,19 +416,26 @@ public class Pokemon {
 
     //Filtra los movimientos para llamar el método correspondiente, según el tipo de movimiento.
     public void usarMovimiento(int indice, Pokemon pokemonObjetivo, Pokemon pokemonCaster){
-        try{
-            if (MOVIMIENTOS[indice] instanceof MovimientoAtaque ataqueMov){
-                ataqueMov.aplicarDamage(pokemonObjetivo, pokemonCaster);
-            }
-            else if (MOVIMIENTOS[indice] instanceof MovimientoMejora mejoraMov){
-                mejoraMov.mejoraAplica(pokemonCaster);
-            }
-            else if (MOVIMIENTOS[indice] instanceof MovimientoEstado estadoMov){
-                estadoMov.aplicarEstado(pokemonCaster, ((MovimientoEstado) MOVIMIENTOS[indice]).getEstado());
-            }
-        }catch (ArrayIndexOutOfBoundsException e){
-            e.printStackTrace();
+        if (indice == 5){
+            MovimientoAtaque movNopega = new MovimientoAtaque("No pudo pegar", 0, 0,Tipos.NULL, 0, "FISICO");
+            movNopega.aplicarDamage(pokemonObjetivo, pokemonCaster);
         }
+        else {
+            try{
+                if (MOVIMIENTOS[indice] instanceof MovimientoAtaque ataqueMov){
+                    ataqueMov.aplicarDamage(pokemonObjetivo, pokemonCaster);
+                }
+                else if (MOVIMIENTOS[indice] instanceof MovimientoMejora mejoraMov){
+                    mejoraMov.mejoraAplica(pokemonCaster);
+                }
+                else if (MOVIMIENTOS[indice] instanceof MovimientoEstado estadoMov){
+                    estadoMov.aplicarEstado(pokemonObjetivo, ((MovimientoEstado) MOVIMIENTOS[indice]).getEstado());
+                }
+            }catch (ArrayIndexOutOfBoundsException e){
+                e.printStackTrace();
+            }
+        }
+
 
     }
 

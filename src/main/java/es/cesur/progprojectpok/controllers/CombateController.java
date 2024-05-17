@@ -94,6 +94,7 @@ public class CombateController implements Initializable {
 
     @FXML
     private ImageView pokemonJugador;
+
     @FXML
     private ImageView pokemonRival;
 
@@ -385,25 +386,26 @@ public class CombateController implements Initializable {
 
     private void darExperiencia(){
         //ES POSIBLE QUE SI, POR LO QUE SEA, EL POKEMON SUBE 2 NIVELES DE GOLPE, NO FUNCIONE.
-        for (Pokemon pokemon : usuario.getEquipoPokemon()){
-            if(pokemon != null){
-                while (pokemon.getExperiencia() >= pokemon.getNivel()*10){
-                    textDescripCombate.setText(pokemon.getMote() + " ha subido al nivel " + (pokemon.getNivel()+1));
-                    textNivPokJug.setText("Nv." + usuario.getPokemon(pokemonUsuarioActivo).getNivel());
-                    barVitJugador.setProgress((double) usuario.getPokemon(pokemonUsuarioActivo).getVitalidad() /usuario.getPokemon(pokemonUsuarioActivo).getVitMax());
+        while (usuario.getPokemon(pokemonUsuarioActivo).getExperiencia() >= usuario.getPokemon(pokemonUsuarioActivo).getNivel()*10){
+
+            textDescripCombate.setText(usuario.getPokemon(pokemonUsuarioActivo).getMote() + " ha subido al nivel " + (usuario.getPokemon(pokemonUsuarioActivo).getNivel()+1));
+            textNivPokJug.setText("Nv." + (usuario.getPokemon(pokemonUsuarioActivo).getNivel()+1));
+            barVitJugador.setProgress((double) usuario.getPokemon(pokemonUsuarioActivo).getVitalidad() /usuario.getPokemon(pokemonUsuarioActivo).getVitMax());
 
 
-                    if (pokemon.subirNivel()){
-                        movimientoAprender = pokemon.selecionarMovimientoDB();
-                        aprendiendoMovimiento = true;
-                        textDescripCombate.setText(pokemon.getMote() + " puede aprender " + movimientoAprender.getNombre() + " ¿deseas que lo aprenda?");
-                        botonSI.setDisable(false);
-                        botonSI.setVisible(true);
-                        botonNo.setDisable(false);
-                        botonNo.setVisible(true);
-                    }
-                }
+            if (usuario.getPokemon(pokemonUsuarioActivo).subirNivel()){
+                movimientoAprender = usuario.getPokemon(pokemonUsuarioActivo).selecionarMovimientoDB();
+                aprendiendoMovimiento = true;
+                textDescripCombate.setText(usuario.getPokemon(pokemonUsuarioActivo).getMote() + " puede aprender " + movimientoAprender.getNombre() + " ¿deseas que lo aprenda?");
+                botonSI.setDisable(false);
+                botonSI.setVisible(true);
+                botonNo.setDisable(false);
+                botonNo.setVisible(true);
             }
+
+
+
+
         }
     }
 
@@ -585,20 +587,31 @@ public class CombateController implements Initializable {
 
     public Pane createPanel(int indicePokemon) {
         Pane pane = new Pane();
+        ImageView imageView = new ImageView();
+        Label labelNom = new Label();
+        Label labelNvl = new Label();
+        Label labelVit = new Label();
+        ProgressBar progressBar = new ProgressBar();
+        progressBar.setProgress(0);
 
-        ImageView imageView = new ImageView(new Image(Pokemon.imgRutaAbsouta(usuario.getPokemon(indicePokemon).getImagenUrlDelante())));
+        if (usuario.getPokemon(indicePokemon) != null){
+            imageView.setImage(new Image(Pokemon.imgRutaAbsouta(usuario.getPokemon(indicePokemon).getImagenUrlDelante())));
+            labelNom.setText(usuario.getPokemon(indicePokemon).getMote());
+            labelNvl.setText("Nv." + usuario.getPokemon(indicePokemon).getNivel());
+            labelVit.setText(usuario.getPokemon(indicePokemon).getVitalidad() + "/" + usuario.getPokemon(indicePokemon).getVitMax());
+            progressBar.setProgress(((double) usuario.getPokemon(indicePokemon).getVitalidad() / usuario.getPokemon(indicePokemon).getVitMax()));
+        }
+
         imageView.setId("image");
 
-        Label labelNom = new Label(usuario.getPokemon(indicePokemon).getMote());
         labelNom.setId("labelNom");
-        Label labelNvl = new Label("Nv." + usuario.getPokemon(indicePokemon).getNivel());
+
         labelNvl.setId("labelLvl");
-        Label labelVit = new Label(usuario.getPokemon(indicePokemon).getVitalidad() + "/" + usuario.getPokemon(indicePokemon).getVitMax());
+
         labelVit.setId("labelVit");
 
-        ProgressBar progressBar = new ProgressBar();
         progressBar.setId("progressBar");
-        progressBar.setProgress(((double) usuario.getPokemon(indicePokemon).getVitalidad() / usuario.getPokemon(indicePokemon).getVitMax()));
+
         progressBar.setStyle(BAR_VERDE);
 
         imageView.setLayoutX(-6);

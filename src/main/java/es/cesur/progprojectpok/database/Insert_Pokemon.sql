@@ -29,8 +29,8 @@ INSERT INTO POKEDEX (NUM_POKEDEX, NOM_POKEMON, TIPO1, TIPO2, IMAGEN_DELANTE, IMA
 (22, 'Fearow', 'Normal', 'Volador', 	'src\\main\\resources\\es\\cesur\\progprojectpok\\images\\pokemons\\fearow-front.png', 		    'src\\main\\resources\\es\\cesur\\progprojectpok\\images\\pokemons\\fearow-back.png', NULL, NULL, 'sonido22.mp3', NULL, NULL),
 (23, 'Ekans', 'Veneno', NULL, 			'src\\main\\resources\\es\\cesur\\progprojectpok\\images\\pokemons\\ekans-front.png', 	        'src\\main\\resources\\es\\cesur\\progprojectpok\\images\\pokemons\\ekans-back.png', NULL, NULL, 'sonido23.mp3', 22, 24),
 (24, 'Arbok', 'Veneno', NULL, 			'src\\main\\resources\\es\\cesur\\progprojectpok\\images\\pokemons\\arbok-front.png', 	        'src\\main\\resources\\es\\cesur\\progprojectpok\\images\\pokemons\\arbok-back.png', NULL, NULL, 'sonido24.mp3', NULL, NULL),
-(25, 'Pikachu', 'Eléctrico', NULL, 		'src\\main\\resources\\es\\cesur\\progprojectpok\\images\\pokemons\\pikachu-m-front.png',  	    'src\\main\\resources\\es\\cesur\\progprojectpok\\images\\pokemons\\pikachu-m-back.png', 'src\\main\\resources\\es\\cesur\\progprojectpok\\images\\pokemons\\pikachu-f-front.png', 'src\\main\\resources\\es\\cesur\\progprojectpok\\images\\pokemons\\pikachu-f-back.png', 'sonido25.mp3', 28, 26),
-(26, 'Raichu', 'Eléctrico', NULL, 		'src\\main\\resources\\es\\cesur\\progprojectpok\\images\\pokemons\\raichu-m-front.png', 	    'src\\main\\resources\\es\\cesur\\progprojectpok\\images\\pokemons\\raichu-m-back.png', 'src\\main\\resources\\es\\cesur\\progprojectpok\\images\\pokemons\\raichu-f-front.png', 'src\\main\\resources\\es\\cesur\\progprojectpok\\images\\pokemons\\raichu-f-back.png', 'sonido26.mp3', NULL, NULL);
+(25, 'Pikachu', 'Electrico', NULL, 		'src\\main\\resources\\es\\cesur\\progprojectpok\\images\\pokemons\\pikachu-m-front.png',  	    'src\\main\\resources\\es\\cesur\\progprojectpok\\images\\pokemons\\pikachu-m-back.png', 'src\\main\\resources\\es\\cesur\\progprojectpok\\images\\pokemons\\pikachu-f-front.png', 'src\\main\\resources\\es\\cesur\\progprojectpok\\images\\pokemons\\pikachu-f-back.png', 'sonido25.mp3', 28, 26),
+(26, 'Raichu', 'Electrico', NULL, 		'src\\main\\resources\\es\\cesur\\progprojectpok\\images\\pokemons\\raichu-m-front.png', 	    'src\\main\\resources\\es\\cesur\\progprojectpok\\images\\pokemons\\raichu-m-back.png', 'src\\main\\resources\\es\\cesur\\progprojectpok\\images\\pokemons\\raichu-f-front.png', 'src\\main\\resources\\es\\cesur\\progprojectpok\\images\\pokemons\\raichu-f-back.png', 'sonido26.mp3', NULL, NULL);
 
 -- IMPORTANTE: Añadir de nuevo al clave foránea al terminar los inserts si se ha elimnado.
 ALTER TABLE POKEDEX
@@ -174,11 +174,16 @@ ORDER BY RAND() LIMIT 1;
 
 --INSERT DE POKEMONS PARA PRUEBAS
 INSERT INTO POKEMON (ID_POKEMON, NUM_POKEDEX, ID_ENTRENADOR, MOTE, CAJA, ATAQUE, AT_ESPECIAL, DEFENSA, DEF_ESPECIAL, VELOCIDAD, VITALIDAD, VIT_MAX, NIVEL, EXPERIENCIA, SEXO, FERTILIDAD, ESTADO) VALUES
-(1, 26, 1, 'El Roto', 1, 80, 80, 80, 80, 80, 800, 800, 11, 119, 'H', 5, 'Saludable');
+(1, 26, 1, 'El Roto', 0, 80, 80, 80, 80, 80, 800, 800, 11, 119, 'H', 5, 'Saludable'),
+(2, 13, 1, 'El Venenos', 0, 5, 5, 100, 100, 100, 800, 800, 6, 0, 'M', 5, 'Saludable');
 
 INSERT INTO `movimientos_pokemon`(`ID_MOVIMIENTO`, `ID_POKEMON`, `ACTIVO`, `PP_REST`) VALUES
-(30, 999, 1,(SELECT PP_MAX FROM movimientos WHERE ID_MOVIMIENTO = 30)),
-(31, 999, 1,(SELECT PP_MAX FROM movimientos WHERE ID_MOVIMIENTO = 31)),
-(2, 999, 1,(SELECT PP_MAX FROM movimientos WHERE ID_MOVIMIENTO = 2)),
-(28, 999, 1,(SELECT PP_MAX FROM movimientos WHERE ID_MOVIMIENTO = 28));
+(30, 1, 1,(SELECT PP_MAX FROM movimientos WHERE ID_MOVIMIENTO = 30)),
+(3, 1, 1,(SELECT PP_MAX FROM movimientos WHERE ID_MOVIMIENTO = 31)),
+(2, 1, 1,(SELECT PP_MAX FROM movimientos WHERE ID_MOVIMIENTO = 2)),
+(28, 1, 1,(SELECT PP_MAX FROM movimientos WHERE ID_MOVIMIENTO = 28)),
+(14, 2, 1,(SELECT PP_MAX FROM movimientos WHERE ID_MOVIMIENTO = 30)),
+(94, 2, 1,(SELECT PP_MAX FROM movimientos WHERE ID_MOVIMIENTO = 31)),
+(95, 2, 1,(SELECT PP_MAX FROM movimientos WHERE ID_MOVIMIENTO = 2)),
+(97, 2, 1,(SELECT PP_MAX FROM movimientos WHERE ID_MOVIMIENTO = 28));
 

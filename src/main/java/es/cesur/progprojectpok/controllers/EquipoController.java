@@ -108,6 +108,7 @@ public class EquipoController implements Initializable {
     private int cajaSelect = -1;
     private int caja0Equipo = 2;
     private boolean equipoLleno = false;
+    private int contEquipo;
 
     public void setUsuario(Entrenador usuario) {
         this.usuario = usuario;
@@ -140,7 +141,9 @@ public class EquipoController implements Initializable {
 
             y += 60;
 
-            if (i == 5) equipoLleno = true;
+            if (usuario.getPokemon(i) != null){
+                contEquipo++;
+            }
 
         }
     }
@@ -204,6 +207,7 @@ public class EquipoController implements Initializable {
         }
         usuario.setPokemon(null, equipoSelect);
         equipoSelect = -1;
+        contEquipo--;
 
     }
 
@@ -220,7 +224,7 @@ public class EquipoController implements Initializable {
      */
 
     public void enviarEquipo() {
-        if (!equipoLleno){
+        if (contEquipo < 6){
             Pokemon pokemon = pokemonCaja[cajaSelect];
             int i;
             for (i = 0; i < usuario.getEquipoPokemon().length; i++) {
@@ -246,7 +250,7 @@ public class EquipoController implements Initializable {
             caja0Equipo = 2;
 
             pokemonCaja[cajaSelect] = null;
-
+            contEquipo++;
             cajaSelect = -1;
         }
         else {

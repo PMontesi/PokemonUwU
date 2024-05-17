@@ -82,16 +82,20 @@ public class Entrenador {
 
     /**
      * Obtiene la ID del último pokemon añadido a la base de datos.
+     * También obtiene los tipos.
      * Se usa exclusivamente cuando un pokemon es capturado.
      * @param pokemon el pokemon capturado.
      */
     public void setPokemonIdBBDD(Pokemon pokemon){
-        String obtenerIDpoke = "SELECT MAX(ID_POKEMON) FROM POKEMON";
+        String obtenerIDpoke = "SELECT MAX(P.ID_POKEMON), PK.TIPO1, PK.TIPO2 \n" +
+                "FROM POKEMON P \n" +
+                "JOIN POKEDEX PK ON P.NUM_POKEDEX = PK.NUM_POKEDEX \n" +
+                "WHERE P.ID_POKEMON = (SELECT MAX(ID_POKEMON) FROM POKEMON)";
         try(Connection connection = DBConnection.getConnection();
             PreparedStatement statementObtenerIDPoke = connection.prepareStatement(obtenerIDpoke);){
             ResultSet resultSetObtenerIDPoke = statementObtenerIDPoke.executeQuery();
             while (resultSetObtenerIDPoke.next()){
-                pokemon.setId(resultSetObtenerIDPoke.getInt("MAX(ID_POKEMON)"));
+                pokemon.setId(resultSetObtenerIDPoke.getInt("MAX(P.ID_POKEMON)"));
             }
             resultSetObtenerIDPoke.close();
             statementObtenerIDPoke.close();

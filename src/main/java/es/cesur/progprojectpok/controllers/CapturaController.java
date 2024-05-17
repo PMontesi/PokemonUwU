@@ -3,6 +3,7 @@ package es.cesur.progprojectpok.controllers;
 import es.cesur.progprojectpok.SplashApplication;
 import es.cesur.progprojectpok.clases.Entrenador;
 import es.cesur.progprojectpok.clases.Pokemon;
+import es.cesur.progprojectpok.clases.Tipos;
 import es.cesur.progprojectpok.database.DBConnection;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -127,9 +128,11 @@ public class CapturaController implements Initializable {
             //Construcción del Pokemon en base a las columnas del segundo SELECT y obtención de la URL de la imagen.
             while (resultSetPokemon.next()) {
                 String nombre = resultSetPokemon.getString("NOM_POKEMON");
-
                 int numPokedex = resultSetPokemon.getInt(("NUM_POKEDEX"));
-                pokemonSalvaje = new Pokemon(nombre, numPokedex);
+                Tipos tipo1 = Pokemon.TipoStringToEnum(resultSetPokemon.getString("TIPO1"));
+                Tipos tipo2 = Pokemon.TipoStringToEnum(resultSetPokemon.getString("TIPO2"));
+
+                pokemonSalvaje = new Pokemon(nombre, numPokedex, tipo1, tipo2);
                 if(pokemonSalvaje.getSexo() == 'H' && resultSetPokemon.getString("IMAGEN_DELANTE_F") != null){
                     imagenDelantePokSalvaje = resultSetPokemon.getString("IMAGEN_DELANTE_F");
                     imagenDetrasPokSalvaje = resultSetPokemon.getString("IMAGEN_DETRAS_F");
